@@ -1,20 +1,45 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+import {
+useFonts,
+Poppins_700Bold,
+Poppins_600SemiBold
 }
+from "@expo-google-fonts/poppins";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+
+import {
+PlusJakartaSans_400Regular,
+PlusJakartaSans_500Medium,
+PlusJakartaSans_700Bold
+}
+from "@expo-google-fonts/plus-jakarta-sans";
+
+
+import AppNavigator from "./src/navigation/AppNavigator";
+
+
+export default function App(){
+
+
+const [loaded]=useFonts({
+
+Poppins_700Bold,
+Poppins_600SemiBold,
+
+PlusJakartaSans_400Regular,
+PlusJakartaSans_500Medium,
+PlusJakartaSans_700Bold,
+
 });
+
+
+if(!loaded)
+return null;
+
+
+
+return <AppNavigator/>;
+
+
+}

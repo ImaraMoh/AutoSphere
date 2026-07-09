@@ -1,6 +1,5 @@
 import React,{useState,useCallback} from "react";
 
-
 import {
 View,
 Text,
@@ -14,21 +13,26 @@ useFocusEffect
 } from "@react-navigation/native";
 
 
+import {
+Ionicons
+} from "@expo/vector-icons";
+
+
 import AppHeader from "../../components/AppHeader";
 
 
 import {
-getMaintenance
-} from "../../services/maintenanceStorage";
+getReminders
+} from "../../services/reminderStorage";
 
 
 import styles from "./styles";
 
 
-export default function Maintenance({navigation}){
+export default function Reminder({navigation}){
 
 
-const [records,setRecords]=useState([]);
+const [data,setData]=useState([]);
 
 
 
@@ -46,7 +50,7 @@ load();
 
 const load=async()=>{
 
-setRecords(await getMaintenance());
+setData(await getReminders());
 
 };
 
@@ -58,10 +62,9 @@ return(
 
 
 <AppHeader
-title="Maintenance History"
+title="Smart Reminder"
 navigation={navigation}
 />
-
 
 
 <ScrollView
@@ -70,7 +73,17 @@ contentContainerStyle={{padding:20}}
 
 
 {
-records.map(item=>(
+data.length===0 ?
+
+<Text>
+No reminders
+</Text>
+
+
+:
+
+
+data.map(item=>(
 
 
 <View
@@ -79,23 +92,30 @@ key={item.id}
 >
 
 
+<Ionicons
+name="notifications"
+size={30}
+color="#F97316"
+/>
+
+
 <Text style={styles.title}>
-{item.repair}
+{item.title}
 </Text>
 
 
 <Text>
-Garage : {item.garage}
+{item.type}
 </Text>
 
 
 <Text>
-Cost : {item.cost}
+Due : {item.date}
 </Text>
 
 
-<Text>
-Date : {item.date}
+<Text style={styles.status}>
+Upcoming
 </Text>
 
 
@@ -104,21 +124,19 @@ Date : {item.date}
 
 ))
 
+
 }
 
 
 
 <TouchableOpacity
-
 style={styles.button}
-
-onPress={()=>navigation.navigate("AddMaintenance")}
-
+onPress={()=>navigation.navigate("AddReminder")}
 >
 
 
 <Text style={styles.buttonText}>
-+ Add Service
++ Add Reminder
 </Text>
 
 

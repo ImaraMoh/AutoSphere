@@ -1,12 +1,16 @@
 import React,{useState,useCallback} from "react";
 
-
 import {
 View,
 Text,
 ScrollView,
 TouchableOpacity
 } from "react-native";
+
+
+import {
+Ionicons
+} from "@expo/vector-icons";
 
 
 import {
@@ -18,17 +22,17 @@ import AppHeader from "../../components/AppHeader";
 
 
 import {
-getMaintenance
-} from "../../services/maintenanceStorage";
+getDocuments
+} from "../../services/documentStorage";
 
 
 import styles from "./styles";
 
 
-export default function Maintenance({navigation}){
+export default function DocumentWallet({navigation}){
 
 
-const [records,setRecords]=useState([]);
+const [documents,setDocuments]=useState([]);
 
 
 
@@ -46,7 +50,9 @@ load();
 
 const load=async()=>{
 
-setRecords(await getMaintenance());
+const data=await getDocuments();
+
+setDocuments(data);
 
 };
 
@@ -58,7 +64,7 @@ return(
 
 
 <AppHeader
-title="Maintenance History"
+title="Document Wallet"
 navigation={navigation}
 />
 
@@ -69,33 +75,57 @@ contentContainerStyle={{padding:20}}
 >
 
 
+
 {
-records.map(item=>(
+documents.length===0 ?
+
+<View style={styles.empty}>
+
+
+<Ionicons
+name="document-outline"
+size={80}
+color="#F97316"
+/>
+
+
+<Text>
+No Documents Added
+</Text>
+
+
+</View>
+
+
+:
+
+
+documents.map(item=>(
 
 
 <View
-style={styles.card}
 key={item.id}
+style={styles.card}
 >
 
 
 <Text style={styles.title}>
-{item.repair}
+{item.name}
 </Text>
 
 
 <Text>
-Garage : {item.garage}
+Type : {item.type}
 </Text>
 
 
 <Text>
-Cost : {item.cost}
+Expiry : {item.expiry}
 </Text>
 
 
-<Text>
-Date : {item.date}
+<Text style={styles.valid}>
+● Valid
 </Text>
 
 
@@ -108,18 +138,20 @@ Date : {item.date}
 
 
 
+
 <TouchableOpacity
 
-style={styles.button}
+style={styles.fab}
 
-onPress={()=>navigation.navigate("AddMaintenance")}
+onPress={()=>navigation.navigate("UploadDocument")}
 
 >
 
-
-<Text style={styles.buttonText}>
-+ Add Service
-</Text>
+<Ionicons
+name="add"
+size={30}
+color="white"
+/>
 
 
 </TouchableOpacity>

@@ -25,6 +25,12 @@ fontWeight:"700"
 },
 
 
+status:{
+color:"#EAB308",
+marginTop:10
+},
+
+
 button:{
 backgroundColor:"#F97316",
 padding:16,
