@@ -10,6 +10,11 @@ import AddReminder from "../screens/AddReminder";
 import Maintenance from "../screens/Maintenance";
 import AddMaintenance from "../screens/AddMaintenance";
 
+import Expenses from "../screens/Expenses";
+import AddExpense from "../screens/AddExpense";
+
+import Reports from "../screens/Reports";
+import AIChat from "../screens/AIChat";
 import {
 createNativeStackNavigator
 }
@@ -99,6 +104,26 @@ name="AddMaintenance"
 component={AddMaintenance}
 />
 
+<Stack.Screen
+name="Expenses"
+component={Expenses}
+/>
+
+
+<Stack.Screen
+name="AddExpense"
+component={AddExpense}
+/>
+
+<Stack.Screen
+name="Reports"
+component={Reports}
+/>
+
+<Stack.Screen
+name="AIChat"
+component={AIChat}
+/>
 
 </Stack.Navigator>
 

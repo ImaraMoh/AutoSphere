@@ -151,6 +151,21 @@ onPress={()=>navigation.navigate("Reminder")}
 
 />
 
+<Action
+icon="wallet"
+title="Expenses"
+onPress={()=>
+navigation.navigate("Expenses")
+}
+/>
+
+<Action
+icon="analytics"
+title="Reports"
+onPress={()=>
+navigation.navigate("Reports")
+}
+/>
 
 </View>
 
@@ -163,7 +178,6 @@ onPress={()=>navigation.navigate("Reminder")}
 <Text style={styles.section}>
 AI Assistant
 </Text>
-
 
 <Card>
 

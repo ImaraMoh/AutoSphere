@@ -12,25 +12,18 @@ backgroundColor:"#F8FAFC"
 },
 
 
-summary:{
+form:{
+padding:20
+},
+
+
+input:{
 backgroundColor:"#FFFFFF",
-padding:25,
-borderRadius:25
-},
-
-
-amount:{
-fontSize:30,
-fontWeight:"800",
-color:"#F97316",
-marginTop:10
-},
-
-
-section:{
-fontSize:22,
-fontWeight:"700",
-marginVertical:20
+borderRadius:12,
+padding:15,
+marginBottom:15,
+borderWidth:1,
+borderColor:"#E5E7EB"
 },
 
 
