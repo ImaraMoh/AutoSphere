@@ -15,6 +15,11 @@ import AddExpense from "../screens/AddExpense";
 
 import Reports from "../screens/Reports";
 import AIChat from "../screens/AIChat";
+import EditProfile from "../screens/EditProfile";
+import ChangePassword from "../screens/ChangePassword";
+import ConnectedDevices from "../screens/ConnectedDevices";
+import Privacy from "../screens/Privacy";
+import NotificationSettings from "../screens/NotificationSettings";
 import {
 createNativeStackNavigator
 }
@@ -140,6 +145,31 @@ component={Reports}
 <Stack.Screen
 name="AIChat"
 component={AIChat}
+/>
+
+<Stack.Screen
+	name="EditProfile"
+	component={EditProfile}
+/>
+
+<Stack.Screen
+	name="ChangePassword"
+	component={ChangePassword}
+/>
+
+<Stack.Screen
+	name="ConnectedDevices"
+	component={ConnectedDevices}
+/>
+
+<Stack.Screen
+	name="Privacy"
+	component={Privacy}
+/>
+
+<Stack.Screen
+	name="NotificationSettings"
+	component={NotificationSettings}
 />
 
 <Stack.Screen
