@@ -36,6 +36,11 @@ import EMICalculator from "../screens/EMICalculator";
 import LoanApplication from "../screens/LoanApplication";
 import PaymentSchedule from "../screens/PaymentSchedule";
 
+import DrivingSchool from "../screens/DrivingSchool";
+import InstructorDetails from "../screens/InstructorDetails";
+import BookLesson from "../screens/BookLesson";
+import LearningProgress from "../screens/LearningProgress";
+
 const Stack=createNativeStackNavigator();
 
 
@@ -170,6 +175,29 @@ component={LoanApplication}
 <Stack.Screen
 name="PaymentSchedule"
 component={PaymentSchedule}
+/>
+
+<Stack.Screen
+name="DrivingSchool"
+component={DrivingSchool}
+/>
+
+
+<Stack.Screen
+name="InstructorDetails"
+component={InstructorDetails}
+/>
+
+
+<Stack.Screen
+name="BookLesson"
+component={BookLesson}
+/>
+
+
+<Stack.Screen
+name="LearningProgress"
+component={LearningProgress}
 />
 
 </Stack.Navigator>

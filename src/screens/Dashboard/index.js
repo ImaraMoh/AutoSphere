@@ -191,6 +191,14 @@ navigation.navigate("Finance")
 }
 />
 
+<Action
+icon="car-sport"
+title="Driving School"
+onPress={()=>
+navigation.navigate("DrivingSchool")
+}
+/>
+
 </View>
 
 
