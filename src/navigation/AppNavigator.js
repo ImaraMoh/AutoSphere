@@ -27,7 +27,9 @@ import BottomNavigator from "./BottomNavigator";
 import AddVehicle from "../screens/AddVehicle";
 
 import VehicleProfile from "../screens/VehicleProfile";
-
+import Insurance from "../screens/Insurance";
+import RenewInsurance from "../screens/RenewInsurance";
+import SubmitClaim from "../screens/SubmitClaim";
 
 const Stack=createNativeStackNavigator();
 
@@ -123,6 +125,23 @@ component={Reports}
 <Stack.Screen
 name="AIChat"
 component={AIChat}
+/>
+
+<Stack.Screen
+name="Insurance"
+component={Insurance}
+/>
+
+
+<Stack.Screen
+name="RenewInsurance"
+component={RenewInsurance}
+/>
+
+
+<Stack.Screen
+name="SubmitClaim"
+component={SubmitClaim}
 />
 
 </Stack.Navigator>

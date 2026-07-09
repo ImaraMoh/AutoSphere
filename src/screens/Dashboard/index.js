@@ -167,6 +167,22 @@ navigation.navigate("Reports")
 }
 />
 
+<Action
+icon="sparkles"
+title="AI Assistant"
+onPress={()=>
+navigation.navigate("AIChat")
+}
+/>
+
+<Action
+icon="shield"
+title="Insurance"
+onPress={()=>
+navigation.navigate("Insurance")
+}
+/>
+
 </View>
 
 
