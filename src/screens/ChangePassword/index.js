@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, Alert, ScrollView} from 'react-native';
+import {View, Text, TextInput, Alert, ScrollView, TouchableOpacity} from 'react-native';
+import {Ionicons} from '@expo/vector-icons';
 import styles from './styles';
 import Button from '../../components/Button';
 
@@ -24,7 +25,17 @@ export default function ChangePassword({navigation}){
   return (
     <View style={styles.container}>
       <ScrollView>
-        <Text style={styles.title}>Change Password</Text>
+        <View style={{
+          flexDirection:"row",
+          alignItems:"center",
+          gap:10,
+          marginBottom:20
+        }}>
+          <TouchableOpacity onPress={()=>navigation.goBack()}>
+            <Ionicons name="arrow-back" size={25} color="#0D1117" />
+          </TouchableOpacity>
+          <Text style={styles.title}>Change Password</Text>
+        </View>
         <Text style={styles.label}>Current password</Text>
         <TextInput secureTextEntry value={current} onChangeText={setCurrent} style={styles.input} />
         <Text style={styles.label}>New password</Text>

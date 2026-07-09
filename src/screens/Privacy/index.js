@@ -1,12 +1,23 @@
 import React from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {Ionicons} from '@expo/vector-icons';
 import styles from './styles';
 
-export default function Privacy(){
+export default function Privacy({navigation}){
   return (
     <View style={styles.container}>
       <ScrollView>
-        <Text style={styles.title}>Privacy</Text>
+        <View style={{
+          flexDirection:"row",
+          alignItems:"center",
+          gap:10,
+          marginBottom:20
+        }}>
+          <TouchableOpacity onPress={()=>navigation.goBack()}>
+            <Ionicons name="arrow-back" size={25} color="#0D1117" />
+          </TouchableOpacity>
+          <Text style={styles.title}>Privacy</Text>
+        </View>
         <Text style={styles.paragraph}>We take your privacy seriously. This app collects only the data necessary to provide services and improve your experience. You can manage permissions and data sharing settings here.</Text>
 
         <Text style={[styles.subtitle,{marginTop:16}]}>Data collected</Text>

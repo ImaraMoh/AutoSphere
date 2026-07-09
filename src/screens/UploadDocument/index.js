@@ -9,6 +9,8 @@ import {
   StyleSheet
 } from "react-native";
 
+import { Ionicons } from "@expo/vector-icons";
+
 import * as ImagePicker from "expo-image-picker";
 
 import {
@@ -76,9 +78,22 @@ export default function UploadDocument({ navigation }) {
 
     <View style={styles.container}>
 
-      <Text style={styles.title}>
-        Upload Document
-      </Text>
+      <View style={{
+        flexDirection:"row",
+        alignItems:"center",
+        gap:10,
+        marginBottom:15
+      }}>
+
+        <TouchableOpacity onPress={()=>navigation.goBack()}>
+          <Ionicons name="arrow-back" size={25} color="#0D1117" />
+        </TouchableOpacity>
+
+        <Text style={styles.title}>
+          Upload Document
+        </Text>
+
+      </View>
 
 
       <TouchableOpacity

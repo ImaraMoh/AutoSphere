@@ -8,6 +8,7 @@ TouchableOpacity,
 StyleSheet
 } from "react-native";
 
+import { Ionicons } from "@expo/vector-icons";
 
 import {
 getReminders,
@@ -74,10 +75,22 @@ return(
 
 <View style={styles.container}>
 
+<View style={{
+flexDirection:"row",
+alignItems:"center",
+gap:10,
+marginBottom:15
+}}>
+
+<TouchableOpacity onPress={()=>navigation.goBack()}>
+<Ionicons name="arrow-back" size={25} color="#0D1117" />
+</TouchableOpacity>
 
 <Text style={styles.title}>
 Add Reminder
 </Text>
+
+</View>
 
 
 

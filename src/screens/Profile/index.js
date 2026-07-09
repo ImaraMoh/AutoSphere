@@ -32,9 +32,6 @@ export default function Profile({navigation}){
 			<ScrollView contentContainerStyle={{paddingBottom:40}}>
 
 				<View style={styles.header}>
-					<TouchableOpacity onPress={()=>navigation.goBack()}>
-						<Ionicons name="chevron-back" size={26} color={colors.text} />
-					</TouchableOpacity>
 					<Text style={styles.headerTitle}>Profile</Text>
 					<TouchableOpacity onPress={()=>navigation.navigate('EditProfile')}>
 						<Ionicons name="create-outline" size={20} color={colors.text} />

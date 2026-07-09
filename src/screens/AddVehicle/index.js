@@ -13,6 +13,7 @@ from "react-native";
 
 import * as ImagePicker from "expo-image-picker";
 
+import { Ionicons } from "@expo/vector-icons";
 
 import {saveVehicle} from "../../services/storage";
 
@@ -87,21 +88,33 @@ return(
 
 <View
 style={{
+flex:1,
 padding:20
 }}
 >
 
+<View style={{
+flexDirection:"row",
+alignItems:"center",
+gap:10,
+marginBottom:20
+}}>
+
+<TouchableOpacity onPress={()=>navigation.goBack()}>
+<Ionicons name="arrow-back" size={25} color="#0D1117" />
+</TouchableOpacity>
 
 <Text
 style={{
 fontSize:28,
-fontWeight:"bold"
+fontWeight:"bold",
+flex:1
 }}
 >
-
 Add Vehicle
-
 </Text>
+
+</View>
 
 
 

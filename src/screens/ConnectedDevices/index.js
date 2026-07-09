@@ -10,14 +10,24 @@ const devices = [
   {id:'3', name:'CarPlay'}
 ];
 
-export default function ConnectedDevices(){
+export default function ConnectedDevices({navigation}){
   function handleRemove(item){
     Alert.alert('Remove device', `Remove ${item.name}?`, [{text:'Cancel',style:'cancel'},{text:'Remove',style:'destructive'}]);
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Connected Devices</Text>
+      <View style={{
+        flexDirection:"row",
+        alignItems:"center",
+        gap:10,
+        marginBottom:20
+      }}>
+        <TouchableOpacity onPress={()=>navigation.goBack()}>
+          <Ionicons name="arrow-back" size={25} color={colors.text} />
+        </TouchableOpacity>
+        <Text style={styles.title}>Connected Devices</Text>
+      </View>
       <FlatList
         data={devices}
         keyExtractor={d=>d.id}

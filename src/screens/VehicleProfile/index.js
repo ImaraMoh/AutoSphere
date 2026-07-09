@@ -3,13 +3,14 @@ import React from "react";
 import {
 View,
 Text,
-Image
+Image,
+TouchableOpacity
 }
 from "react-native";
 
+import { Ionicons } from "@expo/vector-icons";
 
-
-export default function VehicleProfile({route}){
+export default function VehicleProfile({route,navigation}){
 
 
 const {vehicle}=route.params;
@@ -20,9 +21,33 @@ return(
 
 <View
 style={{
+flex:1,
 padding:20
 }}
 >
+
+<View style={{
+flexDirection:"row",
+alignItems:"center",
+gap:10,
+marginBottom:20
+}}>
+
+<TouchableOpacity onPress={()=>navigation.goBack()}>
+<Ionicons name="arrow-back" size={25} color="#0D1117" />
+</TouchableOpacity>
+
+<Text
+style={{
+fontSize:24,
+fontWeight:"bold",
+flex:1
+}}
+>
+Vehicle Details
+</Text>
+
+</View>
 
 
 {

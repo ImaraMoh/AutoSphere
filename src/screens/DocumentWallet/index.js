@@ -66,6 +66,7 @@ return(
 <AppHeader
 title="Document Wallet"
 navigation={navigation}
+showBack={false}
 />
 
 

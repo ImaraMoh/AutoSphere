@@ -100,54 +100,17 @@ Vehicle Health
 Quick Actions
 </Text>
 
-
-
-
 <View style={styles.grid}>
 
-
 <Action
-
-icon="car"
-
-title="Vehicle"
-
-onPress={()=>navigation.navigate("Vehicles")}
-
-/>
-
-
-
-<Action
-
-icon="document-text"
-
-title="Documents"
-
-onPress={()=>navigation.navigate("DocumentWallet")}
-
-/>
-
-
-
-<Action
-
 icon="construct"
-
 title="Maintenance"
-
 onPress={()=>navigation.navigate("Maintenance")}
-
 />
 
-
-
 <Action
-
 icon="notifications"
-
 title="Reminder"
-
 onPress={()=>navigation.navigate("Reminder")}
 
 />
@@ -165,14 +128,6 @@ icon="analytics"
 title="Reports"
 onPress={()=>
 navigation.navigate("Reports")
-}
-/>
-
-<Action
-icon="sparkles"
-title="AI Assistant"
-onPress={()=>
-navigation.navigate("AIChat")
 }
 />
 

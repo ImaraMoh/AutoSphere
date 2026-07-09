@@ -3,7 +3,8 @@ import React from "react";
 import {
 View,
 Text,
-StyleSheet
+StyleSheet,
+Image
 }
 from "react-native";
 
@@ -30,6 +31,10 @@ return(
 
 <View style={styles.container}>
 
+<Image
+source={require("../../assets/logo/logo.png")}
+style={styles.appLogo}
+/>
 
 <Text style={styles.logo}>
 AutoSphere
@@ -60,6 +65,12 @@ justifyContent:"center",
 alignItems:"center"
 },
 
+appLogo:{
+width:100,
+height:100,
+resizeMode:"contain",
+marginBottom:20
+},
 
 logo:{
 fontSize:40,
