@@ -31,6 +31,11 @@ import Insurance from "../screens/Insurance";
 import RenewInsurance from "../screens/RenewInsurance";
 import SubmitClaim from "../screens/SubmitClaim";
 
+import Finance from "../screens/Finance";
+import EMICalculator from "../screens/EMICalculator";
+import LoanApplication from "../screens/LoanApplication";
+import PaymentSchedule from "../screens/PaymentSchedule";
+
 const Stack=createNativeStackNavigator();
 
 
@@ -142,6 +147,29 @@ component={RenewInsurance}
 <Stack.Screen
 name="SubmitClaim"
 component={SubmitClaim}
+/>
+
+<Stack.Screen
+name="Finance"
+component={Finance}
+/>
+
+
+<Stack.Screen
+name="EMICalculator"
+component={EMICalculator}
+/>
+
+
+<Stack.Screen
+name="LoanApplication"
+component={LoanApplication}
+/>
+
+
+<Stack.Screen
+name="PaymentSchedule"
+component={PaymentSchedule}
 />
 
 </Stack.Navigator>

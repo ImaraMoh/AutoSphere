@@ -183,6 +183,14 @@ navigation.navigate("Insurance")
 }
 />
 
+<Action
+icon="card"
+title="Finance"
+onPress={()=>
+navigation.navigate("Finance")
+}
+/>
+
 </View>
 
 
