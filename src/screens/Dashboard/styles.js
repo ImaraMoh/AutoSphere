@@ -17,6 +17,13 @@ fontSize:30,
 fontWeight:"800"
 },
 
+header:{
+	flexDirection:'row',
+	justifyContent:'space-between',
+	alignItems:'center',
+	marginBottom:8
+},
+
 
 sub:{
 color:"#6B7280",
@@ -86,6 +93,11 @@ ai:{
 fontSize:18,
 fontWeight:"700",
 marginBottom:8
+}
+
+,
+aiCard:{
+	marginBottom:8
 }
 
 });

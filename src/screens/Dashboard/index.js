@@ -30,14 +30,15 @@ return(
 
 <ScrollView showsVerticalScrollIndicator={false}>
 
-
-<Text style={styles.greeting}>
-Hello Imara 👋
-</Text>
-
+<View style={styles.header}>
+	<Text style={styles.greeting}>Hello Imara 👋</Text>
+	<TouchableOpacity onPress={() => navigation.navigate("Notifications") }>
+		<Ionicons name="notifications-outline" size={28} color="#111827" />
+	</TouchableOpacity>
+</View>
 
 <Text style={styles.sub}>
-Your smart vehicle companion
+	Your smart vehicle companion
 </Text>
 
 
@@ -211,20 +212,12 @@ navigation.navigate("DrivingSchool")
 AI Assistant
 </Text>
 
-<Card>
-
-
-<Text style={styles.ai}>
-🤖 Ask AutoSphere AI
-</Text>
-
-
-<Text>
-Get vehicle suggestions and maintenance advice
-</Text>
-
-
-</Card>
+<TouchableOpacity onPress={() => navigation.navigate('AI') } activeOpacity={0.8}>
+	<Card>
+		<Text style={styles.ai}>🤖 Ask AutoSphere AI</Text>
+		<Text>Get vehicle suggestions and maintenance advice</Text>
+	</Card>
+</TouchableOpacity>
 
 
 

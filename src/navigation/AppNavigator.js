@@ -41,6 +41,11 @@ import InstructorDetails from "../screens/InstructorDetails";
 import BookLesson from "../screens/BookLesson";
 import LearningProgress from "../screens/LearningProgress";
 
+import Notifications from "../screens/Notifications";
+
+import NotificationDetails 
+from "../screens/NotificationDetails";
+
 const Stack=createNativeStackNavigator();
 
 
@@ -198,6 +203,24 @@ component={BookLesson}
 <Stack.Screen
 name="LearningProgress"
 component={LearningProgress}
+/>
+
+<Stack.Screen
+
+name="Notifications"
+
+component={Notifications}
+
+/>
+
+
+
+<Stack.Screen
+
+name="NotificationDetails"
+
+component={NotificationDetails}
+
 />
 
 </Stack.Navigator>
