@@ -38,36 +38,22 @@ backgroundColor:"#FFFFFF",
 
 borderRadius:20,
 
-padding:15,
-
-alignItems:"center",
+padding:20,
 
 marginBottom:10,
 
-
-shadowColor:"#000",
-
-shadowOpacity:0.08,
-
-shadowRadius:8,
-
-shadowOffset:{
-
-width:0,
-
-height:3
-
-}
+overflow:"hidden"
 
 },
 
 
-
 centerText:{
 
-fontSize:13,
+fontSize:16,
 
-color:"#6B7280"
+fontWeight:"700",
+
+color:"#F97316"
 
 },
 
