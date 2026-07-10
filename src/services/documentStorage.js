@@ -1,29 +1,61 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const DOCUMENT_KEY = "documents";
 
-export const saveDocuments = async (documents) => {
-  try {
-    await AsyncStorage.setItem(
-      DOCUMENT_KEY,
-      JSON.stringify(documents)
-    );
-  } catch (error) {
-    console.log("Save document error:", error);
-  }
-};
+const KEY="AUTOSPHERE_DOCUMENTS";
 
-export const getDocuments = async () => {
-  try {
-    const data = await AsyncStorage.getItem(DOCUMENT_KEY);
 
-    if (data) {
-      return JSON.parse(data);
-    }
+export async function getDocuments(){
 
-    return [];
-  } catch (error) {
-    console.log("Get document error:", error);
-    return [];
-  }
-};
+const data =
+await AsyncStorage.getItem(KEY);
+
+return data
+? JSON.parse(data)
+: [];
+
+}
+
+
+
+export async function saveDocument(document){
+
+const documents =
+await getDocuments();
+
+
+documents.push(document);
+
+
+await AsyncStorage.setItem(
+KEY,
+JSON.stringify(documents)
+);
+
+
+return true;
+
+}
+
+
+
+export async function deleteDocument(id){
+
+const documents =
+await getDocuments();
+
+
+const updated =
+documents.filter(
+item=>item.id!==id
+);
+
+
+await AsyncStorage.setItem(
+KEY,
+JSON.stringify(updated)
+);
+
+
+return true;
+
+}

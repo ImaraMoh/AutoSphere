@@ -1,53 +1,115 @@
-import {
-StyleSheet
-} from "react-native";
-
+import { StyleSheet } from "react-native";
+import colors from "../../theme/colors";
 
 export default StyleSheet.create({
-
-container:{
-flex:1,
-backgroundColor:"#F8FAFC"
-},
-
-
-empty:{
-alignItems:"center",
-marginTop:100,
-gap:20
-},
-
-
-card:{
-backgroundColor:"#FFFFFF",
-padding:20,
-borderRadius:20,
-marginBottom:15
-},
-
-
-title:{
-fontSize:18,
-fontWeight:"700"
-},
-
-
-valid:{
-color:"#16A34A",
-marginTop:10
-},
-
-
-fab:{
-position:"absolute",
-right:25,
-bottom:25,
-backgroundColor:"#F97316",
-width:60,
-height:60,
-borderRadius:30,
-alignItems:"center",
-justifyContent:"center"
-}
-
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 24,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: "700",
+    color: colors.text,
+    marginBottom: 16,
+  },
+  searchBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: colors.white,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: colors.border,
+    marginBottom: 12,
+  },
+  searchInput: {
+    flex: 1,
+    marginLeft: 8,
+    color: colors.text,
+  },
+  filters: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginBottom: 12,
+  },
+  filter: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.white,
+    marginRight: 8,
+    marginBottom: 8,
+  },
+  activeFilter: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 999,
+    backgroundColor: colors.primary,
+    marginRight: 8,
+    marginBottom: 8,
+  },
+  filterText: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: colors.text,
+  },
+  activeFilterText: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: colors.white,
+  },
+  card: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: colors.white,
+    padding: 16,
+    borderRadius: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: colors.border,
+    shadowColor: "#000",
+    shadowOpacity: 0.04,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 2,
+  },
+  name: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: colors.text,
+    marginBottom: 4,
+  },
+  meta: {
+    fontSize: 13,
+    color: colors.gray,
+    marginBottom: 2,
+  },
+  status: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: colors.green,
+    marginTop: 2,
+  },
+  empty: {
+    alignItems: "center",
+    marginTop: 100,
+    gap: 20,
+  },
+  fab: {
+    position: "absolute",
+    right: 25,
+    bottom: 25,
+    backgroundColor: colors.primary,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });

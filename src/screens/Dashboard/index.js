@@ -155,6 +155,14 @@ navigation.navigate("DrivingSchool")
 }
 />
 
+<Action
+icon="scan"
+title="OCR Scanner"
+onPress={() =>
+navigation.navigate("OCRScanner")
+}
+/>
+
 </View>
 
 

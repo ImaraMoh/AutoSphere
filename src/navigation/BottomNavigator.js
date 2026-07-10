@@ -57,6 +57,13 @@ import LearningProgress from "../screens/LearningProgress";
 import Notifications from "../screens/Notifications";
 import NotificationDetails from "../screens/NotificationDetails";
 
+import OCRScanner from "../screens/OCRScanner";
+import ScanPreview from "../screens/ScanPreview";
+import ScanHistory from "../screens/ScanHistory";
+
+import DocumentAutoFill from "../screens/DocumentAutoFill";
+import AddDocument from "../screens/AddDocument";
+import DocumentDetails from "../screens/DocumentDetails";
 
 const Tab=createBottomTabNavigator();
 const Stack=createNativeStackNavigator();
@@ -87,6 +94,13 @@ return(
 <Stack.Screen name="LearningProgress" component={LearningProgress} />
 <Stack.Screen name="Notifications" component={Notifications} />
 <Stack.Screen name="NotificationDetails" component={NotificationDetails} />
+<Stack.Screen name="OCRScanner" component={OCRScanner}/>
+<Stack.Screen name="ScanPreview" component={ScanPreview}/>
+<Stack.Screen name="ScanHistory" component={ScanHistory}/>
+<Stack.Screen name="DocumentAutoFill" component={DocumentAutoFill} />
+<Stack.Screen name="DocumentWallet" component={DocumentWallet} />
+<Stack.Screen name="AddDocument" component={AddDocument} />
+<Stack.Screen name="DocumentDetails" component={DocumentDetails} />
 </Stack.Navigator>
 );
 }

@@ -1,60 +1,100 @@
-import React,{useState,useCallback} from "react";
+import React,{useEffect,useState} from "react";
 
 import {
 View,
 Text,
-ScrollView,
-TouchableOpacity
-} from "react-native";
+FlatList,
+TouchableOpacity,
+TextInput
+}
+from "react-native";
 
 
 import {
-Ionicons
-} from "@expo/vector-icons";
+Search,
+FileText,
+Trash2
+}
+from "lucide-react-native";
 
 
 import {
-useFocusEffect
-} from "@react-navigation/native";
-
-
-import AppHeader from "../../components/AppHeader";
-
-
-import {
-getDocuments
-} from "../../services/documentStorage";
+getDocuments,
+deleteDocument
+}
+from "../../services/documentStorage";
 
 
 import styles from "./styles";
 
 
-export default function DocumentWallet({navigation}){
+
+export default function DocumentWallet({
+navigation
+}){
 
 
 const [documents,setDocuments]=useState([]);
 
+const [search,setSearch]=useState("");
+
+const [filter,setFilter]=useState("All");
 
 
-useFocusEffect(
 
-useCallback(()=>{
+useEffect(()=>{
 
 load();
 
-},[])
-
-);
+},[]);
 
 
 
 const load=async()=>{
 
-const data=await getDocuments();
+const data=
+await getDocuments();
 
 setDocuments(data);
 
 };
+
+
+
+const remove=async(id)=>{
+
+await deleteDocument(id);
+
+load();
+
+};
+
+
+
+const filtered =
+documents.filter(doc=>{
+
+
+const matchSearch =
+doc.title
+.toLowerCase()
+.includes(
+search.toLowerCase()
+);
+
+
+
+const matchFilter =
+filter==="All"
+||
+doc.type===filter;
+
+
+
+return matchSearch && matchFilter;
+
+
+});
 
 
 
@@ -63,74 +103,73 @@ return(
 <View style={styles.container}>
 
 
-<AppHeader
-title="Document Wallet"
-navigation={navigation}
-showBack={false}
+<Text style={styles.title}>
+Document Wallet
+</Text>
+
+
+
+<View style={styles.searchBox}>
+
+
+<Search size={20} color="#6B7280"/>
+
+
+<TextInput
+
+placeholder="Search documents"
+
+placeholderTextColor="#6B7280"
+
+value={search}
+
+onChangeText={setSearch}
+
+style={styles.searchInput}
+
 />
 
 
+</View>
 
-<ScrollView
-contentContainerStyle={{padding:20}}
->
 
+
+<View style={styles.filters}>
 
 
 {
-documents.length===0 ?
-
-<View style={styles.empty}>
-
-
-<Ionicons
-name="document-outline"
-size={80}
-color="#F97316"
-/>
+[
+"All",
+"Insurance",
+"Registration",
+"License",
+"Service"
+]
+.map(item=>(
 
 
-<Text>
-No Documents Added
-</Text>
+<TouchableOpacity
 
+key={item}
 
-</View>
+onPress={()=>setFilter(item)}
 
-
+style={
+filter===item
+?
+styles.activeFilter
 :
+styles.filter
+}
 
-
-documents.map(item=>(
-
-
-<View
-key={item.id}
-style={styles.card}
 >
 
-
-<Text style={styles.title}>
-{item.name}
+<Text style={filter===item ? styles.activeFilterText : styles.filterText}>
+{item}
 </Text>
 
 
-<Text>
-Type : {item.type}
-</Text>
-
-
-<Text>
-Expiry : {item.expiry}
-</Text>
-
-
-<Text style={styles.valid}>
-● Valid
-</Text>
-
-
-</View>
+</TouchableOpacity>
 
 
 ))
@@ -138,31 +177,96 @@ Expiry : {item.expiry}
 }
 
 
+</View>
+
+
+
+<FlatList
+
+data={filtered}
+
+
+keyExtractor={
+item=>item.id
+}
+
+
+renderItem={({item})=>(
 
 
 <TouchableOpacity
 
-style={styles.fab}
+style={styles.card}
 
-onPress={()=>navigation.navigate("UploadDocument")}
+onPress={()=>navigation.navigate(
+
+"DocumentDetails",
+
+{
+document:item
+}
+
+)}
 
 >
 
-<Ionicons
-name="add"
-size={30}
-color="white"
+
+<FileText
+size={35}
+color="#F97316"
+/>
+
+
+
+<View style={{flex:1}}>
+
+
+<Text style={styles.name}>
+{item.title}
+</Text>
+
+
+<Text style={styles.meta}>
+Expiry:
+{item.expiryDate || "No expiry"}
+</Text>
+
+
+<Text style={styles.status}>
+{item.status}
+</Text>
+
+
+</View>
+
+
+
+<TouchableOpacity
+
+onPress={()=>remove(item.id)}
+
+>
+
+<Trash2
+color="red"
 />
 
 
 </TouchableOpacity>
 
 
-</ScrollView>
+</TouchableOpacity>
+
+
+)}
+
+
+/>
 
 
 </View>
 
-)
+);
+
 
 }

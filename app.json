@@ -13,12 +13,21 @@
       "adaptiveIcon": {
         "backgroundColor": "#FFFFFF",
         "foregroundImage": "./assets/logo/logo.png",
-        "backgroundImage": "./assets/android-icon-background.png",
+        "backgroundImage": "./assets/logo/logo.png",
         "monochromeImage": "./assets/logo/logo.png"
       }
     },
     "web": {
       "favicon": "./assets/logo/logo.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": 
+          "Allow AutoSphere to access camera for document scanning"
+        }
+      ]
+    ]
   }
 }

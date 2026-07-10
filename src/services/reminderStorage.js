@@ -1,47 +1,136 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
-const REMINDER_KEY = "reminders";
+const REMINDER_KEY = "AUTOSPHERE_REMINDERS";
 
 
-export const saveReminders = async(reminders)=>{
+// Get all reminders
+export async function getReminders() {
 
-  try{
+    try {
 
-    await AsyncStorage.setItem(
-      REMINDER_KEY,
-      JSON.stringify(reminders)
-    );
-
-  }
-  catch(error){
-
-    console.log(error);
-
-  }
-
-};
+        const data =
+            await AsyncStorage.getItem(REMINDER_KEY);
 
 
-
-export const getReminders = async()=>{
-
-  try{
-
-    const data = await AsyncStorage.getItem(
-      REMINDER_KEY
-    );
+        return data
+            ? JSON.parse(data)
+            : [];
 
 
-    return data ? JSON.parse(data) : [];
+    } catch (error) {
 
-  }
-  catch(error){
+        console.log(
+            "Get Reminder Error:",
+            error
+        );
 
-    console.log(error);
+        return [];
 
-    return [];
+    }
 
-  }
+}
 
-};
+
+
+// Save reminders
+export async function saveReminders(reminders) {
+
+    try {
+
+        await AsyncStorage.setItem(
+            REMINDER_KEY,
+            JSON.stringify(reminders)
+        );
+
+
+        return true;
+
+
+    } catch(error) {
+
+
+        console.log(
+            "Save Reminder Error:",
+            error
+        );
+
+
+        return false;
+
+    }
+
+}
+
+
+
+// Create expiry reminder from document
+export async function createExpiryReminder(document) {
+
+
+    try {
+
+
+        const reminders =
+            await getReminders();
+
+
+
+        const reminder = {
+
+
+            id:
+            Date.now().toString(),
+
+
+            title:
+            `${document.type} Expiry`,
+
+
+            date:
+            document.expiryDate,
+
+
+            description:
+            `Your ${document.type} expires soon`,
+
+
+            status:
+            "Upcoming",
+
+
+            documentId:
+            document.id
+
+        };
+
+
+
+        await saveReminders([
+
+            ...reminders,
+
+            reminder
+
+        ]);
+
+
+
+        return reminder;
+
+
+
+    } catch(error) {
+
+
+        console.log(
+            "Create Reminder Error:",
+            error
+        );
+
+
+        return null;
+
+    }
+
+}
