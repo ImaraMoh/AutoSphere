@@ -1,234 +1,621 @@
-import React, { useState } from "react";
+import React,{useState} from "react";
 
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Image,
-  StyleSheet
-} from "react-native";
+View,
+Text,
+TextInput,
+TouchableOpacity,
+ScrollView,
+Alert,
+Platform
+}
+from "react-native";
 
-import { Ionicons } from "@expo/vector-icons";
+
+import {
+ChevronLeft,
+Calendar,
+Upload
+}
+from "lucide-react-native";
+
+
+import DateTimePicker from "@react-native-community/datetimepicker";
+
 
 import * as ImagePicker from "expo-image-picker";
 
+import * as DocumentPicker from "expo-document-picker";
+
+
 import {
-  getDocuments,
-  saveDocuments
-} from "../../services/documentStorage";
+saveDocument
+}
+from "../../services/documentStorage";
 
 
-export default function UploadDocument({ navigation }) {
-
-  const [image, setImage] = useState(null);
-
-  const [document, setDocument] = useState({
-    name: "",
-    type: "",
-    expiry: ""
-  });
+import styles from "./styles";
 
 
-  const pickDocument = async () => {
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
-      quality: 1
-    });
+export default function UploadDocument({
+navigation
+}){
 
 
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
+const [title,setTitle]=useState("");
 
-  };
+const [type,setType]=useState("");
 
+const [customType,setCustomType]=useState("");
 
-  const saveDocument = async () => {
+const [expiry,setExpiry]=useState("");
 
-    const oldDocuments = await getDocuments();
-
-
-    const newDocument = {
-      id: Date.now(),
-      name: document.name,
-      type: document.type,
-      expiry: document.expiry,
-      image: image,
-      status: "Valid"
-    };
+const [file,setFile]=useState(null);
 
 
-    const updatedDocuments = [
-      ...oldDocuments,
-      newDocument
-    ];
+const [vehicleModel,setVehicleModel]=useState("");
+
+const [registrationNumber,setRegistrationNumber]=useState("");
+
+const [owner,setOwner]=useState("");
 
 
-    await saveDocuments(updatedDocuments);
+const [showDate,setShowDate]=useState(false);
 
 
-    navigation.goBack();
 
-  };
+const types=[
 
+"Insurance",
+"Registration",
+"License",
+"Service",
+"Warranty",
+"Other"
 
-  return (
-
-    <View style={styles.container}>
-
-      <View style={{
-        flexDirection:"row",
-        alignItems:"center",
-        gap:10,
-        marginBottom:15
-      }}>
-
-        <TouchableOpacity onPress={()=>navigation.goBack()}>
-          <Ionicons name="arrow-back" size={25} color="#0D1117" />
-        </TouchableOpacity>
-
-        <Text style={styles.title}>
-          Upload Document
-        </Text>
-
-      </View>
+];
 
 
-      <TouchableOpacity
-        onPress={pickDocument}
-        style={styles.imageBox}
-      >
 
-        {
-          image ?
-
-          <Image
-            source={{ uri: image }}
-            style={styles.image}
-          />
-
-          :
-
-          <Text>
-            Choose Document Image
-          </Text>
-        }
-
-      </TouchableOpacity>
+const pickImage=async()=>{
 
 
-      <TextInput
-        placeholder="Document Name"
-        style={styles.input}
-        onChangeText={(text)=>
-          setDocument({
-            ...document,
-            name:text
-          })
-        }
-      />
+const result =
+await ImagePicker.launchImageLibraryAsync({
+
+mediaTypes:["images"],
+
+quality:0.8
+
+});
 
 
-      <TextInput
-        placeholder="Document Type"
-        style={styles.input}
-        onChangeText={(text)=>
-          setDocument({
-            ...document,
-            type:text
-          })
-        }
-      />
+if(!result.canceled){
 
 
-      <TextInput
-        placeholder="Expiry Date"
-        style={styles.input}
-        onChangeText={(text)=>
-          setDocument({
-            ...document,
-            expiry:text
-          })
-        }
-      />
+setFile({
+
+uri:result.assets[0].uri,
+
+type:"image"
+
+});
 
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={saveDocument}
-      >
+}
 
-        <Text style={styles.buttonText}>
-          Save Document
-        </Text>
-
-      </TouchableOpacity>
+};
 
 
-    </View>
 
-  );
+
+
+const pickPDF=async()=>{
+
+
+const result =
+await DocumentPicker.getDocumentAsync({
+
+type:"application/pdf"
+
+});
+
+
+if(!result.canceled){
+
+
+setFile({
+
+uri:result.assets[0].uri,
+
+type:"pdf"
+
+});
+
+
+}
+
+};
+
+
+
+
+
+
+const save=async()=>{
+
+
+const finalType =
+type==="Other"
+?
+customType
+:
+type;
+
+
+
+if(
+!title ||
+!finalType ||
+!file
+){
+
+Alert.alert(
+"Missing",
+"Document name, type and file are required"
+);
+
+return;
 
 }
 
 
-const styles = StyleSheet.create({
-
-  container:{
-    flex:1,
-    padding:20,
-    backgroundColor:"#F8FAFC"
-  },
 
 
-  title:{
-    fontSize:28,
-    fontWeight:"bold",
-    marginBottom:20
-  },
+const document={
 
 
-  imageBox:{
-    height:150,
-    borderWidth:1,
-    borderColor:"#ddd",
-    borderRadius:15,
-    justifyContent:"center",
-    alignItems:"center",
-    marginBottom:20
-  },
+id:Date.now().toString(),
 
 
-  image:{
-    width:150,
-    height:150,
-    borderRadius:15
-  },
+title,
 
 
-  input:{
-    borderWidth:1,
-    borderColor:"#ddd",
-    padding:12,
-    borderRadius:10,
-    marginBottom:15,
-    backgroundColor:"#fff"
-  },
+type:finalType,
 
 
-  button:{
-    backgroundColor:"#F97316",
-    padding:15,
-    borderRadius:12
-  },
+vehicleModel,
+
+registrationNumber,
+
+owner,
 
 
-  buttonText:{
-    color:"#fff",
-    textAlign:"center",
-    fontWeight:"bold"
-  }
+expiryDate:expiry,
 
-});
+
+file,
+
+
+status:"Valid",
+
+
+createdAt:
+new Date().toISOString()
+
+};
+
+
+
+await saveDocument(document);
+
+
+
+Alert.alert(
+"Success",
+"Document saved"
+);
+
+
+
+navigation.goBack();
+
+
+
+};
+
+
+
+
+return(
+
+
+<View style={styles.container}>
+
+
+<View style={styles.header}>
+
+
+<TouchableOpacity
+onPress={()=>navigation.goBack()}
+>
+
+<ChevronLeft/>
+
+</TouchableOpacity>
+
+
+<Text style={styles.title}>
+Upload Document
+</Text>
+
+
+</View>
+
+
+
+<ScrollView>
+
+
+<Input
+
+label="Document Name"
+
+value={title}
+
+setValue={setTitle}
+
+placeholder="Insurance Certificate"
+
+/>
+
+
+
+<Input
+
+label="Vehicle Model"
+
+value={vehicleModel}
+
+setValue={setVehicleModel}
+
+placeholder="Toyota Corolla"
+
+/>
+
+
+
+<Input
+
+label="Registration Number"
+
+value={registrationNumber}
+
+setValue={setRegistrationNumber}
+
+placeholder="ABC123"
+
+/>
+
+
+
+<Input
+
+label="Owner"
+
+value={owner}
+
+setValue={setOwner}
+
+placeholder="Owner name"
+
+/>
+
+
+
+<Text style={styles.label}>
+Document Type
+</Text>
+
+
+
+<View style={styles.types}>
+
+
+{
+types.map(item=>(
+
+<TouchableOpacity
+
+key={item}
+
+onPress={()=>setType(item)}
+
+style={
+type===item
+?
+styles.selectedType
+:
+styles.type
+}
+
+>
+
+<Text>
+{item}
+</Text>
+
+
+</TouchableOpacity>
+
+))
+
+}
+
+</View>
+
+
+
+
+{
+type==="Other" &&
+
+<TextInput
+
+style={styles.input}
+
+placeholder="Enter type"
+
+value={customType}
+
+onChangeText={setCustomType}
+
+/>
+
+}
+
+
+
+
+<Text style={styles.label}>
+Expiry Date
+</Text>
+
+
+
+<TouchableOpacity
+
+style={styles.dateBox}
+
+onPress={()=>setShowDate(true)}
+
+>
+
+<Calendar
+color="#F97316"
+/>
+
+<Text>
+
+{expiry || "Select Date"}
+
+</Text>
+
+</TouchableOpacity>
+
+
+
+
+{
+Platform.OS==="web"
+
+&&
+
+showDate
+
+&&
+
+<input
+
+type="date"
+
+style={{
+
+marginTop:10,
+
+padding:10
+
+}}
+
+onChange={(e)=>
+
+{
+
+setExpiry(e.target.value);
+
+setShowDate(false);
+
+}
+
+}
+
+/>
+
+}
+
+
+
+
+
+{
+Platform.OS!=="web"
+&&
+showDate
+&&
+
+<DateTimePicker
+
+value={new Date()}
+
+mode="date"
+
+onChange={(e,date)=>{
+
+
+setShowDate(false);
+
+
+if(date){
+
+setExpiry(
+
+date.toLocaleDateString()
+
+);
+
+}
+
+}}
+
+/>
+
+}
+
+
+
+
+
+<Text style={styles.label}>
+Upload File
+</Text>
+
+
+
+
+<TouchableOpacity
+
+style={styles.upload}
+
+onPress={pickImage}
+
+>
+
+<Upload/>
+
+<Text>
+
+{
+file?.type==="image"
+
+?
+"Image Selected"
+
+:
+
+"Upload Image"
+
+}
+
+</Text>
+
+
+</TouchableOpacity>
+
+
+
+<TouchableOpacity
+
+style={styles.pdf}
+
+onPress={pickPDF}
+
+>
+
+
+<Text>
+
+{
+file?.type==="pdf"
+
+?
+"PDF Selected"
+
+:
+
+"Upload PDF"
+
+}
+
+</Text>
+
+
+</TouchableOpacity>
+
+
+
+
+<TouchableOpacity
+
+style={styles.save}
+
+onPress={save}
+
+>
+
+<Text style={styles.saveText}>
+Save Document
+</Text>
+
+</TouchableOpacity>
+
+
+
+</ScrollView>
+
+
+</View>
+
+
+);
+
+}
+
+
+
+
+function Input({
+label,
+value,
+setValue,
+placeholder
+}){
+
+
+return(
+
+<>
+
+<Text style={styles.label}>
+{label}
+</Text>
+
+
+<TextInput
+
+style={styles.input}
+
+value={value}
+
+onChangeText={setValue}
+
+placeholder={placeholder}
+
+/>
+
+
+</>
+
+)
+
+}

@@ -83,7 +83,7 @@ Alert.alert(
 
 
 navigation.navigate(
-"DocumentWallet"
+"DocumentWalletMain"
 );
 
 

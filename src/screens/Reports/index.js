@@ -4,7 +4,8 @@ import React from "react";
 import {
 View,
 Text,
-ScrollView
+ScrollView,
+Dimensions
 }
 from "react-native";
 
@@ -13,13 +14,7 @@ import {
 LineChart,
 PieChart
 }
-from "react-native-chart-kit";
-
-
-import {
-Dimensions
-}
-from "react-native";
+from "react-native-gifted-charts";
 
 
 import AppHeader from "../../components/AppHeader";
@@ -41,7 +36,10 @@ import styles from "./styles";
 
 
 
-export default function Reports({navigation}){
+
+export default function Reports({
+navigation
+}){
 
 
 const data =
@@ -54,7 +52,69 @@ Dimensions.get("window").width;
 
 
 
+
+
+/*
+ Monthly Expense Data
+
+ Convert service data
+ into chart format
+
+*/
+
+const lineData =
+
+data.monthlyExpense.map(
+(item)=>(
+
+{
+
+value:item.amount,
+
+label:item.month
+
+}
+
+)
+
+);
+
+
+
+
+
+
+
+/*
+ Expense Category Data
+
+*/
+
+const pieData =
+
+data.expenseCategories.map(
+
+(item)=>(
+
+{
+
+value:item.value,
+
+text:item.name
+
+}
+
+)
+
+);
+
+
+
+
+
+
 return(
+
 
 <View style={styles.container}>
 
@@ -69,13 +129,27 @@ navigation={navigation}
 
 
 
+
+
 <ScrollView
 
+
+showsVerticalScrollIndicator={false}
+
+
 contentContainerStyle={{
-padding:20
+
+padding:20,
+
+paddingBottom:50
+
 }}
 
+
+
 >
+
+
 
 
 
@@ -89,55 +163,90 @@ score={data.healthScore}
 
 
 
+
+
 <Text style={styles.section}>
+
 Expense Analytics
+
 </Text>
 
 
 
 
 
+<View style={styles.chartCard}>
+
+
 <LineChart
 
-data={{
 
-labels:data.monthlyExpense.map(
-item=>item.month
-),
+data={lineData}
 
-datasets:[
 
-{
 
-data:data.monthlyExpense.map(
-item=>item.amount
-)
-
+width={
+screenWidth-60
 }
 
-]
-
-}}
-
-
-width={screenWidth-40}
 
 
 height={220}
 
 
-chartConfig={{
 
-backgroundGradientFrom:"#FFFFFF",
-
-backgroundGradientTo:"#FFFFFF",
-
-decimalPlaces:0,
+spacing={50}
 
 
-color:()=>"#F97316"
+
+initialSpacing={20}
+
+
+
+color="#F97316"
+
+
+
+thickness={3}
+
+
+
+hideRules={false}
+
+
+
+hideDataPoints={false}
+
+
+
+dataPointsColor="#F97316"
+
+
+
+xAxisColor="#E5E7EB"
+
+
+
+yAxisColor="#E5E7EB"
+
+
+
+yAxisTextStyle={{
+
+color:"#6B7280"
 
 }}
+
+
+
+xAxisLabelTextStyle={{
+
+color:"#6B7280",
+
+fontSize:12
+
+}}
+
 
 
 />
@@ -146,62 +255,85 @@ color:()=>"#F97316"
 
 
 
+</View>
+
+
+
+
+
 
 
 <Text style={styles.section}>
+
 Expense Breakdown
+
 </Text>
 
 
 
+
+
+
+
+<View style={styles.chartCard}>
 
 
 <PieChart
 
 
-data={
 
-data.expenseCategories.map(
-(item,index)=>(
-
-{
-
-name:item.name,
-
-population:item.value,
-
-color:"#F97316",
-
-legendFontColor:"#333"
-
-}
-
-)
-
-)
-
-}
+data={pieData}
 
 
-width={screenWidth-40}
 
-height={220}
-
-
-chartConfig={{
-
-color:()=>"#F97316"
-
-}}
+donut
 
 
-accessor="population"
+
+radius={90}
 
 
-backgroundColor="transparent"
+
+innerRadius={55}
+
+
+
+showText
+
+
+
+textColor="#111827"
+
+
+
+textSize={12}
+
+
+
+centerLabelComponent={()=>(
+<View>
+
+<Text style={styles.centerText}>
+Total
+</Text>
+
+
+<Text style={styles.centerValue}>
+Expenses
+</Text>
+
+</View>
+)}
+
 
 
 />
+
+
+
+</View>
+
+
 
 
 
@@ -210,8 +342,13 @@ backgroundColor="transparent"
 
 
 <Text style={styles.section}>
+
 Vehicle Insights
+
 </Text>
+
+
+
 
 
 
@@ -219,12 +356,17 @@ Vehicle Insights
 
 <AnalyticsCard
 
+
 icon="🔧"
+
 
 title="Services Completed"
 
+
 value={
+
 data.serviceCount
+
 }
 
 
@@ -232,27 +374,47 @@ data.serviceCount
 
 
 
+
+
+
+
+
 <AnalyticsCard
+
 
 icon="🤖"
 
+
 title="AI Maintenance Prediction"
+
 
 value="Oil change soon"
 
+
 />
+
+
+
+
+
 
 
 
 <AnalyticsCard
 
+
 icon="📊"
+
 
 title="Driving Efficiency"
 
+
 value="Good"
 
+
 />
+
+
 
 
 
@@ -260,9 +422,11 @@ value="Good"
 </ScrollView>
 
 
+
 </View>
 
 
-)
+);
+
 
 }

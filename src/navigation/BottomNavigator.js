@@ -62,8 +62,9 @@ import ScanPreview from "../screens/ScanPreview";
 import ScanHistory from "../screens/ScanHistory";
 
 import DocumentAutoFill from "../screens/DocumentAutoFill";
-import AddDocument from "../screens/AddDocument";
 import DocumentDetails from "../screens/DocumentDetails";
+import EditDocument from "../screens/EditDocument";
+import DocumentPreview from "../screens/DocumentPreview";
 
 const Tab=createBottomTabNavigator();
 const Stack=createNativeStackNavigator();
@@ -97,10 +98,7 @@ return(
 <Stack.Screen name="OCRScanner" component={OCRScanner}/>
 <Stack.Screen name="ScanPreview" component={ScanPreview}/>
 <Stack.Screen name="ScanHistory" component={ScanHistory}/>
-<Stack.Screen name="DocumentAutoFill" component={DocumentAutoFill} />
-<Stack.Screen name="DocumentWallet" component={DocumentWallet} />
-<Stack.Screen name="AddDocument" component={AddDocument} />
-<Stack.Screen name="DocumentDetails" component={DocumentDetails} />
+
 </Stack.Navigator>
 );
 }
@@ -118,12 +116,74 @@ return(
 
 // Documents Stack Navigator
 function DocumentsStackNavigator(){
+
 return(
-<Stack.Navigator screenOptions={{headerShown:false}}>
-<Stack.Screen name="DocumentWalletMain" component={DocumentWallet} />
-<Stack.Screen name="UploadDocument" component={UploadDocument} />
+
+<Stack.Navigator
+
+screenOptions={{
+headerShown:false
+}}
+
+>
+
+
+<Stack.Screen
+
+name="DocumentWalletMain"
+
+component={DocumentWallet}
+
+/>
+
+
+
+<Stack.Screen
+
+name="UploadDocument"
+
+component={UploadDocument}
+
+/>
+
+
+
+<Stack.Screen
+name="DocumentAutoFill"
+component={DocumentAutoFill}
+/>
+
+<Stack.Screen
+
+name="DocumentDetails"
+
+component={DocumentDetails}
+
+/>
+
+
+
+<Stack.Screen
+
+name="EditDocument"
+
+component={EditDocument}
+
+/>
+
+
+
+<Stack.Screen
+
+name="DocumentPreview"
+component={DocumentPreview}
+
+/>
+
 </Stack.Navigator>
+
 );
+
 }
 
 // Profile Stack Navigator

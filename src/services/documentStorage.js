@@ -1,4 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+useFocusEffect
+}
+from "@react-navigation/native";
 
 
 const KEY="AUTOSPHERE_DOCUMENTS";
@@ -10,8 +14,10 @@ const data =
 await AsyncStorage.getItem(KEY);
 
 return data
-? JSON.parse(data)
-: [];
+?
+JSON.parse(data)
+:
+[];
 
 }
 
@@ -32,7 +38,36 @@ JSON.stringify(documents)
 );
 
 
-return true;
+}
+
+
+
+export async function updateDocument(updated){
+
+
+const documents =
+await getDocuments();
+
+
+
+const newList =
+documents.map(item=>
+
+item.id===updated.id
+?
+updated
+:
+item
+
+);
+
+
+
+await AsyncStorage.setItem(
+KEY,
+JSON.stringify(newList)
+);
+
 
 }
 
@@ -40,22 +75,23 @@ return true;
 
 export async function deleteDocument(id){
 
+
 const documents =
 await getDocuments();
 
 
-const updated =
+
+const filtered =
 documents.filter(
 item=>item.id!==id
 );
 
 
+
 await AsyncStorage.setItem(
 KEY,
-JSON.stringify(updated)
+JSON.stringify(filtered)
 );
 
-
-return true;
 
 }

@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from "react";
+import React,{useState} from "react";
 
 import {
 View,
@@ -13,7 +13,8 @@ from "react-native";
 import {
 Search,
 FileText,
-Trash2
+Trash2,
+Plus
 }
 from "lucide-react-native";
 
@@ -24,10 +25,12 @@ deleteDocument
 }
 from "../../services/documentStorage";
 
+import {
+useFocusEffect
+}
+from "@react-navigation/native";
 
 import styles from "./styles";
-
-
 
 export default function DocumentWallet({
 navigation
@@ -41,15 +44,6 @@ const [search,setSearch]=useState("");
 const [filter,setFilter]=useState("All");
 
 
-
-useEffect(()=>{
-
-load();
-
-},[]);
-
-
-
 const load=async()=>{
 
 const data=
@@ -60,6 +54,7 @@ setDocuments(data);
 };
 
 
+useFocusEffect( React.useCallback(()=>{load();},[]));
 
 const remove=async(id)=>{
 
@@ -191,6 +186,9 @@ item=>item.id
 }
 
 
+contentContainerStyle={{ paddingBottom: 90 }}
+
+
 renderItem={({item})=>(
 
 
@@ -262,6 +260,19 @@ color="red"
 
 
 />
+
+
+<TouchableOpacity
+
+style={styles.fab}
+
+onPress={()=>navigation.navigate("UploadDocument")}
+
+>
+
+<Plus size={28} color="white"/>
+
+</TouchableOpacity>
 
 
 </View>

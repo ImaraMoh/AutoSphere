@@ -22,28 +22,22 @@ export default function ScanPreview({ route, navigation }) {
         console.log(
             "Sending Image:",
             image
-     );
-      setLoading(true);
-      const result = await extractTextFromImage(image);
-      setText(
-        result.text
-      );
-
+        );
+        setLoading(true);
+        const result = await extractTextFromImage(image);
+        setText(
+            result.text
+        );
 
         navigation.navigate(
-
-        "DocumentAutoFill",
-
+        "Documents",
         {
-
-        vehicleData:
-        result.vehicleData,
-
-        ocrText:
-        result.text
-
+            screen:"DocumentAutoFill",
+            params:{
+                vehicleData:result.vehicleData,
+                ocrText:result.text
+            }
         }
-
         );
 
       if (!result) {

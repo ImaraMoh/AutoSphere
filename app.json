@@ -24,10 +24,10 @@
       [
         "expo-camera",
         {
-          "cameraPermission": 
-          "Allow AutoSphere to access camera for document scanning"
+          "cameraPermission": "Allow AutoSphere to access camera for document scanning"
         }
-      ]
+      ],
+      "expo-sharing"
     ]
   }
 }
