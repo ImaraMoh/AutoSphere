@@ -1,5 +1,6 @@
 import React from "react";
 
+
 import {
 
 View,
@@ -7,6 +8,7 @@ Text,
 TouchableOpacity
 
 }
+
 from "react-native";
 
 
@@ -21,8 +23,12 @@ Pencil
 from "lucide-react-native";
 
 
+import Clipboard from "@react-native-clipboard/clipboard";
+
+
 import Markdown from
 "react-native-markdown-display";
+
 
 
 
@@ -44,18 +50,25 @@ sender==="user";
 
 
 
+function copyText(){
+
+Clipboard.setString(message);
+
+}
+
+
+
 return(
+
 
 <View
 
 style={
-
 isUser
 ?
-styles.userBubble
+styles.user
 :
-styles.aiBubble
-
+styles.ai
 }
 
 >
@@ -64,16 +77,19 @@ styles.aiBubble
 {
 isUser?
 
-
 <Text style={styles.userText}>
+
 {message}
+
 </Text>
 
 
 :
 
 <Markdown>
+
 {message}
+
 </Markdown>
 
 }
@@ -83,14 +99,13 @@ isUser?
 <View style={styles.actions}>
 
 
-<TouchableOpacity>
+<TouchableOpacity
+onPress={copyText}
+>
 
 <Copy
-
 size={16}
-
 color="#64748B"
-
 />
 
 </TouchableOpacity>
@@ -105,11 +120,8 @@ onPress={onEdit}
 >
 
 <Pencil
-
 size={16}
-
 color="#64748B"
-
 />
 
 </TouchableOpacity>
@@ -119,17 +131,12 @@ color="#64748B"
 
 
 <TouchableOpacity
-
 onPress={onDelete}
-
 >
 
 <Trash2
-
 size={16}
-
 color="#DC2626"
-
 />
 
 </TouchableOpacity>
@@ -139,6 +146,7 @@ color="#DC2626"
 
 
 </View>
+
 
 )
 
@@ -150,7 +158,7 @@ color="#DC2626"
 const styles={
 
 
-userBubble:{
+user:{
 
 backgroundColor:"#F97316",
 
@@ -158,39 +166,32 @@ padding:14,
 
 borderRadius:18,
 
-marginVertical:6,
-
 alignSelf:"flex-end",
 
-maxWidth:"82%"
+maxWidth:"80%",
+
+marginVertical:6
 
 },
 
 
-aiBubble:{
+
+ai:{
 
 backgroundColor:"#FFFFFF",
 
-padding:15,
+padding:14,
 
 borderRadius:18,
-
-marginVertical:6,
 
 alignSelf:"flex-start",
 
 maxWidth:"90%",
 
-
-shadowColor:"#000",
-
-shadowOpacity:.05,
-
-shadowRadius:5,
-
-elevation:2
+marginVertical:6
 
 },
+
 
 
 userText:{
@@ -202,15 +203,16 @@ fontSize:15
 },
 
 
+
 actions:{
 
 flexDirection:"row",
 
+justifyContent:"flex-end",
+
 gap:18,
 
-marginTop:10,
-
-justifyContent:"flex-end"
+marginTop:10
 
 }
 

@@ -1,38 +1,80 @@
-import React from "react";
+import React, {
+useEffect,
+useState
+}
+from "react";
 
 
 import {
+
 View,
 Text,
 ScrollView,
 Dimensions,
-Platform
+Platform,
+ActivityIndicator
+
 }
+
 from "react-native";
 
 
+
 import {
+
 LineChart,
 PieChart
+
 }
+
 from "react-native-gifted-charts";
 
 
-import AppHeader from "../../components/AppHeader";
 
-import HealthScore from "../../components/HealthScore";
+import AppHeader
+from "../../components/AppHeader";
 
-import AnalyticsCard from "../../components/AnalyticsCard";
+
+import HealthScore
+from "../../components/HealthScore";
+
+
+import AnalyticsCard
+from "../../components/AnalyticsCard";
+
 
 
 import {
-getVehicleAnalytics
+
+analyzeVehicleHealth
+
 }
+
+from "../../services/aiHealthService";
+
+
+
+import {
+
+getVehicleAnalytics
+
+}
+
 from "../../services/analyticsService";
 
+import AIInsightCard 
+from "../../components/AIInsightCard";
 
-import styles from "./styles";
+import {getAIHealth} from "../../services/aiCacheService"
 
+import {
+getExpenses
+}
+from "../../services/expenseStorage";
+import { getMaintenance } from "../../services/maintenanceStorage";
+
+import styles
+from "./styles";
 
 
 export default function Reports({
@@ -40,8 +82,340 @@ navigation
 }){
 
 
-const data =
+
+const [
+health,
+setHealth
+]
+=
+useState(null);
+
+
+
+const [
+loading,
+setLoading
+]
+=
+useState(true);
+
+
+
+
+const analytics =
 getVehicleAnalytics();
+
+
+const [
+expenses,
+setExpenses
+]
+=
+useState([]);
+
+
+const [
+pieData,
+setPieData
+]
+=
+useState([]);
+
+
+
+const [
+totalExpense,
+setTotalExpense
+]
+=
+useState(0);
+
+
+useEffect(()=>{
+
+
+loadCachedHealth();
+
+
+},[]);
+
+useEffect(()=>{
+
+loadExpenses();
+
+},[]);
+
+
+
+
+async function loadExpenses(){
+
+
+const result =
+await getExpenses();
+
+
+
+setExpenses(result);
+
+
+
+calculateExpenseChart(result);
+
+
+}
+
+
+
+
+function calculateExpenseChart(data){
+
+
+
+const categoryMap={};
+
+
+
+data.forEach(item=>{
+
+
+const category =
+item.category || "Other";
+
+
+
+if(categoryMap[category]){
+
+
+categoryMap[category]
++= Number(item.amount);
+
+
+}
+
+else{
+
+
+categoryMap[category]
+=
+Number(item.amount);
+
+
+}
+
+
+
+});
+
+
+
+
+
+const total =
+
+Object.values(categoryMap)
+
+.reduce(
+
+(a,b)=>a+b,
+
+0
+
+);
+
+
+
+setTotalExpense(total);
+
+
+
+
+const colors=[
+
+"#F97316",
+
+"#16A34A",
+
+"#2563EB",
+
+"#DC2626",
+
+"#9333EA"
+
+];
+
+
+
+
+
+const chartData =
+
+Object.keys(categoryMap)
+
+.map(
+
+(category,index)=>(
+
+
+{
+
+
+value:
+categoryMap[category],
+
+
+label:
+category,
+
+
+
+amount:
+categoryMap[category],
+
+
+
+percentage:
+
+Math.round(
+
+(categoryMap[category]/total)*100
+
+),
+
+
+
+color:
+
+colors[index % colors.length]
+
+
+}
+
+
+)
+
+);
+
+
+
+
+setPieData(chartData);
+
+
+}
+
+async function loadCachedHealth(){
+
+
+
+// Show old result instantly
+
+const cached =
+await getAIHealth();
+
+
+
+if(cached){
+
+
+setHealth(cached);
+
+setLoading(false);
+
+
+}
+
+
+
+
+
+// Update silently
+
+refreshAIHealth();
+
+
+
+}
+
+async function refreshAIHealth(){
+
+
+try{
+
+
+const result =
+await analyzeVehicleHealth({
+
+vehicle:{
+
+
+brand:"Honda",
+
+model:"Civic",
+
+year:2022,
+
+mileage:87000,
+
+fuel:"Petrol"
+
+},
+
+
+
+maintenance:[
+
+{
+
+service:"Oil Change",
+
+cost:5000
+
+}
+
+],
+
+
+
+expenses:[
+
+{
+
+category:"Fuel",
+
+amount:12000
+
+}
+
+]
+
+
+});
+
+
+
+
+setHealth(result);
+
+
+
+}
+
+catch(error){
+
+
+console.log(
+"Background AI Error",
+error
+);
+
+
+}
+
+
+
+}
+
 
 
 
@@ -50,8 +424,13 @@ Dimensions.get("window").width;
 
 
 
+
+
+
 const lineData =
-data.monthlyExpense.map(
+
+analytics.monthlyExpense.map(
+
 item=>({
 
 value:item.amount,
@@ -61,26 +440,6 @@ label:item.month
 })
 
 );
-
-
-
-
-
-const pieData =
-data.expenseCategories.map(
-item=>({
-
-value:item.value,
-
-text:item.name
-
-})
-
-);
-
-
-
-
 
 return(
 
@@ -95,6 +454,8 @@ title="Reports & Analytics"
 navigation={navigation}
 
 />
+
+
 
 
 
@@ -118,11 +479,91 @@ paddingBottom:50
 
 
 
-<HealthScore
 
-score={data.healthScore}
+
+
+<Text style={styles.section}>
+
+AI Vehicle Health Report
+
+</Text>
+
+
+
+
+
+{
+
+loading ?
+
+
+
+<View style={styles.loadingCard}>
+
+
+<ActivityIndicator
+
+size="small"
+
+color="#F97316"
 
 />
+
+
+
+<Text>
+
+🤖 AI is analyzing your vehicle...
+
+</Text>
+
+<Text> Please wait... </Text> 
+</View>
+
+
+
+:
+
+
+
+health &&
+
+<HealthScore
+
+score={health.score}
+
+analysis={health.healthStatus}
+
+healthStatus={health.healthStatus}
+
+maintenancePrediction={
+health.maintenancePrediction
+}
+
+drivingEfficiency={
+health.drivingEfficiency
+}
+
+expenseBehaviour={
+health.expenseBehaviour
+}
+
+recommendations={
+health.recommendations
+}
+
+updatedAt={
+health.updatedAt
+}
+
+/>
+
+
+
+}
+
+
+
 
 
 
@@ -130,8 +571,11 @@ score={data.healthScore}
 
 
 <Text style={styles.section}>
+
 Expense Analytics
+
 </Text>
+
 
 
 
@@ -150,7 +594,7 @@ Platform.OS==="web"
 
 <WebExpenseChart
 
-data={data.monthlyExpense}
+data={analytics.monthlyExpense}
 
 />
 
@@ -170,10 +614,10 @@ width={width-80}
 height={220}
 
 
-color="#F97316"
-
-
 thickness={3}
+
+
+color="#F97316"
 
 
 dataPointsColor="#F97316"
@@ -182,20 +626,13 @@ dataPointsColor="#F97316"
 />
 
 
+
 }
+
 
 
 </View>
 
-
-
-
-
-
-
-<Text style={styles.section}>
-Expense Breakdown
-</Text>
 
 
 
@@ -206,27 +643,47 @@ Expense Breakdown
 <View style={styles.chartCard}>
 
 
-<PieChart
+<Text style={styles.chartTitle}>
 
+Expense Breakdown
+
+</Text>
+
+
+
+<View style={styles.pieContainer}>
+
+
+<PieChart
 
 data={pieData}
 
-
 donut
 
+radius={95}
 
-radius={90}
-
-
-innerRadius={55}
+innerRadius={60}
 
 
 centerLabelComponent={()=>(
-<Text style={styles.centerText}>
-Expense
-</Text>
-)}
+<View>
 
+<Text style={styles.totalAmount}>
+
+Rs. {totalExpense.toLocaleString()}
+
+</Text>
+
+
+<Text style={styles.centerText}>
+
+Total Expense
+
+</Text>
+
+
+</View>
+)}
 
 />
 
@@ -237,72 +694,142 @@ Expense
 
 
 
+<View style={styles.legendContainer}>
+
+
+{
+
+pieData.map(
+
+(item,index)=>(
+
+
+<View
+
+key={index}
+
+style={styles.legendItem}
+
+>
+
+
+<View
+
+style={[
+
+styles.dot,
+
+{
+
+backgroundColor:item.color
+
+}
+
+]}
+
+/>
 
 
 
-<Text style={styles.section}>
-Vehicle Insights
+<View style={styles.legendText}>
+
+
+<Text style={styles.category}>
+
+{item.label}
+
 </Text>
 
 
 
+<Text style={styles.amount}>
+
+Rs. {item.amount.toLocaleString()}
+
+  • {item.percentage}%
+
+</Text>
+
+
+</View>
+
+
+
+</View>
+
+
+)
+
+)
+
+
+}
+
+
+
+</View>
 
 
 
 
-<AnalyticsCard
-
-icon="🔧"
-
-title="Services Completed"
-
-value={data.serviceCount}
-
-/>
-
-
-
-
-
-<AnalyticsCard
-
-icon="🤖"
-
-title="AI Maintenance Prediction"
-
-value="Oil change soon"
-
-/>
-
-
-
-
-
-<AnalyticsCard
-
-icon="📊"
-
-title="Driving Efficiency"
-
-value="Good"
-
-/>
-
-
-
-
+</View>
 
 </ScrollView>
 
 
-
 </View>
 
+
+
+)
+
+
+}
+
+
+
+
+
+
+
+
+
+function extractPrediction(text){
+
+
+if(!text)
+return "No prediction";
+
+
+const lines =
+text.split("\n");
+
+
+
+const match =
+lines.find(
+
+line=>
+
+line.toLowerCase()
+.includes("oil")
 
 );
 
 
+
+return match
+?
+match
+:
+"Vehicle maintenance looks normal";
+
 }
+
+
+
+
+
 
 
 
@@ -313,17 +840,17 @@ data
 }){
 
 
-const max = Math.max(
-
+const max =
+Math.max(
 ...data.map(
 item=>item.amount
 )
-
 );
 
 
 
 return(
+
 
 <View style={{
 
@@ -334,7 +861,6 @@ height:220,
 justifyContent:"flex-end"
 
 }}>
-
 
 
 {
@@ -390,9 +916,8 @@ backgroundColor:"#F97316",
 
 borderRadius:10,
 
-width:
 
-`${
+width:`${
 
 (item.amount/max)*70
 
@@ -401,8 +926,6 @@ width:
 }}
 
 >
-
-
 
 </View>
 
@@ -421,7 +944,9 @@ fontSize:12
 
 >
 
+
 Rs.{item.amount}
+
 
 </Text>
 
@@ -435,7 +960,6 @@ Rs.{item.amount}
 )
 
 
-
 }
 
 
@@ -443,7 +967,7 @@ Rs.{item.amount}
 </View>
 
 
-);
+)
 
 
 }

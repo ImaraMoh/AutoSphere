@@ -7,44 +7,28 @@ from "react-native";
 
 export default StyleSheet.create({
 
-
 container:{
-
 
 flex:1,
 
 backgroundColor:"#F8FAFC"
 
-
 },
 
 
+chat:{
 
-chatContainer:{
-
-
-flex:1,
-
+flex:1
 
 },
-
 
 
 messages:{
 
-
-paddingHorizontal:12,
-
-
-paddingTop:10,
-
+padding:12,
 
 paddingBottom:20
 
-
-
-},
-
-
+}
 
 });

@@ -1,157 +1,82 @@
 import axios from "axios";
 
-
-const GEMINI_API_KEY =
-  process.env.EXPO_PUBLIC_GEMINI_API_KEY;
-
-
+const GEMINI_API_KEY = process.env.EXPO_PUBLIC_GEMINI_API_KEY;
 const GEMINI_MODEL = "gemini-flash-latest";
 
-
-const GEMINI_URL =
-`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
-
-
-export async function askVehicleAI(
-  message,
-  context
-) {
+export async function askVehicleAI(message, context, onUpdate) {
+  if (!GEMINI_API_KEY) {
+    const envError = "Configuration Error: EXPO_PUBLIC_GEMINI_API_KEY is undefined.";
+    console.error(envError);
+    if (typeof onUpdate === "function") onUpdate(envError);
+    return envError;
+  }
 
   try {
-
-
-    if (!GEMINI_API_KEY) {
-
-      return "Gemini API key missing.";
-
-    }
-
-
+    // Appending the key strictly here forces Google to bypass OAuth checks
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
 
     const prompt = `
+You are AutoSphere AI, a professional vehicle assistant.
 
-You are AutoSphere AI,
-a professional vehicle assistant.
-
-Help users with:
-
-- Vehicle maintenance
-- Troubleshooting
-- Fuel efficiency
-- Service recommendations
-- Vehicle expenses
-
-
-Vehicle Information:
-
-${JSON.stringify(
-context,
-null,
-2
-)}
-
+Vehicle Details:
+${JSON.stringify(context, null, 2)}
 
 User Question:
-
 ${message}
 
+Answer format:
 
-Give a clear answer with:
+🔍 Diagnosis
+Possible Causes:
+- 
 
-Possible causes:
+🛠 Recommendation:
+-
 
-Recommendations:
+⚠ Safety Advice:
+-
 
-Safety advice:
-
+Keep answers simple and practical.
 `;
 
+    const response = await fetch(GEMINI_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [
+              {
+                text: prompt,
+              },
+            ],
+          },
+        ],
+      }),
+    });
 
+    const data = await response.json();
+    console.log("Gemini Response Log:", JSON.stringify(data));
 
-    const response =
-      await axios.post(
+    let fullText = "";
 
-        GEMINI_URL,
+    if (data?.candidates?.[0]?.content?.parts?.[0]?.text) {
+      fullText = data.candidates[0].content.parts[0].text;
+    } else if (data?.error?.message) {
+      fullText = `Google API Error: ${data.error.message}`;
+    } else {
+      fullText = "Could not parse response structure. Check terminal logs.";
+    }
 
-        {
+    if (typeof onUpdate === "function") {
+      onUpdate(fullText);
+    }
 
-          contents:[
-
-            {
-
-              parts:[
-
-                {
-                  text:prompt
-                }
-
-              ]
-
-            }
-
-          ],
-          generationConfig:{
-            temperature:0.7,
-            maxOutputTokens:1000
-          }
-
-        },
-
-        {
-
-          headers:{
-
-            "Content-Type":
-            "application/json"
-
-          }
-
-        }
-
-      );
-
-
-
-    const answer =
-
-      response.data
-      ?.candidates?.[0]
-      ?.content
-      ?.parts?.[0]
-      ?.text;
-
-
-
-    return answer ||
-
-    "No response generated.";
-
-
-
+    return fullText;
+  } catch (error) {
+    console.log("Gemini Connection Error:", error);
+    return "AI service unavailable. Please check your network connection.";
   }
-
-  catch(error){
-
-
-    console.log(
-      "Gemini API Error:"
-    );
-
-
-    console.log(
-      "Status:",
-      error.response?.status
-    );
-
-
-    console.log(
-      "Data:",
-      error.response?.data
-    );
-
-
-    return "Sorry, AI service is currently unavailable.";
-
-  }
-
 }
