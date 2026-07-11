@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { View, TouchableOpacity, StyleSheet, Animated, Easing, Platform } from "react-native";
 import AddVehicle from "../screens/AddVehicle";
 import VehicleProfile from "../screens/VehicleProfile";
 import UploadDocument from "../screens/UploadDocument";
@@ -200,6 +201,57 @@ return(
 );
 }
 
+// --- Animated Custom Center AI Button Component ---
+function AnimatedAIButton({ accessibilityState, onPress, focused: isTabFocused }) {
+  const focused = accessibilityState?.selected || isTabFocused;
+  const pulseAnim = React.useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    const animation = Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 1.15,
+          duration: 1500,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: Platform.OS !== "web",
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 1.0,
+          duration: 1500,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: Platform.OS !== "web",
+        }),
+      ])
+    );
+    animation.start();
+    return () => animation.stop();
+  }, [pulseAnim]);
+
+  return (
+    // Balanced centered wrapper shell
+    <View style={styles.centerTabWrapper}>
+      <TouchableOpacity
+        activeOpacity={0.85}
+        onPress={onPress}
+        style={styles.aiButtonContainer}
+      >
+        <Animated.View
+          style={[
+            styles.aiPulseRing,
+            {
+              transform: [{ scale: pulseAnim }],
+              opacity: focused ? 0.4 : 0.15,
+              borderColor: focused ? "#EA580C" : "#F97316",
+            },
+          ]}
+        />
+        <View style={[styles.aiCoreOrb, focused && styles.aiCoreOrbActive]}>
+          <Ionicons name="sparkles" color="#FFFFFF" size={26} />
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+}
 
 
 export default function BottomNavigator(){
@@ -218,9 +270,12 @@ tabBarActiveTintColor:"#F97316",
 tabBarInactiveTintColor:"#6B7280",
 
 tabBarStyle:{
-height:70,
-paddingBottom:10,
-paddingTop:10
+height:75,
+paddingBottom:12,
+paddingTop:10,
+backgroundColor: "#FFFFFF",
+borderTopWidth: 1,
+borderTopColor: "#E2E8F0"
 }
 
 }}
@@ -236,10 +291,10 @@ component={HomeStackNavigator}
 
 options={{
 
-tabBarIcon:({color,size})=>(
+tabBarIcon:({color,size,focused})=>(
 
 <Ionicons
-name="home"
+name={focused ? "home" : "home-outline"}
 color={color}
 size={size}
 />
@@ -260,34 +315,10 @@ component={VehiclesStackNavigator}
 
 options={{
 
-tabBarIcon:({color,size})=>(
+tabBarIcon:({color,size,focused})=>(
 
 <Ionicons
-name="car"
-color={color}
-size={size}
-/>
-
-)
-
-}}
-
-/>
-
-
-
-<Tab.Screen
-
-name="Documents"
-
-component={DocumentsStackNavigator}
-
-options={{
-
-tabBarIcon:({color,size})=>(
-
-<Ionicons
-name="document-text"
+name={focused ? "car" : "car-outline"}
 color={color}
 size={size}
 />
@@ -307,11 +338,29 @@ name="AI"
 component={AIChat}
 
 options={{
+  tabBarLabel: "AutoAI",
+  tabBarButton: (props) => (
+    <AnimatedAIButton 
+      {...props} 
+      focused={props.accessibilityState?.selected} 
+    />
+  ),
+}}
 
-tabBarIcon:({color,size})=>(
+/>
+
+<Tab.Screen
+
+name="Documents"
+
+component={DocumentsStackNavigator}
+
+options={{
+
+tabBarIcon:({color,size,focused})=>(
 
 <Ionicons
-name="sparkles"
+name={focused ? "document-text" : "document-text-outline"}
 color={color}
 size={size}
 />
@@ -332,10 +381,10 @@ component={ProfileStackNavigator}
 
 options={{
 
-tabBarIcon:({color,size})=>(
+tabBarIcon:({color,size,focused})=>(
 
 <Ionicons
-name="person"
+name={focused ? "person" : "person-outline"}
 color={color}
 size={size}
 />
@@ -353,3 +402,50 @@ size={size}
 )
 
 }
+
+const styles = StyleSheet.create({
+  // New style added here to keep the absolute button explicitly inside the flex grid center
+  centerTabWrapper: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  aiButtonContainer: {
+    position: "absolute",
+    top: -30, // Perfectly balances the elevated look out of the tab line
+    justifyContent: "center",
+    alignItems: "center",
+    width: 70,
+    height: 70,
+  },
+  aiPulseRing: {
+    position: "absolute",
+    width: 68,
+    height: 68,
+    borderRadius: 34,
+    borderWidth: 2,
+    backgroundColor: "transparent",
+  },
+  aiCoreOrb: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: "#F97316",
+    justifyContent: "center",
+    alignItems: "center",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#F97316",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.35,
+        shadowRadius: 6,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
+  },
+  aiCoreOrbActive: {
+    backgroundColor: "#EA580C",
+  },
+});

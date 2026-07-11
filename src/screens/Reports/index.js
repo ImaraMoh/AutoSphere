@@ -42,6 +42,7 @@ from "../../components/HealthScore";
 import AnalyticsCard
 from "../../components/AnalyticsCard";
 
+import { saveHealthReport } from "../../services/aiHealthStorage";
 
 
 import {
@@ -73,6 +74,14 @@ getExpenses
 from "../../services/expenseStorage";
 import { getMaintenance } from "../../services/maintenanceStorage";
 
+import {
+getHealthHistory
+}
+from "../../services/aiHealthStorage";
+
+
+import HealthTrendChart
+from "../../components/HealthTrendChart";
 import styles
 from "./styles";
 
@@ -90,7 +99,10 @@ setHealth
 =
 useState(null);
 
-
+const [
+history,
+setHistory
+]=useState([]);
 
 const [
 loading,
@@ -133,20 +145,25 @@ useState(0);
 
 useEffect(()=>{
 
-
+loadHistory();
 loadCachedHealth();
-
-
-},[]);
-
-useEffect(()=>{
-
 loadExpenses();
 
 },[]);
 
 
+async function loadHistory(){
 
+
+const data =
+await getHealthHistory();
+
+
+
+setHistory(data);
+
+
+}
 
 async function loadExpenses(){
 
@@ -397,6 +414,8 @@ amount:12000
 
 setHealth(result);
 
+await saveHealthReport(result);
+
 
 
 }
@@ -558,15 +577,14 @@ health.updatedAt
 
 />
 
-
-
 }
 
 
+<HealthTrendChart
 
+history={history}
 
-
-
+/>
 
 
 

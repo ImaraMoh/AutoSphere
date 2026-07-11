@@ -10,7 +10,8 @@ View,
 Text,
 ScrollView,
 TouchableOpacity,
-ActivityIndicator
+ActivityIndicator,
+Image
 
 }
 
@@ -210,84 +211,45 @@ setLoadingHealth(false);
 }
 
 
-
-
-
-
 return(
 
-
 <View style={styles.container}>
-
-
-<ScrollView
-
-showsVerticalScrollIndicator={false}
-
-contentContainerStyle={styles.scroll}
-
-
-
->
-
-
-
-{/* Header */}
-
-<View style={styles.header}>
-
-
-<View>
-
-
-<Text style={styles.greeting}>
-
-Hello Imara 👋
-
-</Text>
-
-
-
-<Text style={styles.sub}>
-
-Your smart vehicle companion
-
-</Text>
-
-
+{/* --- Professional Top Bar Configuration --- */}
+<View style={styles.topBar}>
+<View style={styles.brandContainer}>
+<Image 
+source={require("../../../assets/logo/logo.png")} 
+style={styles.logo} 
+resizeMode="contain"
+/>
+<Text style={styles.brandName}>AutoSphere</Text>
 </View>
-
-
-
-
 
 <TouchableOpacity
-
-onPress={()=>navigation.navigate("Notifications")}
-
-style={styles.notification}
-
+onPress={() => navigation.navigate("Notifications")}
+style={styles.notificationIconButton}
 >
-
-
-<Ionicons
-
-name="notifications-outline"
-
-size={26}
-
-color="#111827"
-
-/>
-
-
+<Ionicons name="notifications-outline" size={24} color="#1F2937" />
+{/* Subtle red indicator dot for unseen activity */}
+<View style={styles.notificationDot} />
 </TouchableOpacity>
+</View>
 
+<ScrollView
+showsVerticalScrollIndicator={false}
+contentContainerStyle={styles.scroll}
+>
+{/* Header / Welcoming Context */}
+
+<View style={styles.header}>
+<View>
+
+<Text style={styles.greeting}>Hello Imara 👋</Text>
+<Text style={styles.sub}>Your smart vehicle companion</Text>
 
 </View>
 
-
-
+</View>
 
 
 {/* Vehicle Card */}
