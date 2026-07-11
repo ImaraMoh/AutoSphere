@@ -1,20 +1,41 @@
-import React,{
-useState
-}
-from "react";
+import React, {
+useState,
+useRef,
+useEffect
+} from "react";
 
 
 import {
+
 View,
-TextInput,
-TouchableOpacity,
-Text,
-FlatList
+ScrollView,
+KeyboardAvoidingView,
+Platform,
+Alert
+
 }
 from "react-native";
 
 
-import ChatBubble from "../../components/ChatBubble";
+import AIHeader 
+from "../../components/AIHeader";
+
+
+import AIQuickActions
+from "../../components/AIQuickActions";
+
+
+import AIMessageBubble
+from "../../components/AIMessageBubble";
+
+
+import AIInput
+from "../../components/AIInput";
+
+
+import TypingIndicator
+from "../../components/TypingIndicator";
+
 
 import {
 askVehicleAI
@@ -22,159 +43,421 @@ askVehicleAI
 from "../../services/aiService";
 
 
-import styles from "./styles";
+
+import styles 
+from "./styles";
 
 
 
-export default function AIChat(){
+export default function AIChatScreen(){
 
 
-const [message,setMessage]=useState("");
+const scrollRef = useRef();
 
-const [chat,setChat]=useState([
+
+
+const [input,setInput]=useState("");
+
+
+
+const [loading,setLoading]=useState(false);
+
+
+
+const [messages,setMessages]=useState([
 
 {
-id:"1",
+
+id:1,
+
+sender:"ai",
+
 text:
-"Hello 👋 I am AutoSphere AI Assistant. How can I help with your vehicle?",
-user:false
+
+"Hello 👋 I am AutoSphere AI.\n\nAsk me anything about your vehicle maintenance, fuel efficiency, repairs, or expenses."
+
 }
 
 ]);
 
 
 
-const sendMessage=async()=>{
+
+// Auto scroll
+
+useEffect(()=>{
 
 
-if(!message.trim())
+setTimeout(()=>{
+
+scrollRef.current?.scrollToEnd({
+
+animated:true
+
+});
+
+
+},100);
+
+
+},[messages,loading]);
+
+
+
+
+
+async function sendMessage(customText){
+
+
+const text =
+(customText || input).trim();
+
+
+
+if(!text)
 return;
 
 
 
 const userMessage={
 
-id:Date.now().toString(),
 
-text:message,
+id:Date.now(),
 
-user:true
+sender:"user",
+
+text:text
+
 
 };
 
 
-setChat(prev=>[
+
+setMessages(prev=>[
+
 ...prev,
+
 userMessage
+
 ]);
 
 
 
+setInput("");
+
+setLoading(true);
+
+
+
+try{
+
+
+const vehicleContext={
+
+
+vehicle:
+
+"Toyota Corolla 2022",
+
+
+mileage:
+
+"87000 KM",
+
+
+fuel:
+
+"Petrol"
+
+};
+
+
+
 const response =
-await askVehicleAI(message);
+
+await askVehicleAI(
+
+text,
+
+vehicleContext
+
+);
 
 
 
-setChat(prev=>[
+
+const aiMessage={
+
+
+id:Date.now()+1,
+
+sender:"ai",
+
+text:response
+
+
+};
+
+
+
+setMessages(prev=>[
+
+...prev,
+
+aiMessage
+
+]);
+
+
+
+}
+
+catch(error){
+
+
+setMessages(prev=>[
 
 ...prev,
 
 {
-id:
-Date.now()+1,
-text:response,
-user:false
+
+id:Date.now(),
+
+sender:"ai",
+
+text:
+
+"Sorry, I couldn't process your request."
+
 }
 
 ]);
 
 
+}
 
-setMessage("");
+finally{
 
-};
+
+setLoading(false);
+
+
+}
+
+
+}
+
+
+
+
+
+function deleteMessage(id){
+
+
+Alert.alert(
+
+"Delete Message",
+
+"Do you want to remove this message?",
+
+[
+
+{
+text:"Cancel"
+},
+
+{
+
+text:"Delete",
+
+onPress:()=>{
+
+
+setMessages(prev=>
+
+prev.filter(
+
+item=>item.id!==id
+
+)
+
+);
+
+
+}
+
+}
+
+]
+
+);
+
+
+}
+
+
+
+
+
+function editMessage(message){
+
+
+setInput(message);
+
+
+}
+
+
 
 
 
 return(
 
-<View style={styles.container}>
+
+<KeyboardAvoidingView
 
 
-<Text style={styles.title}>
-
-🤖 AutoSphere AI Assistant
-
-</Text>
+style={styles.container}
 
 
+behavior={
 
-<FlatList
+Platform.OS==="ios"
 
-data={chat}
+?
 
-keyExtractor={
-item=>item.id
+"padding"
+
+:
+
+undefined
+
 }
 
-renderItem={({item})=>(
 
-<ChatBubble
-
-message={item.text}
-
-user={item.user}
-
-/>
-
-)}
-
-/>
-
-
-
-<View style={styles.inputContainer}>
-
-
-<TextInput
-
-value={message}
-
-onChangeText={setMessage}
-
-placeholder=
-"Ask about your vehicle..."
-
-style={styles.input}
-
-/>
-
-
-
-<TouchableOpacity
-
-onPress={sendMessage}
-
-style={styles.button}
 
 >
 
-<Text>
 
-Send
 
-</Text>
+<AIHeader />
 
-</TouchableOpacity>
+
+
+<AIQuickActions
+
+
+onSelect={(text)=>sendMessage(text)}
+
+
+/>
+
+
+
+<View style={styles.chatContainer}>
+
+
+<ScrollView
+
+
+ref={scrollRef}
+
+
+showsVerticalScrollIndicator={false}
+
+
+contentContainerStyle={styles.messages}
+
+
+
+keyboardShouldPersistTaps="handled"
+
+
+
+>
+
+
+{
+
+
+messages.map(item=>(
+
+
+
+<AIMessageBubble
+
+
+
+key={item.id}
+
+
+
+message={item.text}
+
+
+
+sender={item.sender}
+
+
+
+onDelete={()=>deleteMessage(item.id)}
+
+
+
+onEdit={()=>editMessage(item.text)}
+
+
+/>
+
+
+))
+
+
+}
+
+
+
+{
+
+loading &&
+
+<TypingIndicator/>
+
+}
+
+
+
+</ScrollView>
 
 
 
 </View>
 
 
-</View>
+
+
+<AIInput
+
+
+
+value={input}
+
+
+
+setValue={setInput}
+
+
+
+send={()=>sendMessage()}
+
+
+/>
+
+
+
+</KeyboardAvoidingView>
+
 
 );
-
 
 }

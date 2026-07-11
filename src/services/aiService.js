@@ -1,123 +1,157 @@
-const vehicleResponses = [
+import axios from "axios";
 
-{
-keywords:["noise","sound","strange"],
-response:
-`
+
+const GEMINI_API_KEY =
+  process.env.EXPO_PUBLIC_GEMINI_API_KEY;
+
+
+const GEMINI_MODEL = "gemini-flash-latest";
+
+
+const GEMINI_URL =
+`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+
+
+export async function askVehicleAI(
+  message,
+  context
+) {
+
+  try {
+
+
+    if (!GEMINI_API_KEY) {
+
+      return "Gemini API key missing.";
+
+    }
+
+
+
+    const prompt = `
+
+You are AutoSphere AI,
+a professional vehicle assistant.
+
+Help users with:
+
+- Vehicle maintenance
+- Troubleshooting
+- Fuel efficiency
+- Service recommendations
+- Vehicle expenses
+
+
+Vehicle Information:
+
+${JSON.stringify(
+context,
+null,
+2
+)}
+
+
+User Question:
+
+${message}
+
+
+Give a clear answer with:
+
 Possible causes:
 
-• Engine belt problem
-• Low engine oil
-• Brake component issue
+Recommendations:
 
-Recommended:
+Safety advice:
 
-✓ Check maintenance history
-✓ Inspect vehicle condition
-✓ Visit mechanic if problem continues
-`
-},
+`;
 
 
-{
-keywords:["oil","engine"],
-response:
-`
-Engine oil related issue detected.
 
-Recommended:
+    const response =
+      await axios.post(
 
-✓ Check oil level
-✓ Check last oil change date
-✓ Replace oil if service is due
-`
-},
+        GEMINI_URL,
 
+        {
 
-{
-keywords:["battery","start"],
-response:
-`
-Possible battery issue.
+          contents:[
 
-Check:
+            {
 
-✓ Battery voltage
-✓ Battery terminals
-✓ Alternator condition
-`
-},
+              parts:[
 
+                {
+                  text:prompt
+                }
 
-{
-keywords:["service"],
-response:
-`
-Regular maintenance improves vehicle life.
+              ]
 
-Recommended:
+            }
 
-✓ Oil change
-✓ Brake inspection
-✓ Tire check
-✓ Filter replacement
-`
-}
+          ],
+          generationConfig:{
+            temperature:0.7,
+            maxOutputTokens:1000
+          }
 
-];
+        },
+
+        {
+
+          headers:{
+
+            "Content-Type":
+            "application/json"
+
+          }
+
+        }
+
+      );
 
 
-export const askVehicleAI = async(message)=>{
+
+    const answer =
+
+      response.data
+      ?.candidates?.[0]
+      ?.content
+      ?.parts?.[0]
+      ?.text;
 
 
-return new Promise((resolve)=>{
+
+    return answer ||
+
+    "No response generated.";
 
 
-setTimeout(()=>{
+
+  }
+
+  catch(error){
 
 
-const text =
-message.toLowerCase();
+    console.log(
+      "Gemini API Error:"
+    );
 
 
-const result =
-vehicleResponses.find(item=>
-
-item.keywords.some(keyword=>
-
-text.includes(keyword)
-
-));
+    console.log(
+      "Status:",
+      error.response?.status
+    );
 
 
-if(result)
-{
-resolve(result.response);
-}
+    console.log(
+      "Data:",
+      error.response?.data
+    );
 
-else
-{
 
-resolve(
-`
-I need more information.
+    return "Sorry, AI service is currently unavailable.";
 
-Please provide:
-
-• Vehicle model
-• Problem description
-• When the issue started
-• Any warning lights
-`
-);
+  }
 
 }
-
-
-},1000);
-
-
-});
-
-
-};

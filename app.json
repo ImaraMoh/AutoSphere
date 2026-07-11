@@ -27,7 +27,8 @@
           "cameraPermission": "Allow AutoSphere to access camera for document scanning"
         }
       ],
-      "expo-sharing"
+      "expo-sharing",
+      "expo-secure-store"
     ]
   }
 }
