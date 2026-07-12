@@ -1,118 +1,972 @@
-import React, {useState} from "react";
+import React, {
+useEffect,
+useState
+}
+from "react";
+
 
 import {
-	View,
-	Text,
-	ScrollView,
-	TouchableOpacity,
-	Image,
-	Switch,
-	Alert
-} from "react-native";
+View,
+Text,
+ScrollView,
+TouchableOpacity,
+Image,
+Switch,
+Alert,
+ActivityIndicator
+}
+from "react-native";
 
-import {Ionicons} from "@expo/vector-icons";
+
+import {
+Ionicons
+}
+from "@expo/vector-icons";
+
+
+import {
+useFocusEffect
+}
+from "@react-navigation/native";
+
+
+import {
+getSettings,
+saveSettings
+}
+from "../../services/settingsStorage";
+
+
+import {
+getProfile
+}
+from "../../services/profileStorage";
+
 
 import styles from "./styles";
-import Button from "../../components/Button";
-import {colors} from "../../theme";
 
-export default function Profile({navigation}){
-	const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-	const [marketingEnabled, setMarketingEnabled] = useState(false);
 
-	function handleLogout(){
-		Alert.alert("Log out","Are you sure you want to log out?",[
-			{text:'Cancel',style:'cancel'},
-			{text:'Log out',style:'destructive',onPress:()=>navigation.navigate('Login')}
-		]);
-	}
 
-	return (
-		<View style={styles.container}>
-			<ScrollView contentContainerStyle={{paddingBottom:40}}>
 
-				<View style={styles.header}>
-					<Text style={styles.headerTitle}>Profile</Text>
-					<TouchableOpacity onPress={()=>navigation.navigate('EditProfile')}>
-						<Ionicons name="create-outline" size={20} color={colors.text} />
-					</TouchableOpacity>
-				</View>
+export default function Profile({
+navigation
+}){
 
-				<View style={styles.profileCard}>
-					<Image source={{uri:'https://i.pravatar.cc/150?img=12'}} style={styles.avatar} />
-					<View style={styles.profileInfo}>
-						<Text style={styles.name}>Imara</Text>
-						<Text style={styles.email}>imara@example.com</Text>
-						<TouchableOpacity style={styles.editRow} onPress={()=>navigation.navigate('EditProfile')}>
-							<Ionicons name="pencil" size={14} color={colors.primary} />
-							<Text style={styles.editText}> Edit profile</Text>
-						</TouchableOpacity>
-					</View>
-				</View>
 
-				<View style={styles.section}>
-					<Text style={styles.sectionTitle}>Account</Text>
-					<TouchableOpacity style={styles.row} onPress={()=>navigation.navigate('ChangePassword')}>
-						<View style={styles.rowLeft}>
-							<Ionicons name="key-outline" size={20} color={colors.primary} />
-							<Text style={styles.rowText}> Change Password</Text>
-						</View>
-						<Ionicons name="chevron-forward" size={20} color={colors.gray} />
-					</TouchableOpacity>
+const [profile,setProfile]=useState(null);
 
-					<TouchableOpacity style={styles.row} onPress={()=>navigation.navigate('ConnectedDevices')}>
-						<View style={styles.rowLeft}>
-							<Ionicons name="phone-portrait-outline" size={20} color={colors.primary} />
-							<Text style={styles.rowText}> Connected Devices</Text>
-						</View>
-						<Ionicons name="chevron-forward" size={20} color={colors.gray} />
-					</TouchableOpacity>
-				</View>
+const [loading,setLoading]=useState(true);
 
-				<View style={styles.section}>
-					<Text style={styles.sectionTitle}>Notifications</Text>
-					<View style={styles.row}>
-						<View style={styles.rowLeft}>
-							<Ionicons name="notifications-outline" size={20} color={colors.primary} />
-							<Text style={styles.rowText}> App notifications</Text>
-						</View>
-						<Switch value={notificationsEnabled} onValueChange={setNotificationsEnabled} />
-					</View>
 
-					<View style={styles.row}>
-						<View style={styles.rowLeft}>
-							<Ionicons name="mail-outline" size={20} color={colors.primary} />
-							<Text style={styles.rowText}> Marketing emails</Text>
-						</View>
-						<Switch value={marketingEnabled} onValueChange={setMarketingEnabled} />
-					</View>
-				</View>
+const [settings,setSettings]=useState({
 
-				<View style={styles.section}>
-					<Text style={styles.sectionTitle}>Privacy & Security</Text>
-					<TouchableOpacity style={styles.row} onPress={()=>navigation.navigate('Privacy')}>
-						<View style={styles.rowLeft}>
-							<Ionicons name="shield-checkmark-outline" size={20} color={colors.primary} />
-							<Text style={styles.rowText}> Privacy</Text>
-						</View>
-						<Ionicons name="chevron-forward" size={20} color={colors.gray} />
-					</TouchableOpacity>
+notifications:false,
 
-					<TouchableOpacity style={styles.row} onPress={()=>navigation.navigate('NotificationSettings')}>
-						<View style={styles.rowLeft}>
-							<Ionicons name="bell-outline" size={20} color={colors.primary} />
-							<Text style={styles.rowText}> Notification settings</Text>
-						</View>
-						<Ionicons name="chevron-forward" size={20} color={colors.gray} />
-					</TouchableOpacity>
-				</View>
+marketing:false
 
-				<View style={styles.footer}>
-					<Button title="Log out" onPress={handleLogout} />
-				</View>
+});
 
-			</ScrollView>
-		</View>
-	);
+
+
+
+
+useFocusEffect(
+
+React.useCallback(()=>{
+
+loadData();
+
+},[])
+
+);
+
+
+
+
+
+async function loadData(){
+
+
+try{
+
+
+setLoading(true);
+
+
+const user =
+await getProfile();
+
+
+
+const savedSettings =
+await getSettings();
+
+
+
+
+setProfile(user);
+
+
+
+setSettings({
+
+notifications:
+savedSettings?.notifications ?? false,
+
+
+marketing:
+savedSettings?.marketing ?? false
+
+
+});
+
+
+
+}
+
+catch(error){
+
+console.log(
+"PROFILE LOAD ERROR",
+error
+);
+
+}
+
+
+finally{
+
+setLoading(false);
+
+}
+
+
+}
+
+
+
+
+
+
+
+
+
+async function updateSetting(
+key,
+value
+){
+
+
+const updated={
+
+
+...settings,
+
+
+[key]:value
+
+
+};
+
+
+
+setSettings(updated);
+
+
+
+await saveSettings(updated);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function handleLogout(){
+
+
+
+Alert.alert(
+
+"Logout",
+
+"Are you sure you want to logout?",
+
+
+[
+
+
+{
+
+text:"Cancel",
+
+style:"cancel"
+
+},
+
+
+{
+
+text:"Logout",
+
+style:"destructive",
+
+onPress:()=>{
+
+
+navigation.reset({
+
+index:0,
+
+routes:[
+
+{
+name:"Login"
+}
+
+]
+
+});
+
+
+}
+
+}
+
+
+]
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+if(loading){
+
+
+return(
+
+<View style={styles.loading}>
+
+
+<ActivityIndicator
+
+size="large"
+
+color="#F97316"
+
+/>
+
+
+<Text style={styles.loadingText}>
+
+Loading Profile...
+
+</Text>
+
+
+</View>
+
+)
+
+}
+
+
+
+
+
+
+
+
+
+
+return(
+
+
+<View style={styles.container}>
+
+
+
+
+{/* HEADER */}
+
+
+<View style={styles.header}>
+
+
+<View>
+
+
+<Text style={styles.title}>
+
+Profile
+
+</Text>
+
+
+<Text style={styles.subtitle}>
+
+Manage your AutoSphere account
+
+</Text>
+
+
+</View>
+
+
+
+
+<TouchableOpacity
+
+style={styles.editButton}
+
+
+onPress={()=>navigation.navigate(
+"EditProfile"
+)}
+
+
+>
+
+
+<Ionicons
+
+name="create-outline"
+
+size={22}
+
+color="#F97316"
+
+/>
+
+
+</TouchableOpacity>
+
+
+</View>
+
+
+
+<ScrollView
+
+
+showsVerticalScrollIndicator={false}
+
+
+contentContainerStyle={styles.scroll}
+
+
+>
+
+
+
+{/* PROFILE CARD */}
+
+
+
+<View style={styles.profileCard}>
+
+
+
+
+<View style={styles.avatarWrapper}>
+
+
+<Image
+
+
+source={
+
+
+profile?.image
+
+?
+
+{
+uri:profile.image
+}
+
+:
+
+require("../../../assets/default-avatar.png")
+
+
+}
+
+
+style={styles.avatar}
+
+
+/>
+
+
+</View>
+
+
+
+<View style={styles.userDetails}>
+
+
+<Text style={styles.name}>
+
+
+{
+
+profile?.name ||
+
+"AutoSphere User"
+
+
+}
+
+
+</Text>
+
+
+
+
+<Text style={styles.email}>
+
+
+{
+
+profile?.email ||
+
+"No email added"
+
+
+}
+
+
+</Text>
+
+
+
+
+
+<TouchableOpacity
+
+style={styles.profileEdit}
+
+
+onPress={()=>navigation.navigate(
+"EditProfile"
+)}
+
+>
+
+
+<Ionicons
+
+name="pencil"
+
+size={14}
+
+color="#F97316"
+
+/>
+
+
+<Text style={styles.profileEditText}>
+
+Edit Profile
+
+</Text>
+
+
+
+</TouchableOpacity>
+
+
+</View>
+
+
+
+</View>
+
+
+
+
+
+
+
+
+
+{/* ACCOUNT */}
+
+
+
+<Section title="Account">
+
+
+<MenuItem
+
+icon="key-outline"
+
+title="Change Password"
+
+onPress={()=>navigation.navigate(
+"ChangePassword"
+)}
+
+/>
+
+
+
+<MenuItem
+
+icon="phone-portrait-outline"
+
+title="Connected Devices"
+
+onPress={()=>navigation.navigate(
+"ConnectedDevices"
+)}
+
+/>
+
+
+</Section>
+
+
+
+
+
+
+
+
+
+{/* SETTINGS */}
+
+
+
+<Section title="Preferences">
+
+
+<SwitchItem
+
+
+icon="notifications-outline"
+
+
+title="App Notifications"
+
+
+value={
+settings.notifications
+}
+
+
+onChange={(value)=>
+
+
+updateSetting(
+
+"notifications",
+
+value
+
+)
+
+
+}
+
+
+
+/>
+
+
+
+<SwitchItem
+
+
+icon="mail-outline"
+
+
+title="Marketing Emails"
+
+
+value={
+settings.marketing
+}
+
+
+onChange={(value)=>
+
+
+updateSetting(
+
+"marketing",
+
+value
+
+)
+
+
+}
+
+
+
+/>
+
+
+
+</Section>
+
+
+
+
+
+
+
+
+
+{/* SECURITY */}
+
+
+
+<Section title="Privacy & Security">
+
+
+<MenuItem
+
+icon="shield-checkmark-outline"
+
+title="Privacy"
+
+onPress={()=>navigation.navigate(
+"Privacy"
+)}
+
+/>
+
+
+
+<MenuItem
+
+icon="lock-closed-outline"
+
+title="Security"
+
+onPress={()=>navigation.navigate(
+"Security"
+)}
+
+/>
+
+
+</Section>
+
+
+
+
+
+
+
+
+
+{/* ABOUT */}
+
+
+
+<Section title="Application">
+
+
+<MenuItem
+
+icon="help-circle-outline"
+
+title="Help & Support"
+onPress={()=>navigation.navigate(
+"Help"
+)}
+
+/>
+
+
+
+<MenuItem
+
+icon="information-circle-outline"
+
+title="About AutoSphere"
+onPress={()=>navigation.navigate(
+"About"
+)}
+/>
+
+
+
+</Section>
+
+
+
+
+
+
+
+
+
+{/* LOGOUT */}
+
+
+
+<TouchableOpacity
+
+style={styles.logout}
+
+onPress={handleLogout}
+
+>
+
+
+<Ionicons
+
+name="log-out-outline"
+
+size={22}
+
+color="#EF4444"
+
+/>
+
+
+<Text style={styles.logoutText}>
+
+Logout
+
+</Text>
+
+
+</TouchableOpacity>
+
+
+
+
+
+</ScrollView>
+
+
+</View>
+
+
+)
+
+}
+
+
+
+
+
+
+
+
+
+function Section({
+title,
+children
+}){
+
+
+return(
+
+
+<View style={styles.section}>
+
+
+<Text style={styles.sectionTitle}>
+
+{title}
+
+</Text>
+
+
+
+<View style={styles.card}>
+
+{children}
+
+</View>
+
+
+</View>
+
+
+)
+
+}
+
+
+
+
+
+
+
+
+
+function MenuItem({
+icon,
+title,
+onPress
+}){
+
+
+return(
+
+
+<TouchableOpacity
+
+
+style={styles.row}
+
+
+onPress={onPress}
+
+
+activeOpacity={0.7}
+
+
+>
+
+
+<View style={styles.left}>
+
+
+<View style={styles.iconBox}>
+
+
+<Ionicons
+
+name={icon}
+
+size={20}
+
+color="#F97316"
+
+/>
+
+
+</View>
+
+
+<Text style={styles.rowText}>
+
+{title}
+
+</Text>
+
+
+</View>
+
+
+
+
+
+<Ionicons
+
+name="chevron-forward"
+
+size={20}
+
+color="#CBD5E1"
+
+/>
+
+
+
+</TouchableOpacity>
+
+
+)
+
+}
+
+
+
+
+
+
+
+
+
+function SwitchItem({
+icon,
+title,
+value,
+onChange
+}){
+
+
+return(
+
+
+<View style={styles.row}>
+
+
+<View style={styles.left}>
+
+
+<View style={styles.iconBox}>
+
+
+<Ionicons
+
+name={icon}
+
+size={20}
+
+color="#F97316"
+
+/>
+
+
+</View>
+
+
+
+<Text style={styles.rowText}>
+
+{title}
+
+</Text>
+
+
+</View>
+
+
+
+
+
+<Switch
+
+
+value={value}
+
+
+onValueChange={onChange}
+
+
+/>
+
+
+</View>
+
+
+)
 
 }

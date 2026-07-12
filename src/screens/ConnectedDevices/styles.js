@@ -1,31 +1,69 @@
-import {StyleSheet} from 'react-native';
-import {colors} from '../../theme';
+import {
+StyleSheet
+}
+from "react-native";
+
 
 export default StyleSheet.create({
-  container:{
-    flex:1,
-    backgroundColor:colors.background,
-    padding:20
-  },
-  title:{
-    fontSize:20,
-    fontWeight:'700',
-    marginBottom:12,
-    color:colors.text
-  },
-  row:{
-    backgroundColor:colors.white,
-    padding:14,
-    borderRadius:10,
-    flexDirection:'row',
-    justifyContent:'space-between',
-    alignItems:'center',
-    marginBottom:10,
-    borderWidth:1,
-    borderColor:colors.border
-  },
-  rowText:{
-    fontSize:16,
-    color:colors.text
-  }
+
+container:{
+flex:1,
+backgroundColor:"#F8FAFC",
+padding:20
+},
+
+
+header:{
+flexDirection:"row",
+alignItems:"center",
+gap:15,
+marginBottom:25
+},
+
+
+title:{
+fontSize:24,
+fontWeight:"900"
+},
+
+
+description:{
+color:"#64748B",
+marginBottom:25
+},
+
+
+deviceCard:{
+backgroundColor:"white",
+borderRadius:22,
+padding:18,
+flexDirection:"row",
+alignItems:"center",
+marginBottom:15
+},
+
+
+iconBox:{
+height:45,
+width:45,
+borderRadius:14,
+backgroundColor:"#FFF7ED",
+alignItems:"center",
+justifyContent:"center",
+marginRight:15
+},
+
+
+deviceName:{
+fontSize:16,
+fontWeight:"800"
+},
+
+
+deviceType:{
+color:"#64748B",
+marginTop:4
+}
+
+
 });

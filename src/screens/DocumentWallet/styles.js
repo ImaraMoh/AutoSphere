@@ -10,8 +10,8 @@ export default StyleSheet.create({
     paddingBottom: 24,
   },
   title: {
-    fontSize: 22,
-    fontWeight: "700",
+    fontSize: 24,
+    fontWeight: "1000",
     color: colors.text,
     marginBottom: 16,
   },

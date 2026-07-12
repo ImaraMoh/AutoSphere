@@ -7,7 +7,6 @@ from "react-native";
 export default StyleSheet.create({
 
 
-
 container:{
 
 flex:1,
@@ -15,7 +14,6 @@ flex:1,
 backgroundColor:"#F8FAFC"
 
 },
-
 
 
 
@@ -79,13 +77,13 @@ paddingBottom:50
 
 
 
-hero:{
+securityHero:{
 
 backgroundColor:"#FFF7ED",
 
-borderRadius:28,
-
 padding:25,
+
+borderRadius:28,
 
 alignItems:"center",
 
@@ -95,8 +93,7 @@ marginBottom:25
 
 
 
-
-heroIcon:{
+securityIcon:{
 
 height:80,
 
@@ -106,14 +103,11 @@ borderRadius:40,
 
 backgroundColor:"#FFFFFF",
 
-justifyContent:"center",
-
 alignItems:"center",
 
-marginBottom:15
+justifyContent:"center"
 
 },
-
 
 
 
@@ -123,10 +117,11 @@ fontSize:22,
 
 fontWeight:"900",
 
+marginTop:15,
+
 color:"#0F172A"
 
 },
-
 
 
 
@@ -134,13 +129,14 @@ heroText:{
 
 textAlign:"center",
 
-color:"#64748B",
+marginTop:8,
 
-marginTop:10,
+color:"#64748B",
 
 lineHeight:22
 
 },
+
 
 
 
@@ -157,6 +153,8 @@ padding:18,
 
 flexDirection:"row",
 
+alignItems:"center",
+
 marginBottom:15,
 
 shadowColor:"#000",
@@ -168,6 +166,7 @@ shadowRadius:10,
 elevation:3
 
 },
+
 
 
 
@@ -217,16 +216,15 @@ color:"#0F172A"
 
 description:{
 
-fontSize:14,
+fontSize:13,
 
 color:"#64748B",
 
-marginTop:6,
+marginTop:5,
 
-lineHeight:20
+lineHeight:19
 
 }
-
 
 
 });

@@ -42,6 +42,9 @@ import ChangePassword from "../screens/ChangePassword";
 import ConnectedDevices from "../screens/ConnectedDevices";
 import Privacy from "../screens/Privacy";
 import NotificationSettings from "../screens/NotificationSettings";
+import About from "../screens/About";
+import Security from "../screens/Security";
+import Help from "../screens/Help";
 
 import Insurance from "../screens/Insurance";
 import RenewInsurance from "../screens/RenewInsurance";
@@ -200,6 +203,9 @@ return(
 <Stack.Screen name="ConnectedDevices" component={ConnectedDevices} />
 <Stack.Screen name="Privacy" component={Privacy} />
 <Stack.Screen name="NotificationSettings" component={NotificationSettings} />
+<Stack.Screen name="About" component={About}/>
+<Stack.Screen name="Security" component={Security}/>
+<Stack.Screen name="Help" component={Help}/>
 </Stack.Navigator>
 );
 }

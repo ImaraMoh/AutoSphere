@@ -25,8 +25,8 @@ export default StyleSheet.create({
     borderRadius: 8,
   },
   brandName: {
-    fontSize: 18,
-    fontWeight: "700",
+    fontSize: 30,
+    fontWeight: "1000",
     color: "#0F172A",
     letterSpacing: -0.3,
   },

@@ -1,31 +1,48 @@
-import {StyleSheet} from 'react-native';
-import {colors} from '../../theme';
+import {
+StyleSheet
+}
+from "react-native";
+
 
 export default StyleSheet.create({
-  container:{
-    flex:1,
-    backgroundColor:colors.background,
-    padding:20
-  },
-  title:{
-    fontSize:20,
-    fontWeight:'700',
-    color:colors.text,
-    marginBottom:12
-  },
-  row:{
-    flexDirection:'row',
-    justifyContent:'space-between',
-    alignItems:'center',
-    backgroundColor:colors.white,
-    padding:14,
-    borderRadius:10,
-    marginBottom:10,
-    borderWidth:1,
-    borderColor:colors.border
-  },
-  rowText:{
-    color:colors.text,
-    fontSize:16
-  }
+
+container:{
+flex:1,
+backgroundColor:"#F8FAFC",
+padding:20
+},
+
+
+header:{
+flexDirection:"row",
+alignItems:"center",
+gap:15,
+marginBottom:30
+},
+
+
+title:{
+fontSize:23,
+fontWeight:"900"
+},
+
+
+row:{
+height:70,
+backgroundColor:"white",
+borderRadius:18,
+paddingHorizontal:18,
+flexDirection:"row",
+alignItems:"center",
+justifyContent:"space-between",
+marginBottom:15
+},
+
+
+text:{
+fontSize:16,
+fontWeight:"700"
+}
+
+
 });
