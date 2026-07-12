@@ -20,10 +20,12 @@ from "@expo/vector-icons";
 
 
 import Dashboard from "../screens/Dashboard";
-import Vehicle from "../screens/Vehicle";
+import Vehicles from "../screens/Vehicles";
 import DocumentWallet from "../screens/DocumentWallet";
 import AIChat from "../screens/AIChat";
 import Profile from "../screens/Profile";
+
+import EditVehicle from "../screens/EditVehicle";
 
 import Reminder from "../screens/Reminder";
 import AddReminder from "../screens/AddReminder";
@@ -99,7 +101,6 @@ return(
 <Stack.Screen name="OCRScanner" component={OCRScanner}/>
 <Stack.Screen name="ScanPreview" component={ScanPreview}/>
 <Stack.Screen name="ScanHistory" component={ScanHistory}/>
-
 </Stack.Navigator>
 );
 }
@@ -108,9 +109,11 @@ return(
 function VehiclesStackNavigator(){
 return(
 <Stack.Navigator screenOptions={{headerShown:false}}>
-<Stack.Screen name="VehicleMain" component={Vehicle} />
+<Stack.Screen name="VehicleMain" component={Vehicles} />
 <Stack.Screen name="AddVehicle" component={AddVehicle} />
 <Stack.Screen name="VehicleProfile" component={VehicleProfile} />
+
+<Stack.Screen name="EditVehicle" component={EditVehicle} />
 </Stack.Navigator>
 );
 }

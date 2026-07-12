@@ -1,36 +1,60 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
-const VEHICLE_KEY = "AUTOSPHERE_VEHICLES";
+
+const VEHICLE_KEY="vehicles";
 
 
 
-export async function saveVehicles(vehicles){
+export const saveVehicle = async(vehicle)=>{
 
 try{
 
+
+const old =
+await getVehicles();
+
+
+
+const updated=[
+
+...old,
+
+vehicle
+
+];
+
+
+
 await AsyncStorage.setItem(
+
 VEHICLE_KEY,
-JSON.stringify(vehicles)
+
+JSON.stringify(updated)
+
 );
 
-}
 
+
+return true;
+
+
+}
 catch(error){
 
-console.log(
-"Vehicle save error",
-error
-);
+console.log(error);
+
+return false;
 
 }
 
-}
+};
 
 
 
 
-export async function getVehicles(){
+
+export const getVehicles = async()=>{
 
 try{
 
@@ -50,63 +74,24 @@ JSON.parse(data)
 
 
 }
-
 catch(error){
 
-console.log(
-"Vehicle load error",
-error
-);
-
+console.log(error);
 
 return [];
 
 }
 
-
-}
-
-
-
-
-export async function addVehicle(vehicle){
-
-
-const vehicles =
-await getVehicles();
-
-
-
-const updated=[
-
-...vehicles,
-
-{
-
-id:Date.now(),
-
-...vehicle
-
-}
-
-];
-
-
-
-await saveVehicles(updated);
-
-
-
-return updated;
-
-
-}
+};
 
 
 
 
 
-export async function deleteVehicle(id){
+export const deleteVehicle = async(id)=>{
+
+
+try{
 
 
 const vehicles =
@@ -116,16 +101,88 @@ await getVehicles();
 
 const updated =
 vehicles.filter(
-item=>item.id!==id
+
+item=>
+
+String(item.id)!==String(id)
+
 );
 
 
 
-await saveVehicles(updated);
+await AsyncStorage.setItem(
+
+VEHICLE_KEY,
+
+JSON.stringify(updated)
+
+);
 
 
 
-return updated;
+return true;
 
 
 }
+
+catch(error){
+
+console.log(error);
+
+return false;
+
+}
+
+
+};
+
+
+export const updateVehicle = async(vehicle)=>{
+
+try{
+
+const vehicles =
+await getVehicles();
+
+
+const updated =
+vehicles.map(item=>
+
+String(item.id)===String(vehicle.id)
+
+?
+
+vehicle
+
+:
+
+item
+
+);
+
+
+
+await AsyncStorage.setItem(
+
+"vehicles",
+
+JSON.stringify(updated)
+
+);
+
+
+
+return true;
+
+
+}
+
+catch(error){
+
+console.log(error);
+
+return false;
+
+}
+
+};

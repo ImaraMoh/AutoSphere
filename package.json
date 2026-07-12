@@ -36,6 +36,7 @@
     "react-native-chart-kit": "^7.0.1",
     "react-native-dotenv": "^3.4.11",
     "react-native-gesture-handler": "~2.32.0",
+    "react-native-get-random-values": "~1.11.0",
     "react-native-gifted-charts": "^1.4.77",
     "react-native-gifted-chat": "^3.4.0",
     "react-native-markdown-display": "^7.0.2",
@@ -47,7 +48,8 @@
     "react-native-svg": "^15.15.4",
     "react-native-text-recognition": "^1.0.2",
     "react-native-vector-icons": "^10.3.0",
-    "react-native-web": "^0.21.2"
+    "react-native-web": "^0.21.2",
+    "uuid": "^14.0.1"
   },
   "scripts": {
     "start": "expo start",

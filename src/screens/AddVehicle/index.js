@@ -1,25 +1,54 @@
-import React,{useState} from "react";
+import React, {
+useState
+}
+from "react";
 
 
 import {
+
 View,
 Text,
-TextInput,
+ScrollView,
 TouchableOpacity,
-Image
+TextInput,
+Image,
+Alert
+
 }
 from "react-native";
 
 
+import {
+
+Ionicons
+
+}
+from "@expo/vector-icons";
+
+
 import * as ImagePicker from "expo-image-picker";
 
-import { Ionicons } from "@expo/vector-icons";
 
-import {saveVehicle} from "../../services/storage";
+import {
+
+saveVehicle
+
+}
+from "../../services/vehicleStorage";
+import * as FileSystem from "expo-file-system";
+
+import styles from "./styles";
 
 
 
-export default function AddVehicle({navigation}){
+
+
+export default function AddVehicle({
+
+navigation
+
+}){
+
 
 
 const [image,setImage]=useState(null);
@@ -27,51 +56,138 @@ const [image,setImage]=useState(null);
 
 const [vehicle,setVehicle]=useState({
 
+type:"Car",
+
 brand:"",
+
 model:"",
+
 year:"",
-fuel:"",
+
+registration:"",
+
 mileage:"",
-registration:""
+
+fuel:""
+
 
 });
 
 
 
 
-const pickImage=async()=>{
+const vehicleTypes=[
+
+"Car",
+"Bike",
+"Van",
+"Truck"
+
+];
 
 
-const result=
+
+const fuelTypes=[
+
+"Petrol",
+"Diesel",
+"Hybrid",
+"Electric"
+
+];
+
+
+
+
+
+function updateField(
+key,
+value
+){
+
+setVehicle({
+
+...vehicle,
+
+[key]:value
+
+});
+
+}
+const pickImage = async()=>{
+
+
+const result =
 await ImagePicker.launchImageLibraryAsync({
 
 mediaTypes:["images"],
 
-quality:1
+quality:0.7,
+
+base64:true
 
 });
 
 
+
 if(!result.canceled){
 
-setImage(result.assets[0].uri);
+
+const asset =
+result.assets[0];
+
+
+
+setImage({
+
+uri:asset.uri,
+
+base64:asset.base64
+
+});
+
 
 }
 
 
+};
+async function handleSave(){
+
+
+
+if(
+!vehicle.brand ||
+!vehicle.model ||
+!vehicle.registration
+){
+
+Alert.alert(
+
+"Missing Information",
+
+"Please enter vehicle brand, model and registration"
+
+);
+
+return;
+
 }
-
-
-
-
-const save=async()=>{
-
 
 await saveVehicle({
 
 ...vehicle,
 
-image
+image:image
+?
+`data:image/jpeg;base64,${image.base64}`
+:
+null,
+
+id:Date.now().toString(),
+
+healthScore:92,
+
+createdAt:new Date().toISOString()
 
 });
 
@@ -84,45 +200,89 @@ navigation.goBack();
 
 
 
+
+
 return(
 
-<View
-style={{
-flex:1,
-padding:20
-}}
+
+<View style={styles.container}>
+
+
+
+{/* Header */}
+
+<View style={styles.header}>
+
+
+<TouchableOpacity
+
+onPress={()=>navigation.goBack()}
+
 >
 
-<View style={{
-flexDirection:"row",
-alignItems:"center",
-gap:10,
-marginBottom:20
-}}>
+<Ionicons
 
-<TouchableOpacity onPress={()=>navigation.goBack()}>
-<Ionicons name="arrow-back" size={25} color="#0D1117" />
+name="arrow-back"
+
+size={26}
+
+color="#0F172A"
+
+/>
+
+
 </TouchableOpacity>
 
-<Text
-style={{
-fontSize:28,
-fontWeight:"bold",
-flex:1
-}}
->
+
+
+<Text style={styles.title}>
+
 Add Vehicle
+
 </Text>
+
+
+<View/>
+
 
 </View>
 
 
 
-<TouchableOpacity
-onPress={pickImage}
+
+
+
+
+
+<ScrollView
+
+showsVerticalScrollIndicator={false}
+
+contentContainerStyle={{
+
+paddingBottom:40
+
+}}
+
 >
 
+
+
+
+{/* Image Upload */}
+
+
+<TouchableOpacity
+
+style={styles.imagePicker}
+
+onPress={pickImage}
+
+>
+
+
 {
+
 image ?
 
 <Image
@@ -131,21 +291,35 @@ source={{
 uri:image
 }}
 
-style={{
-height:120,
-width:120,
-borderRadius:60
-}}
+style={styles.vehicleImage}
 
 />
 
 :
 
-<Text>
+<>
+
+<Ionicons
+
+name="camera"
+
+size={45}
+
+color="#F97316"
+
+/>
+
+
+<Text style={styles.uploadText}>
+
 Upload Vehicle Image
+
 </Text>
 
+</>
+
 }
+
 
 
 </TouchableOpacity>
@@ -153,52 +327,260 @@ Upload Vehicle Image
 
 
 
+
+
+
+
+{/* Vehicle Type */}
+
+
+<Text style={styles.label}>
+
+Vehicle Type
+
+</Text>
+
+
+
+<View style={styles.row}>
+
+
 {
-[
-"brand",
-"model",
-"year",
-"fuel",
-"mileage",
-"registration"
 
-].map(item=>(
+vehicleTypes.map(item=>(
 
 
-<TextInput
+<TouchableOpacity
 
 key={item}
 
-placeholder={item}
+style={[
 
-style={{
+styles.chip,
 
-borderWidth:1,
+vehicle.type===item &&
+styles.activeChip
 
-borderColor:"#ddd",
+]}
 
-padding:12,
+onPress={()=>updateField(
+"type",
+item
+)}
 
-marginTop:10,
+>
 
-borderRadius:10
 
-}}
+<Text
 
-onChangeText={(text)=>
+style={[
 
-setVehicle({
+styles.chipText,
 
-...vehicle,
+vehicle.type===item &&
+styles.activeChipText
 
-[item]:text
+]}
 
-})
+>
+
+{item}
+
+</Text>
+
+
+</TouchableOpacity>
+
+
+))
+
 
 }
 
 
+</View>
+
+
+
+
+
+
+
+
+<Input
+
+label="Brand"
+
+placeholder="Toyota"
+
+value={vehicle.brand}
+
+onChangeText={
+v=>updateField(
+"brand",
+v
+)
+}
+
 />
+
+
+
+
+<Input
+
+label="Model"
+
+placeholder="Corolla"
+
+value={vehicle.model}
+
+onChangeText={
+v=>updateField(
+"model",
+v
+)
+}
+
+/>
+
+
+
+
+
+<View style={styles.double}>
+
+
+<Input
+
+label="Year"
+
+placeholder="2022"
+
+keyboardType="numeric"
+
+value={vehicle.year}
+
+onChangeText={
+v=>updateField(
+"year",
+v
+)
+}
+
+/>
+
+
+
+<Input
+
+label="Mileage"
+
+placeholder="87000"
+
+keyboardType="numeric"
+
+value={vehicle.mileage}
+
+onChangeText={
+v=>updateField(
+"mileage",
+v
+)
+}
+
+/>
+
+
+
+</View>
+
+
+
+
+
+
+
+<Input
+
+label="Registration Number"
+
+placeholder="ABC-1234"
+
+value={vehicle.registration}
+
+onChangeText={
+v=>updateField(
+"registration",
+v
+)
+}
+
+/>
+
+
+
+
+
+
+
+<Text style={styles.label}>
+
+Fuel Type
+
+</Text>
+
+
+
+
+<View style={styles.row}>
+
+
+{
+
+fuelTypes.map(item=>(
+
+
+<TouchableOpacity
+
+key={item}
+
+style={[
+
+styles.chip,
+
+vehicle.fuel===item &&
+styles.activeChip
+
+]}
+
+onPress={()=>updateField(
+"fuel",
+item
+)}
+
+>
+
+
+<Text
+
+style={[
+
+styles.chipText,
+
+vehicle.fuel===item &&
+styles.activeChipText
+
+]}
+
+>
+
+{item}
+
+</Text>
+
+
+</TouchableOpacity>
 
 
 ))
@@ -207,33 +589,27 @@ setVehicle({
 
 
 
+</View>
+
+
+
+
+
+
+
+
 
 
 <TouchableOpacity
 
-onPress={save}
+style={styles.saveButton}
 
-style={{
-
-backgroundColor:"#F97316",
-
-padding:15,
-
-marginTop:20,
-
-borderRadius:10
-
-}}
+onPress={handleSave}
 
 >
 
 
-<Text
-style={{
-color:"white",
-textAlign:"center"
-}}
->
+<Text style={styles.saveText}>
 
 Save Vehicle
 
@@ -245,10 +621,59 @@ Save Vehicle
 
 
 
+
+
+</ScrollView>
+
+
+
+
+
+
+
 </View>
 
 
 )
 
+}
+
+
+
+
+
+function Input({
+
+label,
+
+...props
+
+}){
+
+
+return(
+
+<View style={styles.inputContainer}>
+
+
+<Text style={styles.label}>
+
+{label}
+
+</Text>
+
+
+<TextInput
+
+style={styles.input}
+
+{...props}
+
+/>
+
+
+</View>
+
+)
 
 }

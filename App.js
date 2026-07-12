@@ -15,7 +15,7 @@ PlusJakartaSans_700Bold
 }
 from "@expo-google-fonts/plus-jakarta-sans";
 
-
+import "react-native-get-random-values";
 import AppNavigator from "./src/navigation/AppNavigator";
 
 
