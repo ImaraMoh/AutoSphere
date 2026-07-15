@@ -1,314 +1,157 @@
-import {
-StyleSheet,
-Dimensions
-}
-from "react-native";
-
-
-const {width}=Dimensions.get("window");
-
-const isWeb=width>700;
-
-
+import { StyleSheet, Platform } from "react-native";
 
 export default StyleSheet.create({
-
-
-container:{
-
-flex:1,
-
-backgroundColor:"#F8FAFC"
-
-},
-
-
-
-scroll:{
-
-paddingHorizontal:isWeb?80:20,
-
-paddingBottom:50
-
-},
-
-
-
-
-header:{
-
-height:70,
-
-flexDirection:"row",
-
-alignItems:"center",
-
-justifyContent:"space-between",
-
-paddingHorizontal:20
-
-},
-
-
-
-backButton:{
-
-height:42,
-
-width:42,
-
-borderRadius:14,
-
-backgroundColor:"#FFFFFF",
-
-alignItems:"center",
-
-justifyContent:"center"
-
-},
-
-
-
-title:{
-
-fontSize:24,
-
-fontWeight:"900",
-
-color:"#0F172A"
-
-},
-
-
-
-
-
-
-
-imageContainer:{
-
-alignSelf:"center",
-
-marginTop:20,
-
-position:"relative"
-
-},
-
-
-
-
-avatar:{
-
-width:150,
-
-height:150,
-
-borderRadius:75
-
-},
-
-
-
-placeholder:{
-
-width:150,
-
-height:150,
-
-borderRadius:75,
-
-backgroundColor:"#FFF7ED",
-
-alignItems:"center",
-
-justifyContent:"center"
-
-},
-
-
-
-
-camera:{
-
-position:"absolute",
-
-right:5,
-
-bottom:10,
-
-height:40,
-
-width:40,
-
-borderRadius:20,
-
-backgroundColor:"#F97316",
-
-alignItems:"center",
-
-justifyContent:"center",
-
-borderWidth:3,
-
-borderColor:"#FFFFFF"
-
-},
-
-
-
-
-
-changePhoto:{
-
-textAlign:"center",
-
-marginTop:12,
-
-color:"#F97316",
-
-fontWeight:"700"
-
-},
-
-
-
-
-
-
-
-
-card:{
-
-backgroundColor:"#FFFFFF",
-
-borderRadius:28,
-
-padding:20,
-
-marginTop:30,
-
-shadowColor:"#000",
-
-shadowOpacity:0.05,
-
-shadowRadius:12,
-
-elevation:3
-
-},
-
-
-
-
-
-
-
-
-inputContainer:{
-
-marginBottom:18
-
-},
-
-
-
-label:{
-
-fontSize:13,
-
-fontWeight:"700",
-
-color:"#64748B",
-
-marginBottom:8
-
-},
-
-
-
-
-inputBox:{
-
-height:55,
-
-borderRadius:16,
-
-backgroundColor:"#F8FAFC",
-
-flexDirection:"row",
-
-alignItems:"center",
-
-paddingHorizontal:15,
-
-borderWidth:1,
-
-borderColor:"#E2E8F0"
-
-},
-
-
-
-
-input:{
-
-flex:1,
-
-marginLeft:12,
-
-fontSize:15,
-
-color:"#0F172A"
-
-},
-
-
-
-
-
-
-
-saveButton:{
-
-height:58,
-
-backgroundColor:"#F97316",
-
-borderRadius:20,
-
-marginTop:30,
-
-flexDirection:"row",
-
-alignItems:"center",
-
-justifyContent:"center",
-
-gap:10,
-
-shadowColor:"#F97316",
-
-shadowOpacity:0.25,
-
-shadowRadius:10,
-
-elevation:5
-
-},
-
-
-
-
-saveText:{
-
-color:"#FFFFFF",
-
-fontSize:16,
-
-fontWeight:"800"
-
-}
-
-
+  container: {
+    flex: 1,
+    backgroundColor: "#F8FAFC",
+  },
+  loading: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F8FAFC",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === "ios" ? 60 : 24,
+    paddingBottom: 16,
+    backgroundColor: "#FFFFFF",
+    borderBottomWidth: 1,
+    borderBottomColor: "#F1F5F9",
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: "#F8FAFC",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#0F172A",
+    letterSpacing: -0.2,
+  },
+  scroll: {
+    padding: 20,
+    paddingBottom: 40,
+  },
+  imageWrapper: {
+    alignItems: "center",
+    marginBottom: 24,
+  },
+  imageContainer: {
+    position: "relative",
+    borderRadius: 60,
+    shadowColor: "#0F172A",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
+    elevation: 5,
+  },
+  avatar: {
+    width: 110,
+    height: 110,
+    borderRadius: 55,
+    borderWidth: 4,
+    borderColor: "#FFFFFF",
+  },
+  placeholder: {
+    width: 110,
+    height: 110,
+    borderRadius: 55,
+    backgroundColor: "#FFF7ED",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 4,
+    borderColor: "#FFFFFF",
+  },
+  cameraBadge: {
+    position: "absolute",
+    bottom: 2,
+    right: 2,
+    backgroundColor: "#F97316",
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 3,
+    borderColor: "#FFFFFF",
+  },
+  changePhoto: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#64748B",
+    marginTop: 12,
+  },
+  card: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 24,
+    padding: 20,
+    shadowColor: "#0F172A",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.06,
+    shadowRadius: 20,
+    elevation: 3,
+    borderWidth: 1,
+    borderColor: "#F1F5F9",
+    marginBottom: 24,
+  },
+  inputContainer: {
+    marginBottom: 16,
+  },
+  label: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#475569",
+    marginBottom: 6,
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+  },
+  inputBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#F8FAFC",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    borderRadius: 14,
+    paddingHorizontal: 14,
+    height: 52,
+  },
+  inputIcon: {
+    marginRight: 10,
+  },
+  input: {
+    flex: 1,
+    fontSize: 15,
+    fontWeight: "500",
+    color: "#0F172A",
+    height: "100%",
+  },
+  saveButton: {
+    flexDirection: "row",
+    backgroundColor: "#F97316",
+    height: 54,
+    borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#F97316",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 12,
+    elevation: 4,
+  },
+  saveText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "700",
+    letterSpacing: 0.2,
+  },
 });

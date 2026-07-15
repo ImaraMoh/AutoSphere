@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import { 
+  View, 
+  ScrollView, 
+  KeyboardAvoidingView, 
+  Platform, 
+  SafeAreaView, 
+  StatusBar 
+} from "react-native";
 import AIHeader from "../../components/AIHeader";
 import AIQuickActions from "../../components/AIQuickActions";
 import AIMessageBubble from "../../components/AIMessageBubble";
@@ -34,6 +41,13 @@ export default function AIChatScreen() {
     }
   }
 
+  // Auto-scroll utility method wrapped to run safely on changes
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      scrollRef.current?.scrollToEnd({ animated: true });
+    }, 60);
+  };
+
   async function sendMessage(custom) {
     const text = (custom || input).trim();
     if (!text) return;
@@ -49,6 +63,7 @@ export default function AIChatScreen() {
     await saveChat(updated);
     setInput("");
     setLoading(true);
+    scrollToBottom();
 
     const aiMessageId = Date.now() + 1;
 
@@ -60,7 +75,6 @@ export default function AIChatScreen() {
           mileage: "87000 KM",
         },
         (streamingText) => {
-          // Updates the exact streaming bubble chunk-by-chunk
           setMessages((prevMessages) => {
             const filtered = prevMessages.filter((m) => m.id !== aiMessageId);
             return [
@@ -68,6 +82,7 @@ export default function AIChatScreen() {
               { id: aiMessageId, sender: "ai", text: streamingText },
             ];
           });
+          scrollToBottom();
         }
       );
 
@@ -81,6 +96,7 @@ export default function AIChatScreen() {
       console.error("Error generating AI response:", error);
     } finally {
       setLoading(false);
+      scrollToBottom();
     }
   }
 
@@ -95,36 +111,54 @@ export default function AIChatScreen() {
   }
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-    >
-      <AIHeader />
-
-      <AIQuickActions onSelect={sendMessage} />
-
-      <ScrollView
-        ref={scrollRef}
-        style={styles.chat}
-        contentContainerStyle={styles.messages}
-        onContentSizeChange={() => {
-          scrollRef.current?.scrollToEnd({ animated: true });
-        }}
+    <SafeAreaView style={styles.safeContainer}>
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+      
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 24}
       >
-        {messages.map((item) => (
-          <AIMessageBubble
-            key={item.id}
-            message={item.text}
-            sender={item.sender}
-            onDelete={() => deleteMessage(item.id)}
-            onEdit={() => editMessage(item.text)}
-          />
-        ))}
+        {/* Top Floating App Bar Zone */}
+        <AIHeader />
 
-        {loading && <TypingIndicator />}
-      </ScrollView>
+        {/* Dynamic Inner Chat Display Area */}
+        <View style={styles.chatWrapper}>
+          <ScrollView
+            ref={scrollRef}
+            style={styles.chat}
+            contentContainerStyle={styles.messagesContainer}
+            showsVerticalScrollIndicator={false}
+            onContentSizeChange={scrollToBottom}
+          >
+            {messages.map((item) => (
+              <AIMessageBubble
+                key={item.id}
+                message={item.text}
+                sender={item.sender}
+                onDelete={() => deleteMessage(item.id)}
+                onEdit={() => editMessage(item.text)}
+              />
+            ))}
 
-      <AIInput value={input} setValue={setInput} send={sendMessage} />
-    </KeyboardAvoidingView>
+            {loading && (
+              <View style={styles.typingContainerWrapper}>
+                <TypingIndicator />
+              </View>
+            )}
+          </ScrollView>
+        </View>
+
+        {/* Quick Suggestion Chips Layout */}
+        <View style={styles.actionsWrapper}>
+          <AIQuickActions onSelect={sendMessage} />
+        </View>
+
+        {/* Sticky Input Toolbar Core */}
+        <View style={styles.inputWrapper}>
+          <AIInput value={input} setValue={setInput} send={sendMessage} />
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }

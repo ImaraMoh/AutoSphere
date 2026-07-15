@@ -1,372 +1,1037 @@
-import {
-StyleSheet
-}
-from "react-native";
-
-
+import { StyleSheet, Platform } from "react-native";
 
 export default StyleSheet.create({
-
-
-card:{
-
-
-backgroundColor:"#FFFFFF",
-
-borderRadius:24,
-
-padding:20,
-
-shadowColor:"#000",
-
-shadowOpacity:0.06,
-
-shadowRadius:12,
-
-elevation:4,
-
-marginBottom:15
-
-
-},
-
-
-
-
-
-
-header:{
-
-
-flexDirection:"row",
-
-justifyContent:"space-between",
-
-alignItems:"center"
-
-
-},
-
-
-
-
-
-title:{
-
-
-fontSize:18,
-
-fontWeight:"800",
-
-color:"#0D1117"
-
-
-},
-
-
-
-
-
-status:{
-
-
-marginTop:6,
-
-fontSize:14,
-
-fontWeight:"700",
-
-color:"#16A34A"
-
-
-},
-
-
-
-
-
-
-scoreContainer:{
-
-
-alignItems:"center"
-
-
-},
-
-
-
-score:{
-
-
-fontSize:42,
-
-fontWeight:"900",
-
-color:"#F97316"
-
-
-},
-
-
-
-scoreLabel:{
-
-
-fontSize:12,
-
-color:"#64748B"
-
-
-},
-
-
-
-
-
-
-
-progressBg:{
-
-
-height:10,
-
-backgroundColor:"#E5E7EB",
-
-borderRadius:20,
-
-overflow:"hidden",
-
-marginVertical:18
-
-
-},
-
-
-
-
-
-progress:{
-
-
-height:10,
-
-backgroundColor:"#F97316",
-
-borderRadius:20
-
-
-},
-
-
-
-
-
-
-
-analysisBox:{
-
-
-backgroundColor:"#FFF7ED",
-
-borderRadius:16,
-
-padding:15,
-
-marginBottom:15
-
-
-},
-
-
-
-
-
-
-sectionTitle:{
-
-
-fontSize:15,
-
-fontWeight:"800",
-
-color:"#0D1117",
-
-marginBottom:10
-
-
-},
-
-
-
-
-
-
-analysisText:{
-
-
-fontSize:14,
-
-lineHeight:22,
-
-color:"#374151"
-
-
-},
-
-
-
-
-
-
-insights:{
-
-
-marginTop:5
-
-
-},
-
-
-
-
-
-
-item:{
-
-
-flexDirection:"row",
-
-backgroundColor:"#F8FAFC",
-
-padding:12,
-
-borderRadius:16,
-
-marginBottom:10,
-
-alignItems:"center"
-
-
-},
-
-
-
-
-
-icon:{
-
-
-fontSize:22,
-
-width:35
-
-
-},
-
-
-
-
-itemContent:{
-
-
-flex:1
-
-
-},
-
-
-
-
-
-itemTitle:{
-
-
-fontSize:13,
-
-fontWeight:"700",
-
-color:"#64748B"
-
-
-},
-
-
-
-
-
-itemText:{
-
-
-fontSize:14,
-
-fontWeight:"600",
-
-color:"#0D1117",
-
-marginTop:3,
-
-lineHeight:20
-
-
-},
-
-
-
-
-
-
-
-
-recommendBox:{
-
-
-backgroundColor:"#F0FDF4",
-
-borderRadius:16,
-
-padding:15,
-
-marginTop:10
-
-
-},
-
-
-
-
-recommendation:{
-
-
-fontSize:14,
-
-color:"#166534",
-
-marginBottom:6,
-
-lineHeight:20
-
-
-},
-
-
-
-
-
-updated:{
-
-
-fontSize:12,
-
-color:"#94A3B8",
-
-marginTop:15,
-
-textAlign:"right"
-
-
-}
-
-
-
+  container: {
+    flex: 1,
+    backgroundColor: "#F8FAFC",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: "#FFFFFF",
+    borderBottomWidth: 1,
+    borderBottomColor: "#F1F5F9",
+  },
+  backButton: {
+    width: 38,
+    height: 38,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F8FAFC",
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#0F172A",
+  },
+  headerSpacer: {
+    width: 38,
+  },
+  scrollContent: {
+    padding: 16,
+    paddingBottom: 48,
+  },
+  scrollBody: {
+    paddingBottom: 40,
+  },
+
+  // Hero Section
+  hero: {
+    backgroundColor: "#0F172A",
+    marginHorizontal: 16,
+    marginTop: 16,
+    padding: 20,
+    borderRadius: 20,
+    ...Platform.select({
+      ios: { shadowColor: "#0F172A", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 8 },
+      android: { elevation: 3 },
+    }),
+  },
+  heroTitle: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: "#FFFFFF",
+    marginBottom: 6,
+  },
+  heroText: {
+    fontSize: 13,
+    color: "#94A3B8",
+    lineHeight: 18,
+  },
+
+  // Active Loan Card Styling
+  activeLoanCard: {
+    backgroundColor: "#FFFFFF",
+    marginHorizontal: 16,
+    marginTop: 16,
+    borderRadius: 20,
+    padding: 18,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  loanCardHeaderRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  loanIconBox: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    backgroundColor: "#FFF7ED",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  loanVehicleTitle: {
+    fontSize: 16,
+    fontWeight: "750",
+    color: "#0F172A",
+    marginBottom: 2,
+  },
+  loanSubLabel: {
+    fontSize: 12,
+    color: "#64748B",
+  },
+  statusBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FEF3C7",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+  statusBadgeText: {
+    fontSize: 11,
+    fontWeight: "700",
+    color: "#D97706",
+  },
+  loanDivider: {
+    height: 1,
+    backgroundColor: "#F1F5F9",
+    marginVertical: 14,
+  },
+  loanStatsRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  loanStatItem: {
+    flex: 1,
+  },
+  loanStatLabel: {
+    fontSize: 11,
+    color: "#94A3B8",
+    marginBottom: 4,
+  },
+  loanStatValue: {
+    fontSize: 15,
+    fontWeight: "800",
+    color: "#0F172A",
+  },
+  loanStatDivider: {
+    width: 1,
+    height: 28,
+    backgroundColor: "#E2E8F0",
+    marginHorizontal: 12,
+  },
+  docAttachedRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 14,
+    paddingTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: "#F1F5F9",
+    gap: 6,
+  },
+  docAttachedText: {
+    fontSize: 12,
+    color: "#16A34A",
+    fontWeight: "600",
+    flex: 1,
+  },
+
+  // Empty Containers
+  emptyContainer: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 32,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    ...Platform.select({
+      ios: { shadowColor: "#0F172A", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.02, shadowRadius: 8 },
+      android: { elevation: 2 },
+    }),
+  },
+  emptyIconCircle: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: "#FFF7ED",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: "#FED7AA",
+  },
+  emptyTitle: {
+    fontSize: 16,
+    fontWeight: "800",
+    color: "#0F172A",
+    marginBottom: 6,
+  },
+  emptySubtitle: {
+    fontSize: 13,
+    color: "#64748B",
+    textAlign: "center",
+    lineHeight: 18,
+    paddingHorizontal: 10,
+  },
+  emptyText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#64748B",
+  },
+
+  // Primary Buttons & Actions
+  primaryButton: {
+    height: 54,
+    backgroundColor: "#F97316",
+    borderRadius: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    gap: 10,
+    ...Platform.select({
+      ios: { shadowColor: "#F97316", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.25, shadowRadius: 10 },
+      android: { elevation: 4 },
+    }),
+  },
+  button: {
+    height: 50,
+    backgroundColor: "#F97316",
+    borderRadius: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    ...Platform.select({
+      ios: { shadowColor: "#F97316", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.15, shadowRadius: 8 },
+      android: { elevation: 3 },
+    }),
+  },
+  buttonIconCircle: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: "#FFFFFF",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonPressed: {
+    opacity: 0.9,
+    transform: [{ scale: 0.985 }],
+  },
+  btnIcon: {
+    marginRight: 6,
+  },
+  buttonText: {
+    color: "#FFFFFF",
+    fontSize: 15,
+    fontWeight: "800",
+    letterSpacing: 0.2,
+  },
+
+  // Section Headers & Grids
+  sectionTitle: {
+    fontSize: 13,
+    fontWeight: "700",
+    color: "#64748B",
+    textTransform: "uppercase",
+    letterSpacing: 0.8,
+    marginLeft: 16,
+    marginTop: 24,
+    marginBottom: 12,
+  },
+  sectionHeader: {
+    fontSize: 12,
+    fontWeight: "800",
+    color: "#64748B",
+    textTransform: "uppercase",
+    letterSpacing: 1,
+    marginBottom: 12,
+    marginLeft: 4,
+  },
+  section: {
+    fontSize: 13,
+    fontWeight: "700",
+    color: "#64748B",
+    textTransform: "uppercase",
+    letterSpacing: 0.8,
+    marginBottom: 12,
+    marginLeft: 4,
+  },
+  actionGridContainer: {
+    flexDirection: "row",
+    paddingHorizontal: 16,
+    gap: 12,
+    marginBottom: 12,
+  },
+  actionCard: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  actionIconBox: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 12,
+  },
+  cardTitle: {
+    fontSize: 14,
+    fontWeight: "750",
+    color: "#0F172A",
+    marginBottom: 2,
+  },
+  cardSubText: {
+    fontSize: 11,
+    color: "#94A3B8",
+    lineHeight: 15,
+  },
+
+  // Form Cards & Inputs
+  formCard: {
+    backgroundColor: "#FFFFFF",
+    marginHorizontal: 16,
+    marginTop: 16,
+    borderRadius: 20,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    ...Platform.select({
+      ios: { shadowColor: "#0F172A", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.03, shadowRadius: 8 },
+      android: { elevation: 2 },
+    }),
+  },
+  formHeaderRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 20,
+  },
+  heading: {
+    fontSize: 16,
+    fontWeight: "750",
+    color: "#0F172A",
+  },
+  inputLabel: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: "#475569",
+    marginBottom: 6,
+  },
+  input: {
+    height: 48,
+    borderWidth: 1,
+    borderColor: "#CBD5E1",
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    fontSize: 14,
+    color: "#0F172A",
+    backgroundColor: "#F8FAFC",
+    marginBottom: 16,
+  },
+
+  // Upload Box
+  uploadBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    height: 50,
+    borderWidth: 1.5,
+    borderStyle: "dashed",
+    borderColor: "#CBD5E1",
+    borderRadius: 12,
+    backgroundColor: "#FFF7ED",
+    marginBottom: 20,
+    paddingHorizontal: 12,
+  },
+  uploadBoxSuccess: {
+    backgroundColor: "#F0FDF4",
+    borderColor: "#22C55E",
+  },
+  uploadText: {
+    fontSize: 13,
+    fontWeight: "700",
+    color: "#C2410C",
+  },
+  uploadTextSuccess: {
+    fontSize: 13,
+    fontWeight: "700",
+    color: "#16A34A",
+    flex: 1,
+    marginLeft: 8,
+  },
+
+  // Summary & Calculator Results
+  resultBox: {
+    marginTop: 24,
+    backgroundColor: "#FFF7ED",
+    borderRadius: 16,
+    padding: 18,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#FED7AA",
+  },
+  resultLabel: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: "#C2410C",
+    marginBottom: 4,
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+  },
+  amountText: {
+    fontSize: 24,
+    fontWeight: "850",
+    color: "#EA580C",
+  },
+  amount: {
+    fontSize: 26,
+    fontWeight: "900",
+    color: "#FFFFFF",
+    letterSpacing: -0.5,
+  },
+
+  // Premium Summary Hero Card (Expenses / Analytics)
+  premiumSummaryCard: {
+    backgroundColor: "#0F172A",
+    borderRadius: 24,
+    padding: 20,
+    marginBottom: 24,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "#1E293B",
+    ...Platform.select({
+      ios: { shadowColor: "#0F172A", shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.15, shadowRadius: 16 },
+      android: { elevation: 6 },
+    }),
+  },
+  summary: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    marginBottom: 24,
+    ...Platform.select({
+      ios: { shadowColor: "#0F172A", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.03, shadowRadius: 8 },
+      android: { elevation: 2 },
+    }),
+  },
+  summaryGlowEffect: {
+    position: "absolute",
+    top: -40,
+    right: -40,
+    width: 140,
+    height: 140,
+    borderRadius: 70,
+    backgroundColor: "rgba(249, 115, 22, 0.15)",
+  },
+  summaryContentRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  summaryMeta: {
+    flex: 1,
+  },
+  liveBadgeWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 6,
+    gap: 6,
+  },
+  liveDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: "#22C55E",
+  },
+  summaryLabel: {
+    fontSize: 11,
+    fontWeight: "750",
+    color: "#94A3B8",
+    textTransform: "uppercase",
+    letterSpacing: 0.8,
+  },
+  summaryIconBox: {
+    width: 48,
+    height: 48,
+    borderRadius: 14,
+    backgroundColor: "rgba(249, 115, 22, 0.12)",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "rgba(249, 115, 22, 0.2)",
+  },
+  summaryDivider: {
+    height: 1,
+    backgroundColor: "#1E293B",
+    marginVertical: 16,
+  },
+  summaryFooterRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  summaryFooterText: {
+    fontSize: 12,
+    color: "#94A3B8",
+    fontWeight: "600",
+  },
+  summaryFooterSub: {
+    fontSize: 11,
+    color: "#F97316",
+    fontWeight: "700",
+  },
+
+  // Payment Schedule Specifics
+  scheduleBody: {
+    flex: 1,
+    padding: 16,
+  },
+  summaryCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 18,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    marginBottom: 20,
+    ...Platform.select({
+      ios: { shadowColor: "#0F172A", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.03, shadowRadius: 8 },
+      android: { elevation: 2 },
+    }),
+  },
+  summaryIconCircle: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    backgroundColor: "#FFF7ED",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  summarySubtitle: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: "#64748B",
+    marginBottom: 2,
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+  },
+  summaryAmountText: {
+    fontSize: 18,
+    fontWeight: "850",
+    color: "#0F172A",
+  },
+  summaryPerMonth: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#94A3B8",
+  },
+  flatListContent: {
+    paddingBottom: 24,
+  },
+  paymentCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  paymentCardPaid: {
+    borderColor: "#BBF7D0",
+  },
+  paymentIconBox: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  paymentDetails: {
+    flex: 1,
+    marginLeft: 12,
+  },
+  paymentMonth: {
+    fontSize: 14,
+    fontWeight: "750",
+    color: "#0F172A",
+    marginBottom: 2,
+  },
+  paymentAmount: {
+    fontSize: 13,
+    color: "#64748B",
+    fontWeight: "600",
+  },
+  statusBadgePill: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
+  },
+
+  // History & List Wrappers
+  listWrapper: {
+    marginBottom: 20,
+  },
+  cardItemGutter: {
+    marginBottom: 12,
+  },
+
+  // Loading Card State
+  loadingCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 32,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    marginBottom: 24,
+    ...Platform.select({
+      ios: { shadowColor: "#0F172A", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.02, shadowRadius: 8 },
+      android: { elevation: 2 },
+    }),
+  },
+  loadingIconBox: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: "#FFF7ED",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: "#FED7AA",
+  },
+  loadingTitle: {
+    fontSize: 15,
+    fontWeight: "800",
+    color: "#0F172A",
+    marginBottom: 4,
+  },
+  loadingSubtitle: {
+    fontSize: 12,
+    color: "#64748B",
+    textAlign: "center",
+  },
+
+  // Chart Containers & Analytics Styles
+  chartCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 20,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    ...Platform.select({
+      ios: { shadowColor: "#0F172A", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.03, shadowRadius: 8 },
+      android: { elevation: 2 },
+    }),
+  },
+  chartHeaderRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 16,
+  },
+  chartTitle: {
+    fontSize: 15,
+    fontWeight: "800",
+    color: "#0F172A",
+  },
+  chartWrapperInner: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 10,
+  },
+  chartAxisLabel: {
+    fontSize: 10,
+    color: "#64748B",
+    fontWeight: "600",
+  },
+
+  // Pie Chart & Legend Styles
+  pieContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 10,
+  },
+  pieCenterBox: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  totalAmount: {
+    fontSize: 14,
+    fontWeight: "900",
+    color: "#0F172A",
+  },
+  centerText: {
+    fontSize: 10,
+    fontWeight: "700",
+    color: "#64748B",
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+  },
+  legendContainer: {
+    marginTop: 16,
+    borderTopWidth: 1,
+    borderTopColor: "#F1F5F9",
+    paddingTop: 16,
+    gap: 12,
+  },
+  legendItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#F8FAFC",
+    padding: 10,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  dot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginRight: 12,
+  },
+  legendText: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  category: {
+    fontSize: 13,
+    fontWeight: "750",
+    color: "#0F172A",
+  },
+  percentageDot: {
+    color: "#CBD5E1",
+    fontWeight: "900",
+  },
+
+  // Health Trend Chart Premium Styles
+  trendCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 20,
+    marginBottom: 20,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    ...Platform.select({
+      ios: { shadowColor: "#0F172A", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.03, shadowRadius: 8 },
+      android: { elevation: 2 },
+    }),
+  },
+  trendGlowEffect: {
+    position: "absolute",
+    top: -30,
+    right: -30,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: "rgba(22, 163, 74, 0.08)",
+  },
+  trendHeaderRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  trendIconBox: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: "#F0FDF4",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#DCFCE7",
+  },
+  trendTitle: {
+    fontSize: 15,
+    fontWeight: "800",
+    color: "#0F172A",
+  },
+  trendSubtitle: {
+    fontSize: 11,
+    color: "#64748B",
+    fontWeight: "600",
+  },
+  trendBadgePill: {
+    backgroundColor: "#DCFCE7",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
+  },
+  trendBadgeText: {
+    fontSize: 12,
+    fontWeight: "800",
+    color: "#15803D",
+  },
+  trendChartContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 4,
+  },
+  trendAxisLabel: {
+    fontSize: 10,
+    color: "#64748B",
+    fontWeight: "600",
+  },
+  trendFooterRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 14,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: "#F1F5F9",
+    gap: 6,
+  },
+  trendFooterText: {
+    fontSize: 12,
+    color: "#475569",
+    fontWeight: "600",
+  },
+
+  // Health Score Component Specific Premium Styles
+  healthCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 24,
+    padding: 20,
+    marginBottom: 20,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    ...Platform.select({
+      ios: { shadowColor: "#0F172A", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.04, shadowRadius: 12 },
+      android: { elevation: 3 },
+    }),
+  },
+  healthGlowEffect: {
+    position: "absolute",
+    top: -40,
+    left: -40,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: "rgba(249, 115, 22, 0.06)",
+  },
+  healthHeader: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    marginBottom: 16,
+  },
+  healthTitleGroup: {
+    flex: 1,
+    marginRight: 12,
+  },
+  aiTagBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFF7ED",
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+    alignSelf: "flex-start",
+    marginBottom: 6,
+    gap: 4,
+    borderWidth: 1,
+    borderColor: "#FED7AA",
+  },
+  aiTagText: {
+    fontSize: 10,
+    fontWeight: "800",
+    color: "#C2410C",
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+  },
+  healthCardTitle: {
+    fontSize: 16,
+    fontWeight: "850",
+    color: "#0F172A",
+    marginBottom: 6,
+  },
+  statusPillBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
+    alignSelf: "flex-start",
+    gap: 5,
+    borderWidth: 1,
+  },
+  statusPillText: {
+    fontSize: 11,
+    fontWeight: "800",
+  },
+  scoreCircleOuter: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: "#F8FAFC",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderColor: "#E2E8F0",
+  },
+  scoreNumberText: {
+    fontSize: 16,
+    fontWeight: "900",
+    color: "#0F172A",
+  },
+  scoreLabelText: {
+    fontSize: 9,
+    fontWeight: "750",
+    color: "#64748B",
+    textTransform: "uppercase",
+  },
+  progressTrackBar: {
+    height: 8,
+    backgroundColor: "#F1F5F9",
+    borderRadius: 4,
+    overflow: "hidden",
+    marginBottom: 20,
+  },
+  progressFillBar: {
+    height: "100%",
+    borderRadius: 4,
+  },
+  analysisBoxContainer: {
+    backgroundColor: "#F8FAFC",
+    borderRadius: 16,
+    padding: 14,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  analysisHeaderRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    marginBottom: 6,
+  },
+  subSectionTitle: {
+    fontSize: 12,
+    fontWeight: "800",
+    color: "#64748B",
+    textTransform: "uppercase",
+    letterSpacing: 0.8,
+    marginBottom: 10,
+  },
+  analysisContentText: {
+    fontSize: 13,
+    color: "#334155",
+    lineHeight: 18,
+    fontWeight: "500",
+  },
+  predictionsContainer: {
+    marginBottom: 16,
+  },
+  insightMetricCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  metricIconBox: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 12,
+  },
+  metricTextWrapper: {
+    flex: 1,
+  },
+  metricTitle: {
+    fontSize: 13,
+    fontWeight: "800",
+    color: "#0F172A",
+    marginBottom: 2,
+  },
+  metricDescription: {
+    fontSize: 12,
+    color: "#64748B",
+    fontWeight: "500",
+  },
+  recommendationsContainer: {
+    marginTop: 4,
+    marginBottom: 16,
+    backgroundColor: "#F0FDF4",
+    borderRadius: 16,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: "#DCFCE7",
+  },
+  recommendationItemRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 8,
+  },
+  checkBulletCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: "#DCFCE7",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 10,
+  },
+  recommendationTextItem: {
+    fontSize: 13,
+    color: "#166534",
+    fontWeight: "700",
+    flex: 1,
+  },
+  timestampFooterRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 5,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: "#F1F5F9",
+  },
+  timestampText: {
+    fontSize: 11,
+    color: "#94A3B8",
+    fontWeight: "600",
+  },
 });

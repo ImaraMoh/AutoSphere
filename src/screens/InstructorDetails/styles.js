@@ -1,102 +1,422 @@
-import {
-StyleSheet
-}
-from "react-native";
-
+import { StyleSheet, Platform } from "react-native";
 
 export default StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#F8FAFC",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: "#FFFFFF",
+    borderBottomWidth: 1,
+    borderBottomColor: "#F1F5F9",
+  },
+  backButton: {
+    width: 38,
+    height: 38,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F8FAFC",
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#0F172A",
+  },
+  headerSpacer: { width: 38 },
+  scrollBody: {
+    paddingBottom: 100,
+    paddingTop: 16, // Adds top spacing above the profile card
+  },
 
-container:{
-flex:1,
-backgroundColor:"#F8FAFC",
-padding:20
-},
+  /* Fixed Profile Header Card with Side Margins */
+  profileHeaderCard: {
+    backgroundColor: "#FFFFFF",
+    alignItems: "center",
+    paddingVertical: 24,
+    paddingHorizontal: 16,
+    marginHorizontal: 16, // Adds clean gaps on both sides
+    borderRadius: 24,    // Rounds all corners evenly
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    ...Platform.select({
+      ios: { shadowColor: "#0F172A", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.03, shadowRadius: 8 },
+      android: { elevation: 2 },
+    }),
+  },
+  avatarContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: "#F1F5F9",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
+    marginBottom: 12,
+  },
+  avatarEmoji: {
+    fontSize: 40,
+  },
+  badgeVerified: {
+    position: "absolute",
+    bottom: 2,
+    right: 2,
+    backgroundColor: "#F97316",
+    borderRadius: 10,
+    padding: 3,
+    borderWidth: 2,
+    borderColor: "#FFFFFF",
+  },
+  name: {
+    fontSize: 20,
+    fontWeight: "850",
+    color: "#0F172A",
+    marginBottom: 2,
+  },
+  schoolSubLabel: {
+    fontSize: 13,
+    color: "#64748B",
+    fontWeight: "500",
+    marginBottom: 10,
+  },
+  ratingRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+  },
+  ratingValue: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#1E293B",
+  },
+  reviewCount: {
+    fontSize: 13,
+    color: "#94A3B8",
+  },
+  sectionTitle: {
+    fontSize: 13,
+    fontWeight: "700",
+    color: "#64748B",
+    textTransform: "uppercase",
+    letterSpacing: 0.8,
+    marginLeft: 16,
+    marginTop: 24,
+    marginBottom: 12,
+  },
+  statsGrid: {
+    flexDirection: "row",
+    paddingHorizontal: 16,
+    gap: 10,
+  },
+  gridItem: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    padding: 14,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  iconBox: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 8,
+  },
+  gridLabel: {
+    fontSize: 11,
+    color: "#94A3B8",
+    fontWeight: "500",
+    marginBottom: 2,
+  },
+  gridValue: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: "#334155",
+    textAlign: "center",
+  },
+  bioCard: {
+    backgroundColor: "#FFFFFF",
+    marginHorizontal: 16,
+    padding: 16,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  bioText: {
+    fontSize: 14,
+    color: "#475569",
+    lineHeight: 22,
+  },
+  footerDeck: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "#FFFFFF",
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    paddingBottom: Platform.OS === "ios" ? 28 : 16,
+    borderTopWidth: 1,
+    borderTopColor: "#F1F5F9",
+  },
+  actionButton: {
+    height: 50,
+    backgroundColor: "#F97316",
+    borderRadius: 14,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    ...Platform.select({
+      ios: { shadowColor: "#F97316", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.15, shadowRadius: 8 },
+      android: { elevation: 3 },
+    }),
+  },
+  btnIcon: {
+    marginRight: 8,
+  },
+  actionButtonText: {
+    color: "#FFFFFF",
+    fontSize: 15,
+    fontWeight: "700",
+  },
 
-
-header:{
-flexDirection:"row",
-alignItems:"center",
-gap:10
-},
-
-
-title:{
-fontSize:25,
-fontWeight:"800"
-},
-
-
-profileCard:{
-backgroundColor:"#fff",
-padding:25,
-borderRadius:25,
-marginTop:25,
-alignItems:"center"
-},
-
-
-avatar:{
-width:90,
-height:90,
-borderRadius:45,
-backgroundColor:"#FFF7ED",
-alignItems:"center",
-justifyContent:"center"
-},
-
-
-avatarText:{
-fontSize:45
-},
-
-
-name:{
-fontSize:22,
-fontWeight:"800",
-marginTop:15
-},
-
-
-row:{
-flexDirection:"row",
-gap:8,
-marginTop:10
-},
-
-
-info:{
-width:"100%",
-marginTop:20
-},
-
-
-item:{
-flexDirection:"row",
-gap:10,
-marginVertical:8
-},
-
-
-exp:{
-marginTop:15,
-fontSize:16
-},
-
-
-button:{
-backgroundColor:"#F97316",
-padding:16,
-borderRadius:15,
-width:"100%",
-alignItems:"center",
-marginTop:25
-},
-
-
-buttonText:{
-color:"#fff",
-fontWeight:"700"
-}
-
-
+  /* Supporting styles for DrivingSchool & InstructorList components */
+  heroSection: {
+    padding: 20,
+    backgroundColor: "#FFFFFF",
+    marginBottom: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "#E2E8F0",
+  },
+  heroGreeting: {
+    fontSize: 22,
+    fontWeight: "800",
+    color: "#0F172A",
+    marginBottom: 4,
+  },
+  heroSubText: {
+    fontSize: 14,
+    color: "#64748B",
+  },
+  sectionHeaderRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    marginBottom: 12,
+  },
+  featuredCarousel: {
+    paddingHorizontal: 16,
+    gap: 12,
+  },
+  featuredCard: {
+    width: 260,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  featuredBadge: {
+    alignSelf: "flex-start",
+    backgroundColor: "#FFF7ED",
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+    marginBottom: 8,
+  },
+  featuredBadgeText: {
+    fontSize: 10,
+    fontWeight: "800",
+    color: "#F97316",
+  },
+  featuredCardName: {
+    fontSize: 16,
+    fontWeight: "750",
+    color: "#0F172A",
+    marginBottom: 8,
+  },
+  metaRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+  },
+  metaText: {
+    fontSize: 13,
+    color: "#64748B",
+  },
+  ratingBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FEF3C7",
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 6,
+    marginLeft: "auto",
+    gap: 3,
+  },
+  ratingText: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: "#D97706",
+  },
+  tagContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 6,
+    marginTop: 12,
+  },
+  vTag: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#F1F5F9",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+    gap: 4,
+  },
+  vTagText: {
+    fontSize: 11,
+    fontWeight: "600",
+    color: "#475569",
+  },
+  cardFooter: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: 16,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: "#F1F5F9",
+  },
+  priceLabel: {
+    fontSize: 10,
+    color: "#94A3B8",
+  },
+  priceValue: {
+    fontSize: 14,
+    fontWeight: "800",
+    color: "#0F172A",
+  },
+  actionCircleButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: "#F97316",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  verticalListContainer: {
+    paddingHorizontal: 16,
+    gap: 12,
+  },
+  rowCard: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  rowLeftBlock: {
+    flex: 1,
+  },
+  rowCardName: {
+    fontSize: 15,
+    fontWeight: "750",
+    color: "#0F172A",
+  },
+  dividerDot: {
+    color: "#CBD5E1",
+    marginHorizontal: 6,
+  },
+  rowRightBlock: {
+    alignItems: "flex-end",
+  },
+  priceValueCompact: {
+    fontSize: 14,
+    fontWeight: "800",
+    color: "#0F172A",
+  },
+  priceLabelCompact: {
+    fontSize: 11,
+    color: "#94A3B8",
+  },
+  schoolContextCard: {
+    backgroundColor: "#FFFFFF",
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "#E2E8F0",
+  },
+  schoolName: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: "#0F172A",
+    marginBottom: 6,
+  },
+  listContainer: {
+    padding: 16,
+    gap: 12,
+  },
+  instructorCard: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  cardLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+  },
+  avatarMini: {
+    width: 46,
+    height: 46,
+    borderRadius: 14,
+    backgroundColor: "#F1F5F9",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 12,
+  },
+  instructorInfo: {
+    flex: 1,
+  },
+  instructorName: {
+    fontSize: 15,
+    fontWeight: "700",
+    color: "#0F172A",
+    marginBottom: 2,
+  },
+  instructorExp: {
+    fontSize: 12,
+    color: "#64748B",
+  },
+  cardRight: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  ratingBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FEF3C7",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+    gap: 4,
+  },
 });

@@ -1,176 +1,175 @@
-import {
-StyleSheet
-}
-from "react-native";
-
+import { StyleSheet, Platform } from 'react-native';
 
 export default StyleSheet.create({
-
-
-container:{
-
-flex:1,
-
-backgroundColor:"#F8FAFC",
-
-paddingHorizontal:20,
-
-paddingTop:20
-
-},
-
-
-
-header:{
-
-flexDirection:"row",
-
-alignItems:"center",
-
-gap:15,
-
-marginBottom:30
-
-},
-
-
-
-title:{
-
-fontSize:24,
-
-fontWeight:"800",
-
-color:"#0D1117"
-
-},
-
-
-
-input:{
-
-backgroundColor:"#FFFFFF",
-
-height:52,
-
-borderRadius:14,
-
-paddingHorizontal:16,
-
-fontSize:15,
-
-color:"#111827",
-
-marginBottom:16,
-
-
-borderWidth:1,
-
-borderColor:"#E5E7EB"
-
-
-},
-
-
-
-
-dateBox:{
-
-height:55,
-
-backgroundColor:"#FFFFFF",
-
-borderRadius:14,
-
-paddingHorizontal:16,
-
-flexDirection:"row",
-
-alignItems:"center",
-
-gap:12,
-
-marginBottom:18,
-
-
-borderWidth:1,
-
-borderColor:"#E5E7EB"
-
-},
-
-
-
-upload:{
-
-height:55,
-
-backgroundColor:"#FFFFFF",
-
-borderRadius:14,
-
-flexDirection:"row",
-
-alignItems:"center",
-
-justifyContent:"center",
-
-gap:10,
-
-
-marginBottom:15,
-
-
-borderWidth:1,
-
-borderColor:"#F97316"
-
-},
-
-
-
-save:{
-
-height:58,
-
-backgroundColor:"#F97316",
-
-borderRadius:16,
-
-alignItems:"center",
-
-justifyContent:"center",
-
-marginTop:20,
-
-
-shadowColor:"#000",
-
-shadowOpacity:0.15,
-
-shadowRadius:5,
-
-shadowOffset:{
-
-width:0,
-
-height:3
-
-}
-
-},
-
-
-
-saveText:{
-
-color:"#FFFFFF",
-
-fontSize:16,
-
-fontWeight:"700"
-
-}
-
-
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F1F5F9',
+  },
+  backButton: {
+    padding: 4,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#0F172A',
+  },
+  headerSpacer: {
+    width: 32, 
+  },
+  scrollContent: {
+    padding: 20,
+    paddingBottom: 40,
+  },
+  formContainer: {
+    width: '100%',
+  },
+  inputGroup: {
+    marginBottom: 20,
+  },
+  inputLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#64748B',
+    marginBottom: 8,
+  },
+  input: {
+    height: 48,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    fontSize: 15,
+    color: '#1E293B',
+    backgroundColor: '#F8FAFC',
+    ...Platform.select({
+      web: { outlineStyle: 'none' },
+    }),
+  },
+  dateBox: {
+    height: 48,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    backgroundColor: '#F8FAFC',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  dateLeftBlock: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dateIcon: {
+    marginRight: 10,
+  },
+  dateText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#1E293B',
+  },
+  datePlaceholder: {
+    fontSize: 15,
+    color: '#94A3B8',
+  },
+  pickerWrapper: {
+    backgroundColor: '#F8FAFC',
+    borderRadius: 12,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    marginBottom: 20,
+    overflow: 'hidden',
+  },
+  closePickerButton: {
+    backgroundColor: '#F97316',
+    paddingVertical: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 12,
+  },
+  closePickerText: {
+    color: '#FFFFFF',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  sectionHeading: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#64748B',
+    marginTop: 10,
+    marginBottom: 12,
+  },
+  uploadRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 12,
+    marginBottom: 10,
+  },
+  uploadButton: {
+    flex: 1,
+    height: 46,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    borderStyle: 'dashed',
+    borderRadius: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: '#FAFAFA',
+  },
+  activeUploadButton: {
+    backgroundColor: '#FFF7ED',
+    borderColor: '#F97316',
+    borderStyle: 'solid',
+  },
+  uploadButtonText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#64748B',
+  },
+  activeUploadButtonText: {
+    color: '#F97316',
+    fontWeight: '600',
+  },
+  fileUriIndicator: {
+    fontSize: 12,
+    color: '#94A3B8',
+    marginTop: 4,
+    paddingHorizontal: 4,
+  },
+  footerActionContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#F1F5F9',
+    backgroundColor: '#FFFFFF',
+  },
+  saveButton: {
+    height: 50,
+    backgroundColor: '#F97316',
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#F97316',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  saveButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '700',
+  },
 });

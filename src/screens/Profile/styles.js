@@ -1,645 +1,251 @@
-import {
-StyleSheet,
-Dimensions
-}
-from "react-native";
-
-
-const {width}=Dimensions.get("window");
-
-
-const isWeb =
-width > 700;
-
-
+// styles.js
+import { StyleSheet, Platform } from "react-native";
 
 export default StyleSheet.create({
-
-
-
-container:{
-
-
-flex:1,
-
-
-backgroundColor:"#F8FAFC",
-
-
-},
-
-
-
-
-
-
-scroll:{
-
-
-paddingHorizontal:isWeb ? 60 : 20,
-
-
-paddingTop:25,
-
-
-paddingBottom:50,
-
-
-maxWidth:isWeb ? 900 : undefined,
-
-
-width:"100%",
-
-
-alignSelf:"center"
-
-
-},
-
-
-
-
-
-
-
-loading:{
-
-
-flex:1,
-
-
-justifyContent:"center",
-
-
-alignItems:"center",
-
-
-backgroundColor:"#F8FAFC"
-
-
-},
-
-
-
-
-loadingText:{
-
-
-marginTop:12,
-
-
-fontSize:15,
-
-
-color:"#64748B",
-
-
-fontWeight:"600"
-
-
-},
-
-
-
-
-
-
-
-/* HEADER */
-
-
-header:{
-
-
-flexDirection:"row",
-
-
-justifyContent:"space-between",
-
-
-alignItems:"center",
-
-
-marginBottom:25
-
-
-},
-
-
-
-
-title:{
-
-
-fontSize:24,
-
-
-fontWeight:"1000",
-
-color:"#0F172A",
-marginLeft:20,
-marginTop:20
-
-
-},
-
-
-
-
-subtitle:{
-fontSize:14,
-marginLeft:20,
-color:"#64748B",
-
-},
-
-
-
-
-
-editButton:{
-
-marginRight:20,
-height:45,
-marginTop:20,
-
-width:45,
-
-
-borderRadius:15,
-
-
-backgroundColor:"#FFF7ED",
-
-
-justifyContent:"center",
-
-
-alignItems:"center"
-
-
-},
-
-
-
-
-
-
-
-/* PROFILE */
-
-
-profileCard:{
-
-
-backgroundColor:"#FFFFFF",
-
-
-borderRadius:30,
-
-
-padding:25,
-
-
-flexDirection:isWeb ? "row":"column",
-
-
-alignItems:"center",
-
-
-shadowColor:"#000",
-
-
-shadowOpacity:0.06,
-
-
-shadowRadius:15,
-
-
-elevation:4,
-marginTop:-10,
-
-marginBottom:20
-
-
-},
-
-
-
-
-
-avatarWrapper:{
-
-
-position:"relative"
-
-
-},
-
-
-
-
-avatar:{
-
-
-width:110,
-
-
-height:110,
-
-
-borderRadius:55,
-
-
-backgroundColor:"#E2E8F0"
-
-
-},
-
-
-
-
-
-cameraButton:{
-
-
-position:"absolute",
-
-
-right:3,
-
-
-bottom:5,
-
-
-height:32,
-
-
-width:32,
-
-
-borderRadius:16,
-
-
-backgroundColor:"#F97316",
-
-
-alignItems:"center",
-
-
-justifyContent:"center",
-
-
-borderWidth:3,
-
-
-borderColor:"#FFFFFF"
-
-
-},
-
-
-
-
-
-
-
-userDetails:{
-
-
-marginLeft:isWeb ? 25:0,
-
-
-alignItems:isWeb ? "flex-start":"center",
-
-
-marginTop:isWeb ? 0:18
-
-
-},
-
-
-
-
-
-
-name:{
-
-
-fontSize:25,
-
-
-fontWeight:"900",
-
-
-color:"#0F172A"
-
-
-},
-
-
-
-
-email:{
-
-
-marginTop:6,
-
-
-fontSize:14,
-
-
-color:"#64748B"
-
-
-},
-
-
-
-
-
-
-
-profileEdit:{
-
-
-marginTop:15,
-
-
-backgroundColor:"#FFF7ED",
-
-
-paddingHorizontal:15,
-
-
-paddingVertical:9,
-
-
-borderRadius:20,
-
-
-flexDirection:"row",
-
-
-alignItems:"center",
-
-
-gap:6
-
-
-},
-
-
-
-
-profileEditText:{
-
-
-fontSize:13,
-
-
-fontWeight:"700",
-
-
-color:"#F97316"
-
-
-},
-
-
-
-
-
-
-
-/* SECTION */
-
-
-section:{
-
-
-marginBottom:25
-
-
-},
-
-
-
-
-sectionTitle:{
-
-
-fontSize:18,
-
-
-fontWeight:"800",
-
-
-color:"#0F172A",
-
-
-marginBottom:12
-
-
-},
-
-
-
-
-
-card:{
-
-
-backgroundColor:"#FFFFFF",
-
-
-borderRadius:24,
-
-
-overflow:"hidden",
-
-
-paddingHorizontal:5,
-
-
-shadowColor:"#000",
-
-
-shadowOpacity:0.04,
-
-
-shadowRadius:10,
-
-
-elevation:3
-
-
-},
-
-
-
-
-
-
-
-/* ROW */
-
-
-row:{
-
-
-height:70,
-
-
-paddingHorizontal:15,
-
-
-flexDirection:"row",
-
-
-justifyContent:"space-between",
-
-
-alignItems:"center",
-
-
-borderBottomWidth:1,
-
-
-borderColor:"#F1F5F9"
-
-
-},
-
-
-
-
-
-left:{
-
-
-flexDirection:"row",
-
-
-alignItems:"center"
-
-
-},
-
-
-
-
-
-
-iconBox:{
-
-
-height:42,
-
-
-width:42,
-
-
-borderRadius:14,
-
-
-backgroundColor:"#FFF7ED",
-
-
-justifyContent:"center",
-
-
-alignItems:"center",
-
-
-marginRight:14
-
-
-},
-
-
-
-
-
-
-rowText:{
-
-
-fontSize:15,
-
-
-fontWeight:"700",
-
-
-color:"#1E293B"
-
-
-},
-
-
-
-
-
-
-
-/* LOGOUT */
-
-
-logout:{
-
-
-height:60,
-
-
-backgroundColor:"#FFF1F2",
-
-
-borderRadius:20,
-
-
-flexDirection:"row",
-
-
-justifyContent:"center",
-
-
-alignItems:"center",
-
-
-gap:10,
-
-
-marginTop:10,
-
-
-borderWidth:1,
-
-
-borderColor:"#FECACA"
-
-
-},
-
-
-
-
-
-logoutText:{
-
-
-fontSize:17,
-
-
-fontWeight:"800",
-
-
-color:"#EF4444"
-
-
-}
-
-
-
-
-
+  container: {
+    flex: 1,
+    backgroundColor: "#F8FAFC",
+  },
+  loadingContainer: {
+    flex: 1,
+    backgroundColor: "#F8FAFC",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+  },
+  loadingCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 24,
+    padding: 24,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    gap: 12,
+    ...Platform.select({
+      ios: {
+        shadowColor: "#0F172A",
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.04,
+        shadowRadius: 12,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
+  },
+  loadingText: {
+    fontSize: 13,
+    fontWeight: "750",
+    color: "#64748B",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === "ios" ? 60 : 20,
+    paddingBottom: 16,
+    backgroundColor: "#FFFFFF",
+    borderBottomWidth: 1,
+    borderBottomColor: "#E2E8F0",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "850",
+    color: "#0F172A",
+  },
+  subtitle: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#64748B",
+    marginTop: 2,
+  },
+  editButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: "#FFF7ED",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#FED7AA",
+  },
+  scroll: {
+    padding: 20,
+    paddingBottom: 40,
+  },
+  profileCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 24,
+    padding: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    marginBottom: 24,
+    position: "relative",
+    overflow: "hidden",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#0F172A",
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.05,
+        shadowRadius: 14,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
+  },
+  profileGlowEffect: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: "#FFF7ED",
+    opacity: 0.6,
+    transform: [{ translateX: 30 }, { translateY: -30 }],
+  },
+  avatarWrapper: {
+    width: 72,
+    height: 72,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: "#FED7AA",
+    overflow: "hidden",
+    backgroundColor: "#F1F5F9",
+    marginRight: 16,
+  },
+  avatar: {
+    width: "100%",
+    height: "100%",
+  },
+  userDetails: {
+    flex: 1,
+  },
+  name: {
+    fontSize: 17,
+    fontWeight: "850",
+    color: "#0F172A",
+    marginBottom: 2,
+  },
+  email: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#64748B",
+    marginBottom: 10,
+  },
+  profileEdit: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFF7ED",
+    alignSelf: "flex-start",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#FED7AA",
+    gap: 6,
+  },
+  profileEditText: {
+    fontSize: 11,
+    fontWeight: "800",
+    color: "#C2410C",
+    letterSpacing: 0.2,
+  },
+  section: {
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 12,
+    fontWeight: "850",
+    color: "#64748B",
+    textTransform: "uppercase",
+    letterSpacing: 0.8,
+    marginBottom: 10,
+    marginLeft: 4,
+  },
+  card: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    overflow: "hidden",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#0F172A",
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.04,
+        shadowRadius: 12,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 14,
+    paddingHorizontal: 18,
+  },
+  left: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    flex: 1,
+    marginRight: 12,
+  },
+  iconBox: {
+    width: 36,
+    height: 36,
+    borderRadius: 12,
+    backgroundColor: "#FFF7ED",
+    borderWidth: 1,
+    borderColor: "#FED7AA",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  rowText: {
+    fontSize: 14,
+    fontWeight: "750",
+    color: "#0F172A",
+  },
+  chevronBox: {
+    width: 26,
+    height: 26,
+    borderRadius: 8,
+    backgroundColor: "#F8FAFC",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  divider: {
+    height: 1,
+    backgroundColor: "#F1F5F9",
+    marginLeft: 66,
+  },
+  logoutButton: {
+    backgroundColor: "#FEF2F2",
+    borderRadius: 20,
+    height: 52,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#FEE2E2",
+    marginTop: 8,
+    gap: 8,
+  },
+  logoutText: {
+    fontSize: 14,
+    fontWeight: "850",
+    color: "#DC2626",
+    letterSpacing: 0.2,
+  },
 });

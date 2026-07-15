@@ -59,6 +59,7 @@ import DrivingSchool from "../screens/DrivingSchool";
 import InstructorDetails from "../screens/InstructorDetails";
 import BookLesson from "../screens/BookLesson";
 import LearningProgress from "../screens/LearningProgress";
+import InstructorListScreen from "../screens/InstructorListScreen";
 
 import Notifications from "../screens/Notifications";
 import NotificationDetails from "../screens/NotificationDetails";
@@ -71,6 +72,7 @@ import DocumentAutoFill from "../screens/DocumentAutoFill";
 import DocumentDetails from "../screens/DocumentDetails";
 import EditDocument from "../screens/EditDocument";
 import DocumentPreview from "../screens/DocumentPreview";
+import TermsOfService from "../screens/TermsOfService";
 
 const Tab=createBottomTabNavigator();
 const Stack=createNativeStackNavigator();
@@ -97,6 +99,7 @@ return(
 <Stack.Screen name="PaymentSchedule" component={PaymentSchedule} />
 <Stack.Screen name="DrivingSchool" component={DrivingSchool} />
 <Stack.Screen name="InstructorDetails" component={InstructorDetails} />
+<Stack.Screen name='InstructorListScreen' component={InstructorListScreen} />
 <Stack.Screen name="BookLesson" component={BookLesson} />
 <Stack.Screen name="LearningProgress" component={LearningProgress} />
 <Stack.Screen name="Notifications" component={Notifications} />
@@ -206,6 +209,7 @@ return(
 <Stack.Screen name="About" component={About}/>
 <Stack.Screen name="Security" component={Security}/>
 <Stack.Screen name="Help" component={Help}/>
+<Stack.Screen name="TermsOfService" component={TermsOfService}/>
 </Stack.Navigator>
 );
 }

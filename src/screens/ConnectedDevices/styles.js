@@ -1,69 +1,144 @@
-import {
-StyleSheet
-}
-from "react-native";
-
+// styles.js
+import { StyleSheet, Platform } from "react-native";
 
 export default StyleSheet.create({
-
-container:{
-flex:1,
-backgroundColor:"#F8FAFC",
-padding:20
-},
-
-
-header:{
-flexDirection:"row",
-alignItems:"center",
-gap:15,
-marginBottom:25
-},
-
-
-title:{
-fontSize:24,
-fontWeight:"900"
-},
-
-
-description:{
-color:"#64748B",
-marginBottom:25
-},
-
-
-deviceCard:{
-backgroundColor:"white",
-borderRadius:22,
-padding:18,
-flexDirection:"row",
-alignItems:"center",
-marginBottom:15
-},
-
-
-iconBox:{
-height:45,
-width:45,
-borderRadius:14,
-backgroundColor:"#FFF7ED",
-alignItems:"center",
-justifyContent:"center",
-marginRight:15
-},
-
-
-deviceName:{
-fontSize:16,
-fontWeight:"800"
-},
-
-
-deviceType:{
-color:"#64748B",
-marginTop:4
-}
-
-
+  container: {
+    flex: 1,
+    backgroundColor: "#F8FAFC",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === "ios" ? 10 : 20,
+    paddingBottom: 16,
+    backgroundColor: "#FFFFFF",
+    borderBottomWidth: 1,
+    borderBottomColor: "#E2E8F0",
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: "#F1F5F9",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "850",
+    color: "#0F172A",
+  },
+  headerSpacer: {
+    width: 40,
+  },
+  scrollContainer: {
+    padding: 20,
+    paddingBottom: 40,
+  },
+  description: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#64748B",
+    lineHeight: 20,
+    marginBottom: 20,
+    marginLeft: 4,
+  },
+  devicesListContainer: {
+    gap: 12,
+  },
+  deviceCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#0F172A",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.03,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  iconBox: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: "#FFF7ED",
+    borderWidth: 1,
+    borderColor: "#FED7AA",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 14,
+  },
+  deviceDetails: {
+    flex: 1,
+    marginRight: 10,
+  },
+  nameStatusRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 4,
+    gap: 8,
+  },
+  deviceName: {
+    fontSize: 14,
+    fontWeight: "800",
+    color: "#0F172A",
+    flexShrink: 1,
+  },
+  activeBadge: {
+    backgroundColor: "#FFF7ED",
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: "#FED7AA",
+  },
+  activeBadgeText: {
+    fontSize: 10,
+    fontWeight: "800",
+    color: "#C2410C",
+    letterSpacing: 0.2,
+  },
+  deviceType: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#64748B",
+  },
+  deleteButton: {
+    width: 38,
+    height: 38,
+    borderRadius: 12,
+    backgroundColor: "#FEF2F2",
+    borderWidth: 1,
+    borderColor: "#FEE2E2",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  emptyStateContainer: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 24,
+    padding: 32,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    gap: 12,
+  },
+  emptyStateText: {
+    fontSize: 13,
+    fontWeight: "750",
+    color: "#64748B",
+  },
 });

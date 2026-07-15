@@ -1,519 +1,189 @@
-import React, {
-useCallback,
-useState,
-useEffect
-} from "react";
-
+// Vehicles.js
+import React, { useState, useEffect } from "react";
 import {
-useFocusEffect
-}
-from "@react-navigation/native";
-
-import {
-
-View,
-Text,
-ScrollView,
-TouchableOpacity,
-TextInput,
-RefreshControl
-
-}
-from "react-native";
-
-
-import {
-
-Ionicons
-
-}
-from "@expo/vector-icons";
-
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  TextInput,
+  RefreshControl,
+  SafeAreaView,
+  StatusBar,
+  useWindowDimensions
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 import VehicleCard from "../../components/VehicleCard";
-
 import EmptyVehicleState from "../../components/EmptyVehicleState";
-import HealthScore from "../../components/HealthScore";
 
-import {
-
-getVehicles
-
-}
-from "../../services/vehicleStorage";
-import {
-calculateVehicleHealth
-}
-from "../../services/vehicleHealthService";
+import { getVehicles } from "../../services/vehicleStorage";
+import { calculateVehicleHealth } from "../../services/vehicleHealthService";
 
 import styles from "./styles";
 
-
-
-export default function Vehicles({
-
-navigation
-
-}){
-
-
-const [vehicles,setVehicles]=useState([]);
-
-const [search,setSearch]=useState("");
-
-const [filter,setFilter]=useState("All");
-
-const [refreshing,setRefreshing]=useState(false);
-
-useEffect(()=>{
-
-
-const unsubscribe =
-navigation.addListener(
-"focus",
-()=>{
-
-loadVehicles();
-
-}
-
-);
-
-
-return unsubscribe;
-
-
-},[navigation]);
-
-async function loadVehicles(){
-
-const data =
-await getVehicles();
-
-setVehicles(data);
-
-}
-
-
-
-async function refresh(){
-
-setRefreshing(true);
-
-await loadVehicles();
-
-setRefreshing(false);
-
-}
-
-
-
-
-
-const filteredVehicles = vehicles.filter(vehicle=>{
-
-
-const matchesSearch =
-
-(
-vehicle.brand+
-vehicle.model+
-vehicle.registration
-)
-
-.toLowerCase()
-
-.includes(
-
-search.toLowerCase()
-
-);
-
-
-
-const matchesFilter =
-
-filter==="All"
-
-||
-
-vehicle.type===filter;
-
-
-
-return matchesSearch && matchesFilter;
-
-
-});
-
-const averageHealth =
-vehicles.length
-?
-Math.round(
-
-vehicles.reduce(
-
-(total,item)=>
-
-total + calculateVehicleHealth(item).score,
-
-0
-
-)
-
-/
-vehicles.length
-
-)
-:
-0;
-
-
-
-return(
-
-
-<View style={styles.container}>
-
-
-{/* Header */}
-
-<View style={styles.header}>
-
-
-<View>
-
-<Text style={styles.title}>
-
-My Vehicles 🚗
-
-</Text>
-
-
-<Text style={styles.subtitle}>
-
-Manage your digital vehicles
-
-</Text>
-
-</View>
-
-</View>
-
-
-{/* Vehicle Summary */}
-
-
-<View style={styles.summary}>
-
-
-<View>
-
-<Text style={styles.summaryNumber}>
-
-{vehicles.length}
-
-</Text>
-
-<Text style={styles.summaryLabel}>
-
-Vehicles
-
-</Text>
-
-</View>
-
-
-
-<View>
-
-<Text style={styles.summaryNumber}>
-
-{
-
-vehicles.filter(
-v=>v.type==="Car"
-).length
-
-}
-
-</Text>
-
-<Text style={styles.summaryLabel}>
-
-Cars
-
-</Text>
-
-</View>
-
-
-
-
-<View>
-
-<Text style={styles.summaryNumber}>
-{averageHealth}%
-</Text>
-
-<Text style={styles.summaryLabel}>
-
-Avg Health
-
-</Text>
-
-</View>
-
-
-
-</View>
-
-
-
-
-
-
-
-{/* Search */}
-
-
-<View style={styles.searchBox}>
-
-
-<Ionicons
-
-name="search"
-
-size={20}
-
-color="#94A3B8"
-
-/>
-
-
-<TextInput
-
-placeholder="Search vehicle..."
-
-placeholderTextColor="#94A3B8"
-
-value={search}
-
-onChangeText={setSearch}
-
-style={styles.searchInput}
-
-/>
-
-
-</View>
-
-
-
-
-
-
-
-{/* Filters */}
-
-<ScrollView
-style={{flex:1}}
-showsVerticalScrollIndicator={false}
->
-
-
-{
-
-[
-"All",
-"Car",
-"Bike",
-"Van",
-"Truck"
-
-].map(item=>(
-
-
-<TouchableOpacity
-
-key={item}
-
-onPress={()=>setFilter(item)}
-
-style={[
-
-styles.filter,
-
-filter===item && styles.activeFilter
-
-]}
-
->
-
-
-<Text
-
-style={[
-
-styles.filterText,
-
-filter===item && styles.activeFilterText
-
-]}
-
->
-
-{item}
-
-</Text>
-
-
-</TouchableOpacity>
-
-
-))
-
-
-}
-
-
-
-</ScrollView>
-
-
-
-
-
-
-
-<ScrollView
-
-showsVerticalScrollIndicator={false}
-
-refreshControl={
-
-<RefreshControl
-
-refreshing={refreshing}
-
-onRefresh={refresh}
-
-/>
-
-}
-
-
-contentContainerStyle={{
-
-paddingBottom:120
-
-}}
-
->
-
-
-
-{
-
-filteredVehicles.length===0
-
-?
-
-
-<EmptyVehicleState
-
-onPress={()=>navigation.navigate("AddVehicle")}
-
-/>
-
-
-:
-
-filteredVehicles.map(vehicle=>(
-
-
-<VehicleCard
-
-key={vehicle.id}
-
-vehicle={vehicle}
-
-onPress={()=>
-
-
-navigation.navigate(
-
-"VehicleProfile",
-
-{
-
-vehicle
-
-}
-
-)
-
-
-}
-
-/>
-
-
-))
-
-
-}
-
-
-
-
-
-</ScrollView>
-
-
-
-
-
-
-
-
-
-{/* Floating Button */}
-
-
-<TouchableOpacity
-
-
-style={styles.floatingButton}
-
-
-onPress={()=>navigation.navigate("AddVehicle")}
-
-
->
-
-
-<Ionicons
-
-name="add"
-
-size={30}
-
-color="white"
-
-/>
-
-
-</TouchableOpacity>
-
-
-
-
-
-
-</View>
-
-
-)
-
+export default function Vehicles({ navigation }) {
+  const [vehicles, setVehicles] = useState([]);
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("All");
+  const [refreshing, setRefreshing] = useState(false);
+
+  const { width: windowWidth } = useWindowDimensions();
+  const isLargeScreen = windowWidth > 600;
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      loadVehicles();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
+  async function loadVehicles() {
+    const data = await getVehicles();
+    setVehicles(data || []);
+  }
+
+  async function refresh() {
+    setRefreshing(true);
+    await loadVehicles();
+    setRefreshing(false);
+  }
+
+  const filteredVehicles = vehicles.filter(vehicle => {
+    const matchesSearch =
+      ((vehicle.brand || "") + (vehicle.model || "") + (vehicle.registration || ""))
+        .toLowerCase()
+        .includes(search.toLowerCase());
+
+    const matchesFilter = filter === "All" || vehicle.type === filter;
+
+    return matchesSearch && matchesFilter;
+  });
+
+  const averageHealth = vehicles.length
+    ? Math.round(
+        vehicles.reduce(
+          (total, item) => total + calculateVehicleHealth(item).score,
+          0
+        ) / vehicles.length
+      )
+    : 0;
+
+  const responsiveWrapperStyle = isLargeScreen
+    ? { maxWidth: 540, alignSelf: "center", width: "100%" }
+    : { width: "100%" };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+
+      {/* Header */}
+      <View style={styles.header}>
+        <View style={styles.headerTitleContainer}>
+          <Text style={styles.title}>My Vehicles</Text>
+          <Text style={styles.subtitle}>Manage your digital garage ecosystem</Text>
+        </View>
+      </View>
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} tintColor="#F97316" />}
+        contentContainerStyle={styles.scrollContent}
+      >
+        <View style={responsiveWrapperStyle}>
+          
+          {/* Vehicle Summary Hero Card */}
+          <View style={styles.summaryCardHero}>
+            <View style={styles.summaryItem}>
+              <Text style={styles.summaryNumber}>{vehicles.length}</Text>
+              <Text style={styles.summaryLabel}>Total Fleet</Text>
+            </View>
+            <View style={styles.summaryVerticalDivider} />
+            <View style={styles.summaryItem}>
+              <Text style={styles.summaryNumber}>
+                {vehicles.filter(v => v.type === "Car").length}
+              </Text>
+              <Text style={styles.summaryLabel}>Cars</Text>
+            </View>
+            <View style={styles.summaryVerticalDivider} />
+            <View style={styles.summaryItem}>
+              <Text style={styles.summaryNumber}>{averageHealth}%</Text>
+              <Text style={styles.summaryLabel}>Avg Health</Text>
+            </View>
+          </View>
+
+          {/* Search Input Box */}
+          <View style={styles.searchBox}>
+            <Ionicons name="search" size={18} color="#64748B" />
+            <TextInput
+              placeholder="Search by brand, model, or plate..."
+              placeholderTextColor="#94A3B8"
+              value={search}
+              onChangeText={setSearch}
+              style={styles.searchInput}
+            />
+          </View>
+
+          {/* Filters Scrollable Row */}
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.filterRowContainer}
+            style={styles.filterScrollWrapper}
+          >
+            {["All", "Car", "Bike", "Van", "Truck"].map(item => {
+              const isActive = filter === item;
+              return (
+                <TouchableOpacity
+                  key={item}
+                  onPress={() => setFilter(item)}
+                  activeOpacity={0.8}
+                  style={[
+                    styles.filterPillButton,
+                    isActive && styles.activeFilterPillButton
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.filterPillText,
+                      isActive && styles.activeFilterPillText
+                    ]}
+                  >
+                    {item}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
+
+          {/* Vehicle Listing / Empty State */}
+          {filteredVehicles.length === 0 ? (
+            <EmptyVehicleState onPress={() => navigation.navigate("AddVehicle")} />
+          ) : (
+            <View style={styles.listWrapper}>
+              {filteredVehicles.map(vehicle => (
+                <View key={vehicle.id} style={styles.cardItemGutter}>
+                  <VehicleCard
+                    vehicle={vehicle}
+                    onPress={() =>
+                      navigation.navigate("VehicleProfile", { vehicle })
+                    }
+                  />
+                </View>
+              ))}
+            </View>
+          )}
+
+        </View>
+      </ScrollView>
+
+      {/* Floating Action Button */}
+      <TouchableOpacity
+        style={styles.floatingButton}
+        onPress={() => navigation.navigate("AddVehicle")}
+        activeOpacity={0.85}
+      >
+        <Ionicons name="add" size={24} color="#FFFFFF" />
+      </TouchableOpacity>
+    </SafeAreaView>
+  );
 }

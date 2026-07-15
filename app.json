@@ -15,7 +15,12 @@
         "foregroundImage": "./assets/logo/logo.png",
         "backgroundImage": "./assets/logo/logo.png",
         "monochromeImage": "./assets/logo/logo.png"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.imaramoh.AutoSphere"
     },
     "web": {
       "favicon": "./assets/logo/logo.png"
@@ -28,7 +33,9 @@
         }
       ],
       "expo-sharing",
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-font",
+      "@react-native-community/datetimepicker"
     ]
   }
 }

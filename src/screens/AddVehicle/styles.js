@@ -1,244 +1,183 @@
-import {
-StyleSheet
-}
-from "react-native";
-
+import { StyleSheet, Platform } from "react-native";
 
 export default StyleSheet.create({
-
-container:{
-
-flex:1,
-
-backgroundColor:"#F8FAFC",
-
-paddingHorizontal:20
-
-},
-
-
-
-header:{
-
-flexDirection:"row",
-
-alignItems:"center",
-
-justifyContent:"space-between",
-
-marginTop:20,
-
-marginBottom:25
-
-},
-
-
-
-title:{
-
-fontSize:26,
-
-fontWeight:"800",
-
-color:"#0F172A"
-
-},
-
-
-
-
-
-imagePicker:{
-
-height:220,
-
-borderRadius:25,
-
-backgroundColor:"#FFF7ED",
-
-alignItems:"center",
-
-justifyContent:"center",
-
-marginBottom:25
-
-},
-
-
-
-vehicleImage:{
-
-height:"100%",
-
-width:"100%",
-
-borderRadius:25
-
-},
-
-
-
-uploadText:{
-
-marginTop:10,
-
-color:"#64748B",
-
-fontWeight:"600"
-
-},
-
-
-
-
-
-label:{
-
-fontSize:14,
-
-fontWeight:"700",
-
-color:"#334155",
-
-marginBottom:8
-
-},
-
-
-
-
-
-row:{
-
-flexDirection:"row",
-
-flexWrap:"wrap",
-
-marginBottom:18
-
-},
-
-
-
-
-chip:{
-
-paddingHorizontal:18,
-
-paddingVertical:10,
-
-backgroundColor:"white",
-
-borderRadius:25,
-
-marginRight:10,
-
-marginBottom:10,
-
-borderWidth:1,
-
-borderColor:"#E2E8F0"
-
-},
-
-
-
-activeChip:{
-
-backgroundColor:"#F97316",
-
-borderColor:"#F97316"
-
-},
-
-
-
-chipText:{
-
-fontWeight:"600",
-
-color:"#475569"
-
-},
-
-
-
-activeChipText:{
-
-color:"white"
-
-},
-
-
-
-
-
-inputContainer:{
-
-marginBottom:15
-
-},
-
-
-
-input:{
-
-height:52,
-
-backgroundColor:"white",
-
-borderRadius:15,
-
-paddingHorizontal:15,
-
-fontSize:15,
-
-borderWidth:1,
-
-borderColor:"#E2E8F0"
-
-},
-
-
-
-double:{
-
-flexDirection:"row",
-
-gap:12
-
-},
-
-
-
-saveButton:{
-
-height:55,
-
-backgroundColor:"#F97316",
-
-borderRadius:30,
-
-alignItems:"center",
-
-justifyContent:"center",
-
-marginTop:20
-
-},
-
-
-
-saveText:{
-
-color:"white",
-
-fontSize:17,
-
-fontWeight:"800"
-
-}
-
-
-
+  container: {
+    flex: 1,
+    backgroundColor: "#F8FAFC",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    backgroundColor: "#FFFFFF",
+    borderBottomWidth: 1,
+    borderBottomColor: "#F1F5F9",
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: "#F8FAFC",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  title: {
+    fontSize: 17,
+    fontWeight: "700",
+    color: "#0F172A",
+    letterSpacing: -0.2,
+  },
+  scrollContainer: {
+    padding: 20,
+    paddingBottom: 40,
+  },
+  scrollContainerLarge: {
+    maxWidth: 600,
+    alignSelf: "center",
+    width: "100%",
+  },
+  imagePicker: {
+    width: "100%",
+    height: 180,
+    borderRadius: 20,
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    borderStyle: "dashed",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 24,
+    overflow: "hidden",
+    shadowColor: "#0F172A",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.03,
+    shadowRadius: 10,
+    elevation: 2,
+  },
+  imagePickerActive: {
+    borderStyle: "solid",
+    borderColor: "#CBD5E1",
+  },
+  vehicleImage: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
+  cameraIconContainer: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: "#FFF7ED",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: "#FFEDD5",
+  },
+  uploadText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#C2410C",
+  },
+  sectionLabel: {
+    fontSize: 13,
+    fontWeight: "700",
+    color: "#475569",
+    marginBottom: 10,
+    textTransform: "uppercase",
+    letterSpacing: 0.4,
+  },
+  chipRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+    marginBottom: 16,
+  },
+  chip: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 12,
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  activeChip: {
+    backgroundColor: "#FFF7ED",
+    borderColor: "#F97316",
+    shadowColor: "#F97316",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 2,
+  },
+  chipText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#64748B",
+  },
+  activeChipText: {
+    color: "#F97316",
+  },
+  formGroup: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 24,
+    padding: 18,
+    borderWidth: 1,
+    borderColor: "#F1F5F9",
+    shadowColor: "#0F172A",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.04,
+    shadowRadius: 16,
+    elevation: 3,
+    marginTop: 6,
+  },
+  inputContainer: {
+    marginBottom: 14,
+  },
+  inputLabel: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#475569",
+    marginBottom: 6,
+    textTransform: "uppercase",
+    letterSpacing: 0.4,
+  },
+  input: {
+    height: 48,
+    backgroundColor: "#F8FAFC",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    borderRadius: 14,
+    paddingHorizontal: 14,
+    fontSize: 15,
+    fontWeight: "500",
+    color: "#0F172A",
+  },
+  doubleRow: {
+    flexDirection: "row",
+    gap: 12,
+  },
+  saveButton: {
+    backgroundColor: "#F97316",
+    height: 52,
+    borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 24,
+    shadowColor: "#F97316",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    elevation: 4,
+  },
+  saveText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "700",
+    letterSpacing: 0.2,
+  },
 });

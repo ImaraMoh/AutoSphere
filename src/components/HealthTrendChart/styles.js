@@ -1,41 +1,136 @@
-import {
-StyleSheet
-}
-from "react-native";
-
-
+import { StyleSheet, Platform } from "react-native";
 
 export default StyleSheet.create({
-card:{
-
-
-backgroundColor:"#FFFFFF",
-
-borderRadius:22,
-
-padding:18,
-
-marginBottom:16,
-
-elevation:4
-
-
-},
-
-
-
-title:{
-
-
-fontSize:17,
-
-fontWeight:"800",
-
-color:"#0D1117",
-
-marginBottom:15
-
-
-}
-
+  trendCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 24,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    overflow: "hidden",
+    position: "relative",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#0F172A",
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.05,
+        shadowRadius: 14,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
+  },
+  trendGlowEffect: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    width: 140,
+    height: 140,
+    borderRadius: 70,
+    backgroundColor: "#F0FDF4",
+    opacity: 0.6,
+    transform: [{ translateX: 40 }, { translateY: -40 }],
+  },
+  trendHeaderRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  trendIconBox: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: "#F0FDF4",
+    borderWidth: 1,
+    borderColor: "#DCFCE7",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  trendTitle: {
+    fontSize: 16,
+    fontWeight: "850",
+    color: "#0F172A",
+    marginBottom: 2,
+  },
+  trendSubtitle: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#64748B",
+  },
+  trendBadgePill: {
+    backgroundColor: "#F0FDF4",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#DCFCE7",
+  },
+  trendBadgeText: {
+    fontSize: 12,
+    fontWeight: "850",
+    color: "#16A34A",
+  },
+  trendChartContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 4,
+  },
+  trendAxisLabel: {
+    fontSize: 11,
+    fontWeight: "700",
+    color: "#64748B",
+  },
+  singleBarCenterWrapper: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    paddingVertical: 10,
+  },
+  singleBarContainer: {
+    alignItems: "center",
+  },
+  singleBarTrack: {
+    width: 48,
+    height: 130,
+    backgroundColor: "#F1F5F9",
+    borderRadius: 12,
+    justifyContent: "flex-end",
+    padding: 4,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  singleBarFill: {
+    width: "100%",
+    backgroundColor: "#16A34A",
+    borderRadius: 8,
+    alignItems: "center",
+    paddingTop: 6,
+  },
+  singleBarValueText: {
+    fontSize: 11,
+    fontWeight: "900",
+    color: "#FFFFFF",
+  },
+  singleBarDateText: {
+    fontSize: 12,
+    fontWeight: "800",
+    color: "#0F172A",
+    marginTop: 10,
+  },
+  trendFooterRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 6,
+    paddingTop: 14,
+    borderTopWidth: 1,
+    borderTopColor: "#F1F5F9",
+    marginTop: 12,
+  },
+  trendFooterText: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: "#475569",
+  },
 });

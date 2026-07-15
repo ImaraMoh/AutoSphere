@@ -12,100 +12,72 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import * as FileSystem from "expo-file-system";
 import { updateVehicle, deleteVehicle } from "../../services/vehicleStorage";
 import styles from "./styles";
 
 export default function EditVehicle({ route, navigation }) {
   const { vehicle } = route.params;
 
-  const [image,setImage]=useState(
-
-vehicle.image
-?
-{
-uri:vehicle.image,
-base64:null
-}
-:
-null
-
-);
+  const [image, setImage] = useState(
+    vehicle.image
+      ? {
+          uri: vehicle.image,
+          base64: null,
+        }
+      : null
+  );
   const [data, setData] = useState({ ...vehicle });
   const [isSaving, setIsSaving] = useState(false);
 
   function updateField(key, value) {
-    setData(prev => ({ ...prev, [key]: value }));
+    setData((prev) => ({ ...prev, [key]: value }));
   }
 
-async function pickImage() {
-const result =
-await ImagePicker.launchImageLibraryAsync({
-mediaTypes:["images"],
-quality:0.7,
-base64:true
-});
+  async function pickImage() {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ["images"],
+        quality: 0.7,
+        base64: true,
+      });
 
-if(!result.canceled){
-const asset =
-result.assets[0];
-setImage({
-uri:asset.uri,
-base64:asset.base64,
-});
-}
-}
+      if (!result.canceled) {
+        const asset = result.assets[0];
+        setImage({
+          uri: asset.uri,
+          base64: asset.base64,
+        });
+      }
+    } catch (error) {
+      console.log("IMAGE PICK ERROR:", error);
+    }
+  }
 
   async function saveChanges() {
     if (isSaving) return;
     setIsSaving(true);
-    
+
     try {
       let finalImage = vehicle.image || null;
 
+      if (image) {
+        if (image.base64) {
+          finalImage = `data:image/jpeg;base64,${image.base64}`;
+        } else if (typeof image === "string") {
+          finalImage = image;
+        } else if (image.uri) {
+          finalImage = image.uri;
+        }
+      }
 
+      const updatedVehicle = {
+        ...data,
+        image: finalImage,
+        updatedAt: new Date().toISOString(),
+      };
 
-if(image){
+      await updateVehicle(updatedVehicle);
 
-
-if(image.base64){
-
-
-finalImage =
-`data:image/jpeg;base64,${image.base64}`;
-
-
-}
-
-else if(typeof image==="string"){
-
-
-finalImage=image;
-
-
-}
-
-
-}
-
-
-
-const updatedVehicle={
-
-...data,
-
-image:finalImage,
-
-updatedAt:new Date().toISOString()
-
-};
-
-
-
-await updateVehicle(updatedVehicle);
-      
-      // CRITICAL FIX: Explicitly resets and re-injects state down the hierarchy 
-      // so your Vehicle Profile screen forces a full refresh.
       navigation.navigate("VehicleMain", { refresh: Date.now() });
     } catch (error) {
       if (Platform.OS === "web") {
@@ -157,24 +129,22 @@ await updateVehicle(updatedVehicle);
     <View style={styles.container}>
       {/* Top Header Bar */}
       <View style={styles.header}>
-        <TouchableOpacity 
-          onPress={() => navigation.goBack()} 
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
           style={styles.backButton}
           activeOpacity={0.7}
         >
-          <Ionicons name="arrow-back" size={24} color="#0F172A" />
+          <Ionicons name="arrow-back" size={20} color="#0F172A" />
         </TouchableOpacity>
         <Text style={styles.title}>Edit Vehicle</Text>
-        <View style={{ width: 40 }} /> 
+        <View style={{ width: 40 }} />
       </View>
 
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContainer}
       >
-        {/* PC and Mobile Layout Master Wrapper */}
         <View style={styles.desktopSplitLayout}>
-          
           {/* Left Column: Media Panel & Destructive Actions */}
           <View style={styles.leftMediaPanel}>
             <TouchableOpacity
@@ -184,30 +154,15 @@ await updateVehicle(updatedVehicle);
             >
               {image ? (
                 <Image
-
-source={{
-
-uri:
-
-typeof image === "string"
-
-?
-
-image
-
-:
-
-image?.uri
-
-}}
-
-style={styles.image}
-
-/>
+                  source={{
+                    uri: typeof image === "string" ? image : image?.uri,
+                  }}
+                  style={styles.image}
+                />
               ) : (
                 <View style={styles.imagePlaceholder}>
                   <View style={styles.cameraIconContainer}>
-                    <Ionicons name="camera" size={28} color="#F97316" />
+                    <Ionicons name="camera-outline" size={26} color="#F97316" />
                   </View>
                   <Text style={styles.imagePlaceholderText}>Upload Photo</Text>
                 </View>
@@ -219,7 +174,7 @@ style={styles.image}
               onPress={removeVehicle}
               activeOpacity={0.7}
             >
-              <Ionicons name="trash-outline" size={18} color="#EF4444" />
+              <Ionicons name="trash-outline" size={16} color="#EF4444" />
               <Text style={styles.deleteText}>Delete Vehicle</Text>
             </TouchableOpacity>
           </View>
@@ -250,7 +205,7 @@ style={styles.image}
               <View style={styles.gridColumnHalf}>
                 <Input
                   label="Year"
-                  value={data.year}
+                  value={String(data.year || "")}
                   keyboardType="numeric"
                   placeholder="e.g., 2022"
                   onChangeText={(v) => updateField("year", v)}
@@ -260,7 +215,7 @@ style={styles.image}
               <View style={styles.gridColumnHalf}>
                 <Input
                   label="Mileage (KM)"
-                  value={data.mileage}
+                  value={String(data.mileage || "")}
                   keyboardType="numeric"
                   placeholder="e.g., 87000"
                   onChangeText={(v) => updateField("mileage", v)}
@@ -291,7 +246,7 @@ style={styles.image}
               onSelect={(v) => updateField("fuel", v)}
             />
 
-            {/* Sticky Action Footer */}
+            {/* Action Footer */}
             <View style={styles.actionButtonArea}>
               <TouchableOpacity
                 style={[styles.saveButton, isSaving && { opacity: 0.7 }]}
@@ -307,7 +262,6 @@ style={styles.image}
               </TouchableOpacity>
             </View>
           </View>
-
         </View>
       </ScrollView>
     </View>

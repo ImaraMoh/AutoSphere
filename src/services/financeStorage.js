@@ -1,31 +1,22 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+const FINANCE_KEY = "user_vehicle_loan";
 
-const KEY="finance";
-
-
-export const saveLoan = async(data)=>{
-
-await AsyncStorage.setItem(
-KEY,
-JSON.stringify(data)
-);
-
+export const getLoan = async () => {
+  try {
+    const data = await AsyncStorage.getItem(FINANCE_KEY);
+    return data ? JSON.parse(data) : null;
+  } catch (error) {
+    console.log("Error fetching loan data:", error);
+    return null;
+  }
 };
 
-
-
-export const getLoan = async()=>{
-
-
-const data =
-await AsyncStorage.getItem(KEY);
-
-
-return data ?
-JSON.parse(data)
-:
-null;
-
-
+export const saveLoan = async (loanData) => {
+  try {
+    await AsyncStorage.setItem(FINANCE_KEY, JSON.stringify(loanData));
+  } catch (error) {
+    console.log("Error saving loan data:", error);
+    throw error;
+  }
 };

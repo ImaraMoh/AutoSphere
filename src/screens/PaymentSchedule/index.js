@@ -1,160 +1,112 @@
 import React from "react";
-
-
 import {
-View,
-Text,
-TouchableOpacity,
-FlatList
-}
-from "react-native";
-
-
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  SafeAreaView,
+  StatusBar
+} from "react-native";
 import {
-ChevronLeft,
-CheckCircle
-}
-from "lucide-react-native";
-
-
+  ChevronLeft,
+  CheckCircle2,
+  Clock,
+  CalendarDays
+} from "lucide-react-native";
 import styles from "./styles";
 
-
-const payments=[
-
-{
-month:"January 2026",
-amount:"45000",
-status:"Paid"
-},
-
-{
-month:"February 2026",
-amount:"45000",
-status:"Upcoming"
-},
-
-{
-month:"March 2026",
-amount:"45000",
-status:"Upcoming"
-}
-
+const payments = [
+  {
+    month: "January 2026",
+    amount: "45,000",
+    status: "Paid"
+  },
+  {
+    month: "February 2026",
+    amount: "45,000",
+    status: "Upcoming"
+  },
+  {
+    month: "March 2026",
+    amount: "45,000",
+    status: "Upcoming"
+  },
+  {
+    month: "April 2026",
+    amount: "45,000",
+    status: "Upcoming"
+  }
 ];
 
+export default function PaymentSchedule({ navigation }) {
+  const renderPaymentItem = ({ item }) => {
+    const isPaid = item.status === "Paid";
 
+    return (
+      <View style={[styles.paymentCard, isPaid && styles.paymentCardPaid]}>
+        <View style={[styles.paymentIconBox, { backgroundColor: isPaid ? "#F0FDF4" : "#FEF3C7" }]}>
+          {isPaid ? (
+            <CheckCircle2 size={22} color="#16A34A" />
+          ) : (
+            <Clock size={22} color="#D97706" />
+          )}
+        </View>
 
-export default function PaymentSchedule({
-navigation
-}){
+        <View style={styles.paymentDetails}>
+          <Text style={styles.paymentMonth}>{item.month}</Text>
+          <Text style={styles.paymentAmount}>Rs. {item.amount}</Text>
+        </View>
 
+        <View style={[styles.statusBadgePill, { backgroundColor: isPaid ? "#DCFCE7" : "#FEF3C7" }]}>
+          <Text style={[styles.statusBadgeText, { color: isPaid ? "#15803D" : "#B45309" }]}>
+            {item.status}
+          </Text>
+        </View>
+      </View>
+    );
+  };
 
-return(
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
-<View style={styles.container}>
+      {/* Screen Toolbar Header */}
+      <View style={styles.header}>
+        <TouchableOpacity 
+          onPress={() => navigation.goBack()} 
+          style={styles.backButton}
+          activeOpacity={0.7}
+        >
+          <ChevronLeft size={24} color="#1E293B" />
+        </TouchableOpacity>
+        <Text style={styles.title}>Payment Schedule</Text>
+        <View style={styles.headerSpacer} />
+      </View>
 
+      <View style={styles.scheduleBody}>
+        
+        {/* Summary Card Header */}
+        <View style={styles.summaryCard}>
+          <View style={styles.summaryIconCircle}>
+            <CalendarDays size={22} color="#F97316" />
+          </View>
+          <View style={{ flex: 1, marginLeft: 14 }}>
+            <Text style={styles.summarySubtitle}>Loan Repayment Plan</Text>
+            <Text style={styles.summaryAmountText}>Rs. 45,000 <Text style={styles.summaryPerMonth}>/ Month</Text></Text>
+          </View>
+        </View>
 
-<View style={styles.header}>
+        <Text style={styles.sectionTitle}>Installment Timeline</Text>
 
+        <FlatList
+          data={payments}
+          keyExtractor={(item) => item.month}
+          renderItem={renderPaymentItem}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.flatListContent}
+        />
 
-<TouchableOpacity
-onPress={()=>navigation.goBack()}
->
-
-<ChevronLeft size={30}/>
-
-</TouchableOpacity>
-
-
-<Text style={styles.title}>
-Payment Schedule
-</Text>
-
-
-</View>
-
-
-
-
-<View style={styles.summary}>
-
-
-<Text>
-Loan Repayment
-</Text>
-
-
-<Text style={styles.amount}>
-Rs 45000 / Month
-</Text>
-
-
-</View>
-
-
-
-
-<FlatList
-
-data={payments}
-
-keyExtractor={
-item=>item.month
-}
-
-renderItem={({item})=>(
-
-
-<View style={styles.payment}>
-
-
-<CheckCircle
-size={25}
-color={
-item.status==="Paid"
-?
-"#16A34A"
-:
-"#EAB308"
-}
-/>
-
-
-
-<View style={styles.details}>
-
-
-<Text style={styles.month}>
-{item.month}
-</Text>
-
-
-<Text>
-Rs {item.amount}
-</Text>
-
-
-<Text>
-{item.status}
-</Text>
-
-
-</View>
-
-
-</View>
-
-
-)}
-
-/>
-
-
-
-</View>
-
-
-);
-
-
+      </View>
+    </SafeAreaView>
+  );
 }

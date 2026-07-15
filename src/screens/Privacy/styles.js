@@ -1,232 +1,148 @@
-import {
-StyleSheet
-}
-from "react-native";
-
+// styles.js
+import { StyleSheet, Platform } from "react-native";
 
 export default StyleSheet.create({
-
-
-
-container:{
-
-flex:1,
-
-backgroundColor:"#F8FAFC"
-
-},
-
-
-
-
-header:{
-
-height:70,
-
-flexDirection:"row",
-
-alignItems:"center",
-
-justifyContent:"space-between",
-
-paddingHorizontal:20
-
-},
-
-
-
-
-back:{
-
-height:42,
-
-width:42,
-
-borderRadius:14,
-
-backgroundColor:"#FFFFFF",
-
-justifyContent:"center",
-
-alignItems:"center"
-
-},
-
-
-
-
-title:{
-
-fontSize:26,
-
-fontWeight:"900",
-
-color:"#0F172A"
-
-},
-
-
-
-
-scroll:{
-
-padding:20,
-
-paddingBottom:50
-
-},
-
-
-
-
-hero:{
-
-backgroundColor:"#FFF7ED",
-
-borderRadius:28,
-
-padding:25,
-
-alignItems:"center",
-
-marginBottom:25
-
-},
-
-
-
-
-heroIcon:{
-
-height:80,
-
-width:80,
-
-borderRadius:40,
-
-backgroundColor:"#FFFFFF",
-
-justifyContent:"center",
-
-alignItems:"center",
-
-marginBottom:15
-
-},
-
-
-
-
-heroTitle:{
-
-fontSize:22,
-
-fontWeight:"900",
-
-color:"#0F172A"
-
-},
-
-
-
-
-heroText:{
-
-textAlign:"center",
-
-color:"#64748B",
-
-marginTop:10,
-
-lineHeight:22
-
-},
-
-
-
-
-
-
-card:{
-
-backgroundColor:"#FFFFFF",
-
-borderRadius:22,
-
-padding:18,
-
-flexDirection:"row",
-
-marginBottom:15,
-
-shadowColor:"#000",
-
-shadowOpacity:0.05,
-
-shadowRadius:10,
-
-elevation:3
-
-},
-
-
-
-
-iconBox:{
-
-height:50,
-
-width:50,
-
-borderRadius:16,
-
-backgroundColor:"#FFF7ED",
-
-alignItems:"center",
-
-justifyContent:"center"
-
-},
-
-
-
-
-content:{
-
-flex:1,
-
-marginLeft:15
-
-},
-
-
-
-
-cardTitle:{
-
-fontSize:16,
-
-fontWeight:"800",
-
-color:"#0F172A"
-
-},
-
-
-
-
-description:{
-
-fontSize:14,
-
-color:"#64748B",
-
-marginTop:6,
-
-lineHeight:20
-
-}
-
-
-
+  container: {
+    flex: 1,
+    backgroundColor: "#F8FAFC",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === "ios" ? 60 : 20,
+    paddingBottom: 16,
+    backgroundColor: "#FFFFFF",
+    borderBottomWidth: 1,
+    borderBottomColor: "#E2E8F0",
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: "#F1F5F9",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: "850",
+    color: "#0F172A",
+  },
+  headerSpacer: {
+    width: 40,
+  },
+  scroll: {
+    padding: 20,
+    paddingBottom: 40,
+  },
+  heroCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 24,
+    padding: 24,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    marginBottom: 20,
+    position: "relative",
+    overflow: "hidden",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#0F172A",
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.05,
+        shadowRadius: 14,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
+  },
+  heroGlowEffect: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    width: 140,
+    height: 140,
+    borderRadius: 70,
+    backgroundColor: "#FFF7ED",
+    opacity: 0.7,
+    transform: [{ translateX: 40 }, { translateY: -40 }],
+  },
+  heroIconBox: {
+    width: 64,
+    height: 64,
+    borderRadius: 20,
+    backgroundColor: "#FFF7ED",
+    borderWidth: 1,
+    borderColor: "#FED7AA",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 16,
+  },
+  heroTitle: {
+    fontSize: 18,
+    fontWeight: "850",
+    color: "#0F172A",
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  heroText: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#64748B",
+    textAlign: "center",
+    lineHeight: 20,
+  },
+  card: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 16,
+    flexDirection: "row",
+    alignItems: "flex-start",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    marginBottom: 12,
+    gap: 14,
+    ...Platform.select({
+      ios: {
+        shadowColor: "#0F172A",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.03,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  iconBox: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: "#FFF7ED",
+    borderWidth: 1,
+    borderColor: "#FED7AA",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 2,
+  },
+  content: {
+    flex: 1,
+  },
+  cardTitle: {
+    fontSize: 14,
+    fontWeight: "800",
+    color: "#0F172A",
+    marginBottom: 4,
+  },
+  description: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#64748B",
+    lineHeight: 18,
+  },
 });

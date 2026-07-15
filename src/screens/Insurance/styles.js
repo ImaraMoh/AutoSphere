@@ -1,120 +1,155 @@
-import {
-StyleSheet
-}
-from "react-native";
-
+import { StyleSheet, Platform } from "react-native";
 
 export default StyleSheet.create({
-
-container:{
-flex:1,
-backgroundColor:"#F8FAFC",
-padding:20
-},
-
-
-header:{
-flexDirection:"row",
-alignItems:"center",
-gap:15
-},
-
-
-title:{
-fontSize:26,
-fontWeight:"800",
-color:"#0D1117"
-},
-
-
-
-hero:{
-backgroundColor:"#0D1117",
-padding:22,
-borderRadius:25,
-marginTop:25
-},
-
-
-heroTitle:{
-color:"white",
-fontSize:22,
-fontWeight:"700"
-},
-
-
-heroText:{
-color:"#CBD5E1",
-marginTop:8
-},
-
-
-
-empty:{
-backgroundColor:"white",
-padding:25,
-borderRadius:25,
-alignItems:"center",
-marginTop:20
-},
-
-
-emptyTitle:{
-fontSize:20,
-fontWeight:"700",
-marginTop:15
-},
-
-
-emptyText:{
-textAlign:"center",
-color:"#64748B",
-marginVertical:10
-},
-
-
-primaryButton:{
-backgroundColor:"#F97316",
-padding:15,
-borderRadius:15,
-flexDirection:"row",
-alignItems:"center",
-gap:10
-},
-
-
-buttonText:{
-color:"white",
-fontWeight:"700"
-},
-
-
-
-actions:{
-marginTop:20,
-flexDirection:"row",
-gap:15
-},
-
-
-card:{
-flex:1,
-backgroundColor:"white",
-padding:18,
-borderRadius:20
-},
-
-
-icon:{
-fontSize:35
-},
-
-
-cardTitle:{
-fontWeight:"700",
-fontSize:16,
-marginTop:10
-}
-
-
+  container: {
+    flex: 1,
+    backgroundColor: "#F8FAFC",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: "#FFFFFF",
+    borderBottomWidth: 1,
+    borderBottomColor: "#F1F5F9",
+  },
+  backButton: {
+    width: 38,
+    height: 38,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F8FAFC",
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#0F172A",
+  },
+  headerSpacer: {
+    width: 38,
+  },
+  scrollBody: {
+    paddingBottom: 40,
+  },
+  hero: {
+    backgroundColor: "#0F172A",
+    marginHorizontal: 16,
+    marginTop: 16,
+    padding: 20,
+    borderRadius: 20,
+    ...Platform.select({
+      ios: { shadowColor: "#0F172A", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 8 },
+      android: { elevation: 3 },
+    }),
+  },
+  heroTitle: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: "#FFFFFF",
+    marginBottom: 6,
+  },
+  heroText: {
+    fontSize: 13,
+    color: "#94A3B8",
+    lineHeight: 18,
+  },
+  policySection: {
+    paddingHorizontal: 16,
+    marginTop: 16,
+  },
+  emptyContainer: {
+    backgroundColor: "#FFFFFF",
+    marginHorizontal: 16,
+    marginTop: 16,
+    borderRadius: 20,
+    padding: 24,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  emptyIconCircle: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    backgroundColor: "#FFF7ED",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 16,
+  },
+  emptyTitle: {
+    fontSize: 16,
+    fontWeight: "750",
+    color: "#0F172A",
+    marginBottom: 6,
+  },
+  emptyText: {
+    fontSize: 13,
+    color: "#64748B",
+    textAlign: "center",
+    lineHeight: 18,
+    marginBottom: 20,
+  },
+  primaryButton: {
+    flexDirection: "row",
+    height: 48,
+    backgroundColor: "#F97316",
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    width: "100%",
+  },
+  btnIcon: {
+    marginRight: 6,
+  },
+  buttonText: {
+    color: "#FFFFFF",
+    fontSize: 14,
+    fontWeight: "700",
+  },
+  sectionTitle: {
+    fontSize: 13,
+    fontWeight: "700",
+    color: "#64748B",
+    textTransform: "uppercase",
+    letterSpacing: 0.8,
+    marginLeft: 16,
+    marginTop: 24,
+    marginBottom: 12,
+  },
+  actionsGrid: {
+    flexDirection: "row",
+    paddingHorizontal: 16,
+    gap: 12,
+  },
+  actionCard: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  actionIconBox: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 12,
+  },
+  cardTitle: {
+    fontSize: 14,
+    fontWeight: "750",
+    color: "#0F172A",
+    marginBottom: 2,
+  },
+  cardSubText: {
+    fontSize: 11,
+    color: "#94A3B8",
+    lineHeight: 15,
+  },
 });

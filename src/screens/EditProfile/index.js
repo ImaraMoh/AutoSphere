@@ -1,948 +1,282 @@
-import React, {
-useState,
-useEffect
-}
-from "react";
-
-
+import React, { useState, useEffect } from "react";
 import {
-
-View,
-Text,
-TextInput,
-ScrollView,
-TouchableOpacity,
-Image,
-ActivityIndicator,
-Alert,
-Platform
-
-}
-from "react-native";
-
-
-import {
-Ionicons
-}
-from "@expo/vector-icons";
-
-
+  View,
+  Text,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+  Alert,
+  Platform,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-
-
-import {
-
-getProfile,
-saveProfile
-
-}
-from "../../services/profileStorage";
-
-
+import { getProfile, saveProfile } from "../../services/profileStorage";
 import styles from "./styles";
 
+export default function EditProfile({ navigation, route }) {
+  const [profile, setProfile] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    image: null,
+  });
 
+  const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    loadProfile();
+  }, []);
 
+  async function loadProfile() {
+    try {
+      const data = await getProfile();
+      if (data) {
+        setProfile({
+          name: data.name || "",
+          email: data.email || "",
+          phone: data.phone || "",
+          image: data.image || null,
+        });
+      }
+    } catch (error) {
+      console.log("LOAD ERROR:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
-export default function EditProfile({
+  function updateField(key, value) {
+    setProfile((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  }
 
-navigation
+  async function pickImage() {
+    try {
+      const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-}){
+      if (!permission.granted) {
+        Alert.alert("Permission Required", "Please allow photo access");
+        return;
+      }
 
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ["images"],
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.7,
+      });
 
+      if (result.canceled) return;
 
-const [profile,setProfile]=useState({
+      const asset = result.assets[0];
+      let imageUri = asset.uri;
 
-name:"",
-email:"",
-phone:"",
-image:null
+      if (Platform.OS === "web") {
+        try {
+          const response = await fetch(imageUri);
+          const blob = await response.blob();
+          imageUri = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          });
+        } catch (webError) {
+          console.log("WEB IMAGE ERROR:", webError);
+        }
+      }
 
-});
+      setProfile((prev) => ({
+        ...prev,
+        image: imageUri,
+      }));
+    } catch (error) {
+      console.log("IMAGE ERROR", error);
+      Alert.alert("Error", "Unable to select image");
+    }
+  }
 
+  // Bulletproof exit handler that handles multiple navigation router types
+  function handleExit() {
+    try {
+      // 1. Check if parent passed an explicit callback function via route parameters
+      if (route?.params?.onProfileUpdated) {
+        route.params.onProfileUpdated();
+        return;
+      }
 
+      // 2. Standard React Navigation stack pop
+      if (navigation && typeof navigation.goBack === "function" && navigation.canGoBack()) {
+        navigation.goBack();
+        return;
+      }
 
-const [saving,setSaving]=useState(false);
+      // 3. Fallback: try navigating to common root names if stack fails
+      if (navigation && typeof navigation.navigate === "function") {
+        navigation.navigate("Profile"); // Change to your profile screen route name if different
+      }
+    } catch (navError) {
+      console.log("NAVIGATION EXIT ERROR:", navError);
+    }
+  }
 
+  async function saveChanges() {
+    console.log("SAVE BUTTON PRESSED");
+    navigation.goBack();
 
+    if (saving) return;
 
-const [loading,setLoading]=useState(true);
+    if (!profile.name || !profile.name.trim()) {
+      Alert.alert("Missing Name", "Please enter your name");
+      return;
+    }
 
+    try {
+      setSaving(true);
+      
+      // Save details to storage
+      await saveProfile(profile);
 
+      // Show success alert and trigger exit upon confirmation
+      Alert.alert("Success", "Profile updated successfully!", [
+        {
+          text: "OK",
+          onPress: () => handleExit(),
+        },
+      ]);
+    } catch (error) {
+      console.log("SAVE ERROR:", error);
+      Alert.alert("Error", "Unable to save profile changes.");
+    } finally {
+      setSaving(false);
+    }
+  }
 
+  if (loading) {
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" color="#F97316" />
+      </View>
+    );
+  }
 
+  return (
+    <View style={styles.container}>
+      {/* HEADER */}
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={handleExit}
+          activeOpacity={0.7}
+        >
+          <Ionicons name="arrow-back" size={22} color="#0F172A" />
+        </TouchableOpacity>
 
-useEffect(()=>{
+        <Text style={styles.title}>Edit Profile</Text>
 
-loadProfile();
+        <View style={{ width: 40 }} />
+      </View>
 
-},[]);
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scroll}
+      >
+        {/* PROFILE IMAGE */}
+        <View style={styles.imageWrapper}>
+          <TouchableOpacity
+            style={styles.imageContainer}
+            onPress={pickImage}
+            activeOpacity={0.85}
+          >
+            {profile.image ? (
+              <Image source={{ uri: profile.image }} style={styles.avatar} />
+            ) : (
+              <View style={styles.placeholder}>
+                <Ionicons name="person" size={50} color="#F97316" />
+              </View>
+            )}
 
+            <View style={styles.cameraBadge}>
+              <Ionicons name="camera" size={14} color="white" />
+            </View>
+          </TouchableOpacity>
 
+          <Text style={styles.changePhoto}>Tap to change profile photo</Text>
+        </View>
 
+        {/* FORM CARD */}
+        <View style={styles.card}>
+          <Input
+            label="Full Name"
+            icon="person-outline"
+            value={profile.name}
+            onChangeText={(v) => updateField("name", v)}
+          />
 
+          <Input
+            label="Email Address"
+            icon="mail-outline"
+            value={profile.email}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            onChangeText={(v) => updateField("email", v)}
+          />
 
-async function loadProfile(){
+          <Input
+            label="Phone Number"
+            icon="call-outline"
+            value={profile.phone}
+            keyboardType="phone-pad"
+            onChangeText={(v) => updateField("phone", v)}
+          />
+        </View>
 
-
-try{
-
-
-const data =
-await getProfile();
-
-
-
-if(data){
-
-
-setProfile({
-
-name:data.name || "",
-
-email:data.email || "",
-
-phone:data.phone || "",
-
-image:data.image || null
-
-});
-
-
+        {/* SAVE BUTTON */}
+        <View style={{ marginTop: 10, marginBottom: 40 }}>
+          <TouchableOpacity
+            style={[styles.saveButton, saving && { opacity: 0.6 }]}
+            disabled={saving}
+            onPress={saveChanges}
+            activeOpacity={0.85}
+          >
+            {saving ? (
+              <ActivityIndicator color="white" />
+            ) : (
+              <>
+                <Ionicons
+                  name="checkmark-circle-outline"
+                  size={20}
+                  color="white"
+                  style={{ marginRight: 8 }}
+                />
+                <Text style={styles.saveText}>Save Changes</Text>
+              </>
+            )}
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </View>
+  );
 }
 
-
-}
-
-catch(error){
-
-console.log(error);
-
-}
-
-finally{
-
-setLoading(false);
-
-}
-
-
-}
-
-
-
-
-
-
-
-function updateField(
-key,
-value
-){
-
-
-setProfile(prev=>({
-
-...prev,
-
-[key]:value
-
-}));
-
-
-}
-
-
-
-
-
-
-
-
-
-async function pickImage(){
-
-
-try{
-
-
-const permission =
-await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-
-
-if(!permission.granted){
-
-
-Alert.alert(
-
-"Permission Required",
-
-"Please allow photo access"
-
-);
-
-
-return;
-
-}
-
-
-
-
-
-const result =
-await ImagePicker.launchImageLibraryAsync({
-
-mediaTypes:["images"],
-
-allowsEditing:true,
-
-aspect:[1,1],
-
-quality:0.7
-
-
-});
-
-
-
-
-
-if(result.canceled)
-
-return;
-
-
-
-
-
-const asset =
-result.assets[0];
-
-
-
-let imageUri =
-asset.uri;
-
-
-
-
-
-/*
- WEB FIX
-
-Blob URL disappears after reload.
-Convert to Base64.
-
-*/
-
-
-if(Platform.OS==="web"){
-
-
-
-const response =
-await fetch(imageUri);
-
-
-
-const blob =
-await response.blob();
-
-
-
-const reader =
-new FileReader();
-
-
-
-imageUri =
-await new Promise((resolve)=>{
-
-
-reader.onloadend=()=>{
-
-resolve(reader.result);
-
-};
-
-
-reader.readAsDataURL(blob);
-
-
-});
-
-
-
-}
-
-
-
-
-
-
-setProfile(prev=>({
-
-...prev,
-
-image:imageUri
-
-}));
-
-
-
-
-}
-
-catch(error){
-
-
-console.log(
-"IMAGE ERROR",
-error
-);
-
-
-Alert.alert(
-
-"Error",
-
-"Unable to select image"
-
-);
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-
-
-async function saveChanges(){
-
-
-
-if(saving)
-
-return;
-
-
-
-
-if(!profile.name.trim()){
-
-
-
-Alert.alert(
-
-"Missing Name",
-
-"Please enter your name"
-
-);
-
-
-return;
-
-
-}
-
-
-
-
-
-try{
-
-
-setSaving(true);
-
-
-
-const result =
-await saveProfile(profile);
-
-
-
-
-Alert.alert(
-
-"Success",
-
-"Profile updated successfully",
-
-[
-
-{
-
-text:"OK",
-
-onPress:()=>navigation.goBack()
-
-}
-
-]
-
-);
-
-
-
-}
-
-catch(error){
-
-
-console.log(
-
-"SAVE ERROR",
-
-error
-
-);
-
-
-
-Alert.alert(
-
-"Error",
-
-"Unable to save profile"
-
-);
-
-
-}
-
-finally{
-
-
-setSaving(false);
-
-
-}
-
-
-}
-
-
-
-
-
-
-
-
-
-if(loading){
-
-
-return(
-
-
-<View style={styles.loading}>
-
-
-<ActivityIndicator
-
-size="large"
-
-color="#F97316"
-
-/>
-
-
-</View>
-
-
-)
-
-}
-
-
-
-
-
-
-
-
-
-return(
-
-
-<View style={styles.container}>
-
-
-{/* HEADER */}
-
-
-<View style={styles.header}>
-
-
-
-<TouchableOpacity
-
-style={styles.backButton}
-
-onPress={()=>navigation.goBack()}
-
->
-
-
-<Ionicons
-
-name="arrow-back"
-
-size={24}
-
-color="#0F172A"
-
-/>
-
-
-</TouchableOpacity>
-
-
-
-
-
-<Text style={styles.title}>
-
-Edit Profile
-
-</Text>
-
-
-
-
-<View style={{width:40}}/>
-
-
-</View>
-
-
-
-
-
-
-
-
-
-<ScrollView
-
-
-showsVerticalScrollIndicator={false}
-
-
-contentContainerStyle={styles.scroll}
-
-
->
-
-
-
-
-
-
-
-{/* PROFILE IMAGE */}
-
-
-
-<TouchableOpacity
-
-
-style={styles.imageContainer}
-
-
-onPress={pickImage}
-
-
-activeOpacity={0.8}
-
-
->
-
-
-
-{
-
-
-profile.image ?
-
-
-
-<Image
-
-
-source={{
-
-uri:profile.image
-
-}}
-
-
-style={styles.avatar}
-
-
-/>
-
-
-:
-
-
-
-<View style={styles.placeholder}>
-
-
-<Ionicons
-
-name="person"
-
-size={65}
-
-color="#F97316"
-
-/>
-
-
-</View>
-
-
-
-}
-
-
-
-
-
-
-<View style={styles.camera}>
-
-
-<Ionicons
-
-name="camera"
-
-size={18}
-
-color="white"
-
-/>
-
-
-</View>
-
-
-
-
-
-</TouchableOpacity>
-
-
-
-
-
-
-
-
-<Text style={styles.changePhoto}>
-
-Tap to change profile photo
-
-</Text>
-
-
-
-
-
-
-
-
-
-{/* FORM CARD */}
-
-
-
-<View style={styles.card}>
-
-
-<Input
-
-label="Full Name"
-
-icon="person-outline"
-
-value={profile.name}
-
-onChangeText={(v)=>
-
-updateField(
-
-"name",
-
-v
-
-)
-
-}
-
-/>
-
-
-
-
-
-<Input
-
-label="Email"
-
-icon="mail-outline"
-
-value={profile.email}
-
-keyboardType="email-address"
-
-onChangeText={(v)=>
-
-updateField(
-
-"email",
-
-v
-
-)
-
-}
-
-/>
-
-
-
-
-
-
-<Input
-
-label="Phone Number"
-
-icon="call-outline"
-
-value={profile.phone}
-
-keyboardType="phone-pad"
-
-onChangeText={(v)=>
-
-updateField(
-
-"phone",
-
-v
-
-)
-
-}
-
-/>
-
-
-
-</View>
-
-
-
-
-
-
-
-
-
-{/* SAVE BUTTON */}
-
-
-
-<TouchableOpacity
-
-
-style={[
-
-styles.saveButton,
-
-saving && {
-opacity:0.6
-}
-
-]}
-
-
-
-disabled={saving}
-
-
-
-onPress={saveChanges}
-
-
-
->
-
-
-
-{
-
-
-saving ?
-
-
-
-<ActivityIndicator
-
-color="white"
-
-/>
-
-
-:
-
-
-<>
-
-
-<Ionicons
-
-name="save-outline"
-
-size={20}
-
-color="white"
-
-/>
-
-
-
-<Text style={styles.saveText}>
-
-Save Changes
-
-</Text>
-
-
-
-</>
-
-
-}
-
-
-
-</TouchableOpacity>
-
-
-
-
-
-
-</ScrollView>
-
-
-
-
-
-
-</View>
-
-
-)
-
-
-
-}
-
-
-
-
-
-
-
-
-
-function Input({
-
-label,
-
-icon,
-
-...props
-
-}){
-
-
-return(
-
-
-
-<View style={styles.inputContainer}>
-
-
-<Text style={styles.label}>
-
-{label}
-
-</Text>
-
-
-
-<View style={styles.inputBox}>
-
-
-<Ionicons
-
-name={icon}
-
-size={20}
-
-color="#F97316"
-
-/>
-
-
-
-<TextInput
-
-
-style={styles.input}
-
-
-placeholder={label}
-
-
-placeholderTextColor="#94A3B8"
-
-
-{...props}
-
-
-/>
-
-
-
-</View>
-
-
-
-</View>
-
-
-
-)
-
+function Input({ label, icon, ...props }) {
+  return (
+    <View style={styles.inputContainer}>
+      <Text style={styles.label}>{label}</Text>
+      <View style={styles.inputBox}>
+        <Ionicons name={icon} size={20} color="#F97316" style={styles.inputIcon} />
+        <TextInput
+          style={styles.input}
+          placeholder={label}
+          placeholderTextColor="#94A3B8"
+          {...props}
+        />
+      </View>
+    </View>
+  );
 }

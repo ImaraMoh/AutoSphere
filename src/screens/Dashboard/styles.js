@@ -1,68 +1,60 @@
-import { StyleSheet, Platform, Dimensions } from "react-native";
-
-const { width } = Dimensions.get("window");
-// Perfect layout size mapping for standard two-column balance grid spacing
-const COLUMN_WIDTH = (width - 48) / 2; 
+import { StyleSheet, Platform } from "react-native";
 
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F8FAFC", // Clean, high-end modern off-white background
+    backgroundColor: "#F8FAFC"
   },
-  scroll: {
+
+  topBar: {
+    height: 64,
+    backgroundColor: "#FFFFFF",
+    alignItems: "center",
+    justifyContent: "center",
     paddingHorizontal: 16,
-    paddingBottom: 110, // Leaving space so absolute bottom tab components never hide text
-    paddingTop: 8,
+    borderBottomWidth: 1,
+    borderColor: "#E2E8F0",
+    width: "100%"
   },
+
+  topBarInner: {
+    width: "100%",
+    maxWidth: 540,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between"
+  },
+
   brandContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 10,
+    gap: 8
   },
+
   logo: {
-    width: 32,
-    height: 32,
-    borderRadius: 8,
+    width: 35,
+    height: 35
   },
+
   brandName: {
-    fontSize: 30,
-    fontWeight: "1000",
-    color: "#0F172A",
-    letterSpacing: -0.3,
+    fontSize: 24,
+    fontWeight: "700",
+    fontFamily: Platform.OS === "web" ? "Poppins" : undefined,
+    color: "#0D1117",
+    letterSpacing: -0.3
   },
-  // --- Professional Top Bar Layout Style ---
-  topBar: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between", // Fixed from "between" to instantly push button to the right edge
-    backgroundColor: "#FFFFFF",
-    paddingHorizontal: 16,
-    height: 64,
-    borderBottomWidth: 1,
-    borderBottomColor: "#F1F5F9",
-    paddingTop: Platform.OS === "ios" ? 12 : 0, 
-    ...Platform.select({
-      ios: {
-        shadowColor: "#0F172A",
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.03,
-        shadowRadius: 2,
-      },
-      android: {
-        elevation: 2,
-      },
-    }),
-  },
-  
+
   notificationIconButton: {
-    position: "relative",
     width: 40,
     height: 40,
+    borderRadius: 12,
     backgroundColor: "#F8FAFC",
-    borderRadius: 20,
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0"
   },
+
   notificationDot: {
     position: "absolute",
     top: 10,
@@ -70,168 +62,308 @@ export default StyleSheet.create({
     width: 7,
     height: 7,
     borderRadius: 3.5,
-    backgroundColor: "#EF4444",
+    backgroundColor: "#EF4444"
   },
 
-  // --- Header / Greeting Content Structure ---
-  header: {
-    marginVertical: 16,
+  scrollContent: {
+    paddingBottom: 40
   },
-  greeting: {
+
+  headerContainer: {
+    paddingHorizontal: 16,
+    paddingTop: 20,
+    marginBottom: 16
+  },
+
+  greetingText: {
     fontSize: 24,
     fontWeight: "700",
-    color: "#0F172A",
-    letterSpacing: -0.5,
-  },
-  sub: {
-    fontSize: 14,
-    color: "#64748B",
-    marginTop: 2,
+    fontFamily: Platform.OS === "web" ? "Poppins" : undefined,
+    color: "#0D1117",
+    letterSpacing: -0.5
   },
 
-  // --- Vehicle Details Card Interior ---
-  vehicleHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 16,
-    paddingVertical: 4,
-  },
-  carIcon: {
-    width: 64,
-    height: 64,
-    backgroundColor: "#FFF7ED",
-    borderRadius: 16,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  vehicle: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#1E293B",
-  },
-  info: {
+  subText: {
     fontSize: 13,
     color: "#64748B",
-    marginTop: 2,
-    fontWeight: "500",
-  },
-  divider: {
-    height: 1,
-    backgroundColor: "#F1F5F9",
-    marginVertical: 16,
-  },
-  healthRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  label: {
-    fontSize: 12,
-    textTransform: "uppercase",
-    color: "#94A3B8",
-    fontWeight: "600",
-    letterSpacing: 0.5,
-  },
-  good: {
-    fontSize: 15,
-    fontWeight: "600",
-    color: "#16A34A",
-    marginTop: 2,
+    fontFamily: Platform.OS === "web" ? "Plus Jakarta Sans" : undefined,
+    marginTop: 2
   },
 
-  // --- Layout Headers / Sections ---
-  section: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#1E293B",
-    marginTop: 24,
-    marginBottom: 12,
-    letterSpacing: -0.2,
-  },
-
-  // --- Loading / Processing Element Styles ---
-  loading: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 12,
-    gap: 10,
-  },
-  loadingText: {
-    fontSize: 14,
-    color: "#64748B",
-    fontWeight: "500",
-  },
-  
-// --- Balanced, Highly Responsive Grid Layout ---
-  grid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "flex-start", // Left-aligns grid rows gracefully
-    gap: 12,                      // Native fluid uniform gap control
-    width: "100%",
-  },
-  action: {
-    // Calculates a perfect 2-column layout width dynamically by subtractive gap share
-    width: "48.2%", 
-    flexGrow: 1,      // Dynamically fills uneven edge constraints smoothly
-    minWidth: 140,    // Guarantees text won't clip or overlap on small display sizes
-    marginBottom: 4,
-  },
-  actionBox: {
+  heroVehicleCard: {
     backgroundColor: "#FFFFFF",
-    borderRadius: 16,
-    padding: 16,
+    borderRadius: 20,
+    padding: 20,
+    
+    // Forces the component to expand across the layout view track
+    alignSelf: "stretch", 
+    
+    // Inserts a fixed, uncompromised safety gutter on left and right sides
+    marginHorizontal: 16, 
+    marginBottom: 24,
+    
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    shadowColor: "#0D1117",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.03,
+    shadowRadius: 12,
+    elevation: 2,
+    ...Platform.select({
+      web: {
+        boxSizing: "border-box"
+      }
+    })
+  },
+
+  heroRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start"
+  },
+
+  heroMeta: {
+    flex: 1,
+    gap: 4
+  },
+
+  heroBadge: {
+    fontSize: 10,
+    fontWeight: "700",
+    color: "#F97316",
+    letterSpacing: 1
+  },
+
+  heroVehicleTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    fontFamily: Platform.OS === "web" ? "Poppins" : undefined,
+    color: "#0D1117"
+  },
+
+  heroVehicleSpecs: {
+    fontSize: 12,
+    color: "#64748B",
+    fontFamily: Platform.OS === "web" ? "Plus Jakarta Sans" : undefined
+  },
+
+  heroIconWrapper: {
+    width: 50,
+    height: 50,
+    borderRadius: 14,
+    backgroundColor: "#FFF7ED",
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: "#F1F5F9",
-    height: 96, // Keeps uniform height across all dynamic width variations
-    ...Platform.select({
-      ios: {
-        shadowColor: "#0F172A",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.02,
-        shadowRadius: 4,
-      },
-      android: {
-        elevation: 1,
-      },
-    }),
-  },
-  actionText: {
-    fontSize: 13,
-    fontWeight: "600",
-    color: "#334155",
-    marginTop: 8,
-    textAlign: "center",
+    borderColor: "#FFEDD5"
   },
 
-  // --- Premium AI Interactive Shell Styling ---
-  aiHeader: {
+  heroFooter: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 18,
+    paddingTop: 14,
+    borderTopWidth: 1,
+    borderTopColor: "#F1F5F9"
+  },
+
+  statusIndicatorContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 14,
-    paddingVertical: 4,
+    gap: 8
   },
-  aiIcon: {
-    width: 48,
-    height: 48,
-    backgroundColor: "#EEF2F6",
-    borderRadius: 24,
-    justifyContent: "center",
+
+  statusDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "#16A34A"
+  },
+
+  statusText: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#16A34A",
+    fontFamily: Platform.OS === "web" ? "Plus Jakarta Sans" : undefined
+  },
+
+  sectionHeading: {
+    fontSize: 14,
+    fontWeight: "700",
+    fontFamily: Platform.OS === "web" ? "Poppins" : undefined,
+    color: "#64748B",
+    textTransform: "uppercase",
+    letterSpacing: 0.8,
+    paddingHorizontal: 16,
+    marginBottom: 12
+  },
+
+  // 2x2 Fixed Static Non-Scroll Grid Platform Blocks
+  utilitiesGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    gap: 10,
+    marginBottom: 24
+  },
+
+  utilityGridCard: {
+    backgroundColor: "#FFFFFF",
+    width: "48.5%",
+    borderRadius: 16,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    gap: 8,
+    shadowColor: "#0D1117",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.01,
+    shadowRadius: 4,
+    elevation: 1
+  },
+
+  utilityIconBox: {
+    width: 38,
+    height: 38,
+    borderRadius: 10,
+    backgroundColor: "#FFF7ED",
     alignItems: "center",
-    fontSize: 22,
+    justifyContent: "center"
   },
-  aiTitle: {
+
+  utilityCardTitle: {
+    fontSize: 14,
+    fontWeight: "700",
+    fontFamily: Platform.OS === "web" ? "Poppins" : undefined,
+    color: "#0D1117"
+  },
+
+  utilityCardDesc: {
+    fontSize: 11,
+    color: "#64748B",
+    fontFamily: Platform.OS === "web" ? "Plus Jakarta Sans" : undefined,
+    marginTop: 1
+  },
+
+  // Centered AI Assistant Section
+  aiAssistantCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    marginHorizontal: 16,
+    borderWidth: 1,
+    borderColor: "#E9D5FF",
+    flexDirection: "row",
+    overflow: "hidden",
+    shadowColor: "#A855F7",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.03,
+    shadowRadius: 10,
+    elevation: 2,
+    marginBottom: 24
+  },
+
+  aiLeftMarker: {
+    width: 5,
+    backgroundColor: "#A855F7"
+  },
+
+  aiContentContainer: {
+    flex: 1,
+    padding: 18,
+    gap: 2
+  },
+
+  aiTitleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6
+  },
+
+  aiAssistBadge: {
+    fontSize: 10,
+    fontWeight: "700",
+    color: "#A855F7",
+    letterSpacing: 0.5
+  },
+
+  aiMainHeading: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#0F172A",
+    fontFamily: Platform.OS === "web" ? "Poppins" : undefined,
+    color: "#0D1117"
   },
-  aiText: {
-    fontSize: 12,
+
+  aiBodyCopy: {
+    fontSize: 13,
     color: "#64748B",
-    marginTop: 2,
-    maxWidth: width * 0.65,
+    fontFamily: Platform.OS === "web" ? "Plus Jakarta Sans" : undefined,
+    lineHeight: 18,
+    marginTop: 2
   },
+
+  healthCardWrapper: {
+    marginHorizontal: 16,
+    marginBottom: 24
+  },
+
+  diagnosticLoadingCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    marginHorizontal: 16,
+    padding: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    gap: 12,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    marginBottom: 24
+  },
+
+  loadingCopy: {
+    fontSize: 13,
+    color: "#64748B",
+    fontWeight: "500"
+  },
+
+  // Centered Services & Documents Small 2-Column Grid
+  compactActionGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    paddingHorizontal: 16,
+    justifyContent: "space-between",
+    gap: 10
+  },
+
+  compactGridButton: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    width: "48.5%",
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10
+  },
+
+  compactGridButtonText: {
+    fontSize: 13,
+    fontWeight: "600",
+    fontFamily: Platform.OS === "web" ? "Plus Jakarta Sans" : undefined,
+    color: "#0D1117",
+    flex: 1
+  },
+
+  elementPressed: {
+    opacity: 0.7
+  },
+
+  cardPressed: {
+    transform: [{ scale: 0.98 }],
+    opacity: 0.95
+  }
 });

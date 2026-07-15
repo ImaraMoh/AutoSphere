@@ -1,375 +1,211 @@
-import {
-StyleSheet
-}
-from "react-native";
-
+// styles.js
+import { StyleSheet, Platform } from "react-native";
 
 export default StyleSheet.create({
-
-container:{
-
-flex:1,
-
-backgroundColor:"#F8FAFC",
-
-paddingHorizontal:20
-
-},
-
-
-
-header:{
-
-flexDirection:"row",
-
-alignItems:"center",
-
-justifyContent:"space-between",
-
-marginTop:20,
-
-marginBottom:25
-
-},
-
-
-
-backButton:{
-
-width:42,
-
-height:42,
-
-borderRadius:14,
-
-backgroundColor:"#FFFFFF",
-
-alignItems:"center",
-
-justifyContent:"center",
-
-elevation:2
-
-},
-
-
-
-title:{
-
-fontSize:23,
-
-fontWeight:"900",
-
-color:"#0F172A"
-
-},
-
-
-
-brandCard:{
-
-backgroundColor:"#FFF7ED",
-
-borderRadius:32,
-
-paddingVertical:35,
-
-paddingHorizontal:25,
-
-alignItems:"center",
-
-marginBottom:25,
-
-shadowColor:"#000",
-
-shadowOpacity:0.05,
-
-shadowRadius:12,
-
-elevation:3
-
-},
-
-
-
-logoCircle:{
-
-height:100,
-
-width:100,
-
-borderRadius:50,
-
-backgroundColor:"#FFFFFF",
-
-alignItems:"center",
-
-justifyContent:"center",
-
-marginBottom:18,
-
-shadowColor:"#000",
-
-shadowOpacity:0.08,
-
-shadowRadius:10,
-
-elevation:4
-
-},
-
-logo:{
-
-width:70,
-
-height:70,
-
-resizeMode:"contain"
-
-},
-
-
-
-appName:{
-
-fontSize:28,
-
-fontWeight:"900",
-
-color:"#0F172A"
-
-},
-
-
-
-tagline:{
-
-marginTop:5,
-
-fontSize:15,
-
-color:"#64748B"
-
-},
-
-
-
-versionBadge:{
-
-backgroundColor:"#F97316",
-
-paddingHorizontal:15,
-
-paddingVertical:7,
-
-borderRadius:20,
-
-marginTop:15
-
-},
-
-
-
-versionText:{
-
-color:"#FFFFFF",
-
-fontWeight:"700",
-
-fontSize:12
-
-},
-
-
-
-
-
-
-card:{
-
-backgroundColor:"#FFFFFF",
-
-borderRadius:22,
-
-padding:20,
-
-marginBottom:20
-
-},
-
-
-
-sectionTitle:{
-
-fontSize:18,
-
-fontWeight:"900",
-
-marginBottom:12
-
-},
-
-
-
-description:{
-
-color:"#64748B",
-
-lineHeight:22,
-
-fontSize:14,
-
-marginBottom:10
-
-},
-
-
-
-sectionHeading:{
-
-fontSize:20,
-
-fontWeight:"900",
-
-marginBottom:15,
-
-marginTop:10
-
-},
-
-
-
-
-
-featureCard:{
-
-backgroundColor:"#FFFFFF",
-
-borderRadius:20,
-
-padding:16,
-
-flexDirection:"row",
-
-alignItems:"center",
-
-marginBottom:12
-
-},
-
-
-
-iconBox:{
-
-height:48,
-
-width:48,
-
-borderRadius:15,
-
-backgroundColor:"#FFF7ED",
-
-alignItems:"center",
-
-justifyContent:"center",
-
-marginRight:15
-
-},
-
-
-
-featureTitle:{
-
-fontWeight:"800",
-
-fontSize:16
-
-},
-
-
-
-featureText:{
-
-color:"#64748B",
-
-marginTop:4,
-
-fontSize:13
-
-},
-
-
-
-
-company:{
-
-fontSize:17,
-
-fontWeight:"800",
-
-color:"#F97316"
-
-},
-
-
-
-
-row:{
-
-backgroundColor:"#FFFFFF",
-
-height:65,
-
-borderRadius:18,
-
-paddingHorizontal:18,
-
-flexDirection:"row",
-
-alignItems:"center",
-
-justifyContent:"space-between",
-
-marginBottom:12
-
-},
-
-
-
-rowLeft:{
-
-flexDirection:"row",
-
-alignItems:"center"
-
-},
-
-
-
-rowText:{
-
-marginLeft:15,
-
-fontWeight:"700",
-
-fontSize:15
-
-},
-
-
-
-copyright:{
-
-textAlign:"center",
-
-color:"#94A3B8",
-
-fontSize:12,
-
-marginTop:20
-
-}
-
-
+  container: {
+    flex: 1,
+    backgroundColor: "#F8FAFC",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === "ios" ? 10 : 20,
+    paddingBottom: 16,
+    backgroundColor: "#FFFFFF",
+    borderBottomWidth: 1,
+    borderBottomColor: "#E2E8F0",
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: "#F1F5F9",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "850",
+    color: "#0F172A",
+  },
+  headerSpacer: {
+    width: 40,
+  },
+  scrollContainer: {
+    padding: 20,
+    paddingBottom: 40,
+  },
+  brandCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 24,
+    padding: 28,
+    alignItems: "center",
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#0F172A",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.03,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  logoBox: {
+    width: 76,
+    height: 76,
+    borderRadius: 20,
+    backgroundColor: "#FFF7ED",
+    borderWidth: 1,
+    borderColor: "#FED7AA",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 16,
+    overflow: "hidden",
+  },
+  logo: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
+  appName: {
+    fontSize: 22,
+    fontWeight: "850",
+    color: "#0F172A",
+    marginBottom: 4,
+    textAlign: "center",
+  },
+  tagline: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#64748B",
+    marginBottom: 14,
+    textAlign: "center",
+  },
+  versionBadge: {
+    backgroundColor: "#FFF7ED",
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#FED7AA",
+  },
+  versionText: {
+    fontSize: 11,
+    fontWeight: "800",
+    color: "#F97316",
+    letterSpacing: 0.3,
+  },
+  sectionGroup: {
+    marginBottom: 24,
+  },
+  sectionHeaderTitle: {
+    fontSize: 13,
+    fontWeight: "800",
+    color: "#64748B",
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+    marginBottom: 12,
+    marginLeft: 4,
+  },
+  listContainer: {
+    gap: 12,
+  },
+  standardCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    marginBottom: 24,
+    ...Platform.select({
+      ios: {
+        shadowColor: "#0F172A",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.03,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  card: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#0F172A",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.03,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  companyTitle: {
+    fontSize: 14,
+    fontWeight: "800",
+    color: "#0F172A",
+  },
+  iconBox: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: "#FFF7ED",
+    borderWidth: 1,
+    borderColor: "#FED7AA",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 14,
+  },
+  content: {
+    flex: 1,
+    marginRight: 10,
+  },
+  cardTitle: {
+    fontSize: 14,
+    fontWeight: "800",
+    color: "#0F172A",
+    marginBottom: 3,
+  },
+  descriptionText: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#64748B",
+    lineHeight: 16,
+  },
+  chevronBox: {
+    width: 28,
+    height: 28,
+    borderRadius: 8,
+    backgroundColor: "#F8FAFC",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  copyrightText: {
+    textAlign: "center",
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#94A3B8",
+    marginTop: 8,
+    marginBottom: 20,
+  },
 });

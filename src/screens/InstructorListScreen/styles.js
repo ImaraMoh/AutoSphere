@@ -1,0 +1,121 @@
+import { StyleSheet, Platform } from "react-native";
+
+export default StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#F8FAFC",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: "#FFFFFF",
+    borderBottomWidth: 1,
+    borderBottomColor: "#F1F5F9",
+  },
+  backButton: {
+    width: 38,
+    height: 38,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F8FAFC",
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#0F172A",
+  },
+  headerSpacer: { width: 38 },
+  schoolContextCard: {
+    backgroundColor: "#FFFFFF",
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "#E2E8F0",
+  },
+  schoolName: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: "#0F172A",
+    marginBottom: 6,
+  },
+  metaRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  metaText: {
+    fontSize: 13,
+    color: "#64748B",
+    marginLeft: 4,
+  },
+  dividerDot: {
+    color: "#CBD5E1",
+    marginHorizontal: 8,
+    fontWeight: "bold",
+  },
+  listContainer: {
+    padding: 16,
+    gap: 12,
+  },
+  instructorCard: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    ...Platform.select({
+      ios: { shadowColor: "#0F172A", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.02, shadowRadius: 4 },
+      android: { elevation: 1 },
+    }),
+  },
+  cardLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+  },
+  avatarMini: {
+    width: 46,
+    height: 46,
+    borderRadius: 14,
+    backgroundColor: "#F1F5F9",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 12,
+  },
+  avatarEmoji: { fontSize: 22 },
+  instructorInfo: { flex: 1 },
+  instructorName: {
+    fontSize: 15,
+    fontWeight: "700",
+    color: "#0F172A",
+    marginBottom: 2,
+  },
+  instructorExp: {
+    fontSize: 12,
+    color: "#64748B",
+  },
+  cardRight: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  ratingBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FEF3C7",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+    gap: 4,
+  },
+  ratingText: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: "#D97706",
+  },
+});

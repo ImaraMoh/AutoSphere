@@ -1,50 +1,220 @@
-import {
-StyleSheet
-}
-from "react-native";
-
+import { StyleSheet, Platform } from "react-native";
 
 export default StyleSheet.create({
-
-container:{
-flex:1,
-backgroundColor:"#F8FAFC",
-padding:20
-},
-
-
-header:{
-flexDirection:"row",
-alignItems:"center",
-gap:10
-},
-
-
-title:{
-fontSize:26,
-fontWeight:"800"
-},
-
-
-hero:{
-backgroundColor:"#0D1117",
-padding:25,
-borderRadius:25,
-marginTop:25
-},
-
-
-heroTitle:{
-color:"#fff",
-fontSize:22,
-fontWeight:"700"
-},
-
-
-heroText:{
-color:"#CBD5E1",
-marginTop:8
-}
-
-
+  container: {
+    flex: 1,
+    backgroundColor: "#F8FAFC", // Sleek modern gray drop background
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: "#FFFFFF",
+    borderBottomWidth: 1,
+    borderBottomColor: "#F1F5F9",
+  },
+  backButton: {
+    width: 38,
+    height: 38,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F8FAFC",
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#0F172A",
+  },
+  headerSpacer: {
+    width: 38,
+  },
+  scrollBody: {
+    paddingBottom: 40,
+  },
+  heroSection: {
+    paddingHorizontal: 16,
+    paddingTop: 20,
+    paddingBottom: 12,
+  },
+  heroGreeting: {
+    fontSize: 22,
+    fontWeight: "800",
+    color: "#0F172A",
+    letterSpacing: -0.5,
+  },
+  heroSubText: {
+    fontSize: 13,
+    color: "#64748B",
+    marginTop: 4,
+  },
+  sectionHeaderRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    marginTop: 16,
+    marginBottom: 12,
+  },
+  sectionTitle: {
+    fontSize: 15,
+    fontWeight: "700",
+    color: "#334155",
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+  },
+  featuredCarousel: {
+    paddingLeft: 16,
+    paddingRight: 8,
+    paddingBottom: 16,
+  },
+  featuredCard: {
+    width: 260,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 16,
+    marginRight: 14,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    ...Platform.select({
+      ios: { shadowColor: "#0F172A", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.04, shadowRadius: 10 },
+      android: { elevation: 3 },
+    }),
+  },
+  featuredBadge: {
+    alignSelf: "flex-start",
+    backgroundColor: "#FFF3E0",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    marginBottom: 12,
+  },
+  featuredBadgeText: {
+    fontSize: 10,
+    fontWeight: "700",
+    color: "#F97316",
+  },
+  featuredCardName: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#0F172A",
+    marginBottom: 6,
+  },
+  metaRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  metaText: {
+    fontSize: 13,
+    color: "#64748B",
+    marginLeft: 4,
+    marginRight: 8,
+  },
+  ratingBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FEF3C7",
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 6,
+    gap: 3,
+  },
+  ratingText: {
+    fontSize: 11,
+    fontWeight: "700",
+    color: "#D97706",
+  },
+  tagContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 6,
+    marginTop: 12,
+  },
+  vTag: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#F1F5F9",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+    gap: 4,
+  },
+  vTagText: {
+    fontSize: 11,
+    fontWeight: "600",
+    color: "#475569",
+  },
+  cardFooter: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderTopWidth: 1,
+    borderTopColor: "#F1F5F9",
+    marginTop: 16,
+    paddingTop: 12,
+  },
+  priceLabel: {
+    fontSize: 10,
+    color: "#94A3B8",
+    textTransform: "uppercase",
+  },
+  priceValue: {
+    fontSize: 16,
+    fontWeight: "800",
+    color: "#F97316",
+  },
+  actionCircleButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: "#0F172A",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  verticalListContainer: {
+    paddingHorizontal: 16,
+    gap: 12,
+  },
+  rowCard: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  rowLeftBlock: {
+    flex: 1,
+    paddingRight: 12,
+  },
+  rowCardName: {
+    fontSize: 15,
+    fontWeight: "700",
+    color: "#0F172A",
+  },
+  dividerDot: {
+    color: "#CBD5E1",
+    marginHorizontal: 4,
+  },
+  rowRightBlock: {
+    alignItems: "flex-end",
+    justifyContent: "center",
+    borderLeftWidth: 1,
+    borderLeftColor: "#F1F5F9",
+    paddingLeft: 14,
+  },
+  priceValueCompact: {
+    fontSize: 14,
+    fontWeight: "800",
+    color: "#1E293B",
+  },
+  priceLabelCompact: {
+    fontSize: 11,
+    color: "#94A3B8",
+    marginTop: 2,
+  },
 });

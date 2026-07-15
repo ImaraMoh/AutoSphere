@@ -1,66 +1,94 @@
-import {
-StyleSheet
-}
-from "react-native";
-
+import { StyleSheet, Platform } from "react-native";
 
 export default StyleSheet.create({
-
-container:{
-flex:1,
-backgroundColor:"#F8FAFC",
-padding:20
-},
-
-
-header:{
-flexDirection:"row",
-alignItems:"center",
-gap:10
-},
-
-
-title:{
-fontSize:24,
-fontWeight:"800"
-},
-
-
-card:{
-backgroundColor:"white",
-marginTop:25,
-padding:20,
-borderRadius:25
-},
-
-
-heading:{
-fontSize:20,
-fontWeight:"700"
-},
-
-
-input:{
-backgroundColor:"#F1F5F9",
-padding:15,
-borderRadius:15,
-marginTop:15
-},
-
-
-button:{
-backgroundColor:"#F97316",
-padding:16,
-borderRadius:15,
-marginTop:25,
-alignItems:"center"
-},
-
-
-buttonText:{
-color:"white",
-fontWeight:"700"
-}
-
-
+  container: {
+    flex: 1,
+    backgroundColor: "#F8FAFC",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: "#FFFFFF",
+    borderBottomWidth: 1,
+    borderBottomColor: "#F1F5F9",
+  },
+  backButton: {
+    width: 38,
+    height: 38,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F8FAFC",
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#0F172A",
+  },
+  headerSpacer: {
+    width: 38,
+  },
+  scrollBody: {
+    padding: 16,
+    paddingBottom: 40,
+  },
+  formCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    ...Platform.select({
+      ios: { shadowColor: "#0F172A", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.03, shadowRadius: 8 },
+      android: { elevation: 2 },
+    }),
+  },
+  formHeaderRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 20,
+  },
+  heading: {
+    fontSize: 16,
+    fontWeight: "750",
+    color: "#0F172A",
+  },
+  inputLabel: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: "#475569",
+    marginBottom: 6,
+  },
+  input: {
+    height: 48,
+    borderWidth: 1,
+    borderColor: "#CBD5E1",
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    fontSize: 14,
+    color: "#0F172A",
+    backgroundColor: "#F8FAFC",
+    marginBottom: 16,
+  },
+  primaryButton: {
+    height: 50,
+    backgroundColor: "#F97316",
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 8,
+    ...Platform.select({
+      ios: { shadowColor: "#F97316", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.15, shadowRadius: 8 },
+      android: { elevation: 3 },
+    }),
+  },
+  buttonText: {
+    color: "#FFFFFF",
+    fontSize: 15,
+    fontWeight: "700",
+  },
 });

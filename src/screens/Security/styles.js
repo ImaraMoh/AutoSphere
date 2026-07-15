@@ -1,230 +1,155 @@
-import {
-StyleSheet
-}
-from "react-native";
-
+// styles.js
+import { StyleSheet, Platform } from "react-native";
 
 export default StyleSheet.create({
-
-
-container:{
-
-flex:1,
-
-backgroundColor:"#F8FAFC"
-
-},
-
-
-
-header:{
-
-height:70,
-
-flexDirection:"row",
-
-alignItems:"center",
-
-justifyContent:"space-between",
-
-paddingHorizontal:20
-
-},
-
-
-
-
-back:{
-
-height:42,
-
-width:42,
-
-borderRadius:14,
-
-backgroundColor:"#FFFFFF",
-
-justifyContent:"center",
-
-alignItems:"center"
-
-},
-
-
-
-
-title:{
-
-fontSize:26,
-
-fontWeight:"900",
-
-color:"#0F172A"
-
-},
-
-
-
-
-scroll:{
-
-padding:20,
-
-paddingBottom:50
-
-},
-
-
-
-
-securityHero:{
-
-backgroundColor:"#FFF7ED",
-
-padding:25,
-
-borderRadius:28,
-
-alignItems:"center",
-
-marginBottom:25
-
-},
-
-
-
-securityIcon:{
-
-height:80,
-
-width:80,
-
-borderRadius:40,
-
-backgroundColor:"#FFFFFF",
-
-alignItems:"center",
-
-justifyContent:"center"
-
-},
-
-
-
-heroTitle:{
-
-fontSize:22,
-
-fontWeight:"900",
-
-marginTop:15,
-
-color:"#0F172A"
-
-},
-
-
-
-heroText:{
-
-textAlign:"center",
-
-marginTop:8,
-
-color:"#64748B",
-
-lineHeight:22
-
-},
-
-
-
-
-
-
-
-card:{
-
-backgroundColor:"#FFFFFF",
-
-borderRadius:22,
-
-padding:18,
-
-flexDirection:"row",
-
-alignItems:"center",
-
-marginBottom:15,
-
-shadowColor:"#000",
-
-shadowOpacity:0.05,
-
-shadowRadius:10,
-
-elevation:3
-
-},
-
-
-
-
-
-iconBox:{
-
-height:50,
-
-width:50,
-
-borderRadius:16,
-
-backgroundColor:"#FFF7ED",
-
-alignItems:"center",
-
-justifyContent:"center"
-
-},
-
-
-
-
-content:{
-
-flex:1,
-
-marginLeft:15
-
-},
-
-
-
-
-cardTitle:{
-
-fontSize:16,
-
-fontWeight:"800",
-
-color:"#0F172A"
-
-},
-
-
-
-
-description:{
-
-fontSize:13,
-
-color:"#64748B",
-
-marginTop:5,
-
-lineHeight:19
-
-}
-
-
+  container: {
+    flex: 1,
+    backgroundColor: "#F8FAFC",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === "ios" ? 10 : 20,
+    paddingBottom: 16,
+    backgroundColor: "#FFFFFF",
+    borderBottomWidth: 1,
+    borderBottomColor: "#E2E8F0",
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: "#F1F5F9",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "850",
+    color: "#0F172A",
+  },
+  headerSpacer: {
+    width: 40,
+  },
+  scrollContainer: {
+    padding: 20,
+    paddingBottom: 40,
+  },
+  securityHero: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 24,
+    padding: 24,
+    alignItems: "center",
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#0F172A",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.03,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  securityIconBox: {
+    width: 64,
+    height: 64,
+    borderRadius: 20,
+    backgroundColor: "#FFF7ED",
+    borderWidth: 1,
+    borderColor: "#FED7AA",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 14,
+  },
+  heroTitle: {
+    fontSize: 18,
+    fontWeight: "850",
+    color: "#0F172A",
+    marginBottom: 6,
+    textAlign: "center",
+  },
+  heroText: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#64748B",
+    textAlign: "center",
+    lineHeight: 18,
+    paddingHorizontal: 10,
+  },
+  listContainer: {
+    gap: 12,
+  },
+  card: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#0F172A",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.03,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  iconBox: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: "#FFF7ED",
+    borderWidth: 1,
+    borderColor: "#FED7AA",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 14,
+  },
+  destructiveIconBox: {
+    backgroundColor: "#FEF2F2",
+    borderColor: "#FEE2E2",
+  },
+  content: {
+    flex: 1,
+    marginRight: 10,
+  },
+  cardTitle: {
+    fontSize: 14,
+    fontWeight: "800",
+    color: "#0F172A",
+    marginBottom: 3,
+  },
+  destructiveCardTitle: {
+    color: "#EF4444",
+  },
+  descriptionText: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#64748B",
+    lineHeight: 16,
+  },
+  chevronBox: {
+    width: 28,
+    height: 28,
+    borderRadius: 8,
+    backgroundColor: "#F8FAFC",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
 });

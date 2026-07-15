@@ -1,142 +1,71 @@
+// NotificationCard.js
 import React from "react";
-
-
 import {
-View,
-Text,
-TouchableOpacity
-}
-from "react-native";
-
-
+  View,
+  Text,
+  TouchableOpacity
+} from "react-native";
 import {
-Bell,
-ShieldCheck,
-Wrench,
-CreditCard
-}
-from "lucide-react-native";
-
-
+  Bell,
+  ShieldCheck,
+  Wrench,
+  CreditCard
+} from "lucide-react-native";
+import styles from "./styles";
 
 export default function NotificationCard({
-item,
-onPress
-}){
+  item,
+  onPress
+}) {
+  const getIcon = () => {
+    if (item.type === "Insurance")
+      return <ShieldCheck size={20} color="#F97316" />;
 
+    if (item.type === "Maintenance")
+      return <Wrench size={20} color="#F97316" />;
 
-const getIcon=()=>{
+    if (item.type === "Finance")
+      return <CreditCard size={20} color="#F97316" />;
 
+    return <Bell size={20} color="#F97316" />;
+  };
 
-if(item.type==="Insurance")
-return <ShieldCheck color="#F97316"/>;
+  const isHighPriority = item.priority?.toLowerCase() === "high";
 
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      style={styles.card}
+      activeOpacity={0.7}
+    >
+      <View style={styles.iconBox}>
+        {getIcon()}
+      </View>
 
-if(item.type==="Maintenance")
-return <Wrench color="#F97316"/>;
+      <View style={styles.content}>
+        <View style={styles.cardTopRow}>
+          <Text style={styles.cardTitle} numberOfLines={1}>
+            {item.title}
+          </Text>
+          {item.date && (
+            <Text style={styles.dateText}>{item.date}</Text>
+          )}
+        </View>
 
+        <Text style={styles.messageText} numberOfLines={2}>
+          {item.message}
+        </Text>
 
-if(item.type==="Finance")
-return <CreditCard color="#F97316"/>;
-
-
-return <Bell color="#F97316"/>;
-
-
-};
-
-
-
-return(
-
-<TouchableOpacity
-
-onPress={onPress}
-
-style={{
-
-backgroundColor:"#fff",
-
-padding:18,
-
-borderRadius:20,
-
-marginVertical:8,
-
-flexDirection:"row"
-
-}}
-
->
-
-
-<View>
-
-{getIcon()}
-
-</View>
-
-
-
-<View
-style={{
-marginLeft:15,
-flex:1
-}}
->
-
-
-<Text
-style={{
-fontWeight:"800",
-fontSize:16
-}}
->
-
-{item.title}
-
-</Text>
-
-
-
-<Text
-style={{
-color:"#64748B",
-marginTop:5
-}}
->
-
-{item.message}
-
-</Text>
-
-
-
-<Text
-style={{
-marginTop:8,
-color:
-item.priority==="High"
-?
-"#DC2626"
-:
-"#16A34A"
-}}
->
-
-{item.priority}
-
-</Text>
-
-
-</View>
-
-
-
-</TouchableOpacity>
-
-
-);
-
-
+        {item.priority && (
+          <View style={styles.footerRow}>
+            <View style={[styles.priorityBadge, isHighPriority ? styles.priorityHigh : styles.priorityMedium]}>
+              <Text style={[styles.priorityText, isHighPriority ? styles.priorityTextHigh : styles.priorityTextMedium]}>
+                {item.priority} Priority
+              </Text>
+            </View>
+          </View>
+        )}
+      </View>
+    </TouchableOpacity>
+  );
 }
