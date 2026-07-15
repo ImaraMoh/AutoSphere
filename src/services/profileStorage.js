@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Unique storage key for your app's user profile
-const PROFILE_KEY = "@user_profile_data_v1";
+const PROFILE_KEY = "@user_profile";
 
 export async function getProfile() {
   try {

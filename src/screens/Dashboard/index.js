@@ -11,6 +11,7 @@ import {
   useWindowDimensions
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import VehicleHealthCard from "../../components/VehicleHealthCard";
 import { analyzeVehicleHealth } from "../../services/aiHealthService";
 import Card from "../../components/Card";
@@ -21,9 +22,24 @@ export default function Dashboard({ navigation }) {
   const [loadingHealth, setLoadingHealth] = useState(true);
   const { width: windowWidth } = useWindowDimensions();
 
+  const [userData, setUserData] = useState(null);
+  const [primaryVehicle, setPrimaryVehicle] = useState(null);
+  
   useEffect(() => {
     loadHealth();
+    loadData();
   }, []);
+
+  async function loadData() {
+    try {
+      const storedUser = await AsyncStorage.getItem("@user_profile");
+      const storedVehicle = await AsyncStorage.getItem("@primary_vehicle");
+      if (storedUser) setUserData(JSON.parse(storedUser));
+      if (storedVehicle) setPrimaryVehicle(JSON.parse(storedVehicle));
+    } catch (error) {
+      console.log("Storage Load Error", error);
+    }
+  }
 
   async function loadHealth() {
     try {
@@ -61,8 +77,14 @@ export default function Dashboard({ navigation }) {
     { icon: "car-sport", title: "Driving School", route: "DrivingSchool" }
   ];
 
-  // Dynamic max-width boundary layout constraints for larger screen scaling stability
   const centerContainerStyle = windowWidth > 600 ? { maxWidth: 540, alignSelf: "center", width: "100%" } : {};
+
+  // Extract dynamic fallback values if not yet cached
+  const displayName = userData?.fullName ? userData.fullName.split(" ")[0] : "Garage Member";
+  const vehicleMake = primaryVehicle?.make || "Honda";
+  const vehicleModel = primaryVehicle?.model || "Civic";
+  const vehicleYear = primaryVehicle?.year || "2022";
+  const vehiclePlate = primaryVehicle?.plateNumber || "WP CAB 1234";
 
   return (
     <SafeAreaView style={styles.container}>
@@ -94,33 +116,33 @@ export default function Dashboard({ navigation }) {
       >
         <View style={centerContainerStyle}>
           
-          {/* Welcome User Frame */}
+          {/* Welcome User Frame with Dynamic Username */}
           <View style={styles.headerContainer}>
-            <Text style={styles.greetingText}>Hello Imara 👋</Text>
+            <Text style={styles.greetingText}>Hello {displayName} 👋</Text>
             <Text style={styles.subText}>Your smart digital vehicle assistant</Text>
           </View>
 
-        {/* Core Target Primary Vehicle Display Module */}
-        <View style={styles.heroVehicleCard}>
-        <View style={styles.heroRow}>
-            <View style={styles.heroMeta}>
-            <Text style={styles.heroBadge}>PRIMARY VEHICLE</Text>
-            <Text style={styles.heroVehicleTitle}>Honda Civic 2022</Text>
-            <Text style={styles.heroVehicleSpecs}>87,000 KM • Petrol • WP CAB 1234</Text>
+          {/* Core Target Primary Vehicle Display Module (Synced from Register State) */}
+          <View style={styles.heroVehicleCard}>
+            <View style={styles.heroRow}>
+              <View style={styles.heroMeta}>
+                <Text style={styles.heroBadge}>PRIMARY VEHICLE</Text>
+                <Text style={styles.heroVehicleTitle}>{vehicleMake} {vehicleModel} {vehicleYear}</Text>
+                <Text style={styles.heroVehicleSpecs}>87,000 KM • Petrol • {vehiclePlate}</Text>
+              </View>
+              <View style={styles.heroIconWrapper}>
+                <Ionicons name="car-sport" size={32} color="#F97316" />
+              </View>
             </View>
-            <View style={styles.heroIconWrapper}>
-            <Ionicons name="car-sport" size={32} color="#F97316" />
+            
+            <View style={styles.heroFooter}>
+              <View style={styles.statusIndicatorContainer}>
+                <View style={styles.statusDot} />
+                <Text style={styles.statusText}>System Status: Good Condition</Text>
+              </View>
+              <Ionicons name="checkmark-circle" size={20} color="#16A34A" />
             </View>
-        </View>
-        
-        <View style={styles.heroFooter}>
-            <View style={styles.statusIndicatorContainer}>
-            <View style={styles.statusDot} />
-            <Text style={styles.statusText}>System Status: Good Condition</Text>
-            </View>
-            <Ionicons name="checkmark-circle" size={20} color="#16A34A" />
-        </View>
-        </View>
+          </View>
 
           {/* Core Utilities Static 2x2 Grid Layout */}
           <Text style={styles.sectionHeading}>Core Utilities</Text>
@@ -161,7 +183,7 @@ export default function Dashboard({ navigation }) {
 
           {/* Context Dynamic Render Diagnostics Frame */}
           {loadingHealth ? (
-            <View containerStyle={styles.diagnosticLoadingCard}>
+            <View style={styles.diagnosticLoadingCard}>
               <ActivityIndicator size="small" color="#A855F7" />
               <Text style={styles.loadingCopy}>Processing telemetry calculations...</Text>
             </View>
@@ -182,7 +204,6 @@ export default function Dashboard({ navigation }) {
                 onPress={() => navigation.navigate(action.route)}
                 style={({ pressed }) => [styles.compactGridButton, pressed && styles.elementPressed]}
               >
-                {/* Icons updated globally to primary brand Vibrant Orange color */}
                 <Ionicons name={action.icon} size={20} color="#F97316" />
                 <Text style={styles.compactGridButtonText} numberOfLines={1}>{action.title}</Text>
               </Pressable>

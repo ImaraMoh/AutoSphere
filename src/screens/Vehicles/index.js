@@ -12,6 +12,7 @@ import {
   useWindowDimensions
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import VehicleCard from "../../components/VehicleCard";
 import EmptyVehicleState from "../../components/EmptyVehicleState";
@@ -38,8 +39,36 @@ export default function Vehicles({ navigation }) {
   }, [navigation]);
 
   async function loadVehicles() {
-    const data = await getVehicles();
-    setVehicles(data || []);
+    try {
+      let data = await getVehicles();
+      
+      // If storage is empty, initialize it automatically using registered primary vehicle details
+      if (!data || data.length === 0) {
+        const storedVehicle = await AsyncStorage.getItem("@primary_vehicle");
+        if (storedVehicle) {
+          const parsedVehicle = JSON.parse(storedVehicle);
+          const defaultVehicle = {
+            id: "1",
+            brand: parsedVehicle.make || "Honda",
+            model: parsedVehicle.model || "Civic",
+            year: parsedVehicle.year || "2022",
+            registration: parsedVehicle.plateNumber || "WP CAB 1234",
+            type: "Car",
+            mileage: 87000,
+            fuel: "Petrol"
+          };
+          
+          // Save back to storage so it persists
+          await AsyncStorage.setItem("@vehicles", JSON.stringify([defaultVehicle]));
+          data = [defaultVehicle];
+        }
+      }
+
+      setVehicles(data || []);
+    } catch (error) {
+      console.log("Failed to load vehicle list", error);
+      setVehicles([]);
+    }
   }
 
   async function refresh() {
@@ -161,7 +190,7 @@ export default function Vehicles({ navigation }) {
           ) : (
             <View style={styles.listWrapper}>
               {filteredVehicles.map(vehicle => (
-                <View key={vehicle.id} style={styles.cardItemGutter}>
+                <View key={vehicle.id || vehicle.registration} style={styles.cardItemGutter}>
                   <VehicleCard
                     vehicle={vehicle}
                     onPress={() =>

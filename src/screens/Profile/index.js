@@ -15,6 +15,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getSettings, saveSettings } from "../../services/settingsStorage";
 import { getProfile } from "../../services/profileStorage";
 import styles from "./styles";
@@ -38,7 +39,23 @@ export default function Profile({ navigation }) {
   async function loadData() {
     try {
       setLoading(true);
-      const user = await getProfile();
+      
+      // Fetch profile service data
+      let user = await getProfile();
+      
+      // If service profile is empty, check AsyncStorage for logged-in user credentials
+      if (!user || !user.name || user.name === "AutoSphere User") {
+        const storedUser = await AsyncStorage.getItem("@user_profile");
+        if (storedUser) {
+          const parsedUser = JSON.parse(storedUser);
+          user = {
+            name: parsedUser.fullName || "AutoSphere User",
+            email: parsedUser.email || "No email added",
+            image: parsedUser.image || null
+          };
+        }
+      }
+
       const savedSettings = await getSettings();
 
       setProfile(user);

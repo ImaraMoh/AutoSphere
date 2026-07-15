@@ -1,41 +1,28 @@
 import React, { useEffect } from "react";
 import { View, TouchableOpacity, StyleSheet, Animated, Easing, Platform } from "react-native";
-import AddVehicle from "../screens/AddVehicle";
-import VehicleProfile from "../screens/VehicleProfile";
-import UploadDocument from "../screens/UploadDocument";
-import {
-createBottomTabNavigator
-}
-from "@react-navigation/bottom-tabs";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Ionicons } from "@expo/vector-icons";
 
-import {
-createNativeStackNavigator
-}
-from "@react-navigation/native-stack";
-
-import {
-Ionicons
-}
-from "@expo/vector-icons";
-
-
+// Screens
+import SplashScreen from "../screens/Splash";
+import Login from "../screens/Login";
 import Dashboard from "../screens/Dashboard";
 import Vehicles from "../screens/Vehicles";
+import AddVehicle from "../screens/AddVehicle";
+import VehicleProfile from "../screens/VehicleProfile";
+import EditVehicle from "../screens/EditVehicle";
 import DocumentWallet from "../screens/DocumentWallet";
+import UploadDocument from "../screens/UploadDocument";
 import AIChat from "../screens/AIChat";
 import Profile from "../screens/Profile";
 
-import EditVehicle from "../screens/EditVehicle";
-
 import Reminder from "../screens/Reminder";
 import AddReminder from "../screens/AddReminder";
-
 import Maintenance from "../screens/Maintenance";
 import AddMaintenance from "../screens/AddMaintenance";
-
 import Expenses from "../screens/Expenses";
 import AddExpense from "../screens/AddExpense";
-
 import Reports from "../screens/Reports";
 import EditProfile from "../screens/EditProfile";
 import ChangePassword from "../screens/ChangePassword";
@@ -74,147 +61,155 @@ import EditDocument from "../screens/EditDocument";
 import DocumentPreview from "../screens/DocumentPreview";
 import TermsOfService from "../screens/TermsOfService";
 
-const Tab=createBottomTabNavigator();
-const Stack=createNativeStackNavigator();
-
+const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 // Home Stack Navigator
-function HomeStackNavigator(){
-return(
-<Stack.Navigator screenOptions={{headerShown:false}}>
-<Stack.Screen name="DashboardMain" component={Dashboard} />
-<Stack.Screen name="Reminder" component={Reminder} />
-<Stack.Screen name="AddReminder" component={AddReminder} />
-<Stack.Screen name="Maintenance" component={Maintenance} />
-<Stack.Screen name="AddMaintenance" component={AddMaintenance} />
-<Stack.Screen name="Expenses" component={Expenses} />
-<Stack.Screen name="AddExpense" component={AddExpense} />
-<Stack.Screen name="Reports" component={Reports} />
-<Stack.Screen name="Insurance" component={Insurance} />
-<Stack.Screen name="RenewInsurance" component={RenewInsurance} />
-<Stack.Screen name="SubmitClaim" component={SubmitClaim} />
-<Stack.Screen name="Finance" component={Finance} />
-<Stack.Screen name="EMICalculator" component={EMICalculator} />
-<Stack.Screen name="LoanApplication" component={LoanApplication} />
-<Stack.Screen name="PaymentSchedule" component={PaymentSchedule} />
-<Stack.Screen name="DrivingSchool" component={DrivingSchool} />
-<Stack.Screen name="InstructorDetails" component={InstructorDetails} />
-<Stack.Screen name='InstructorListScreen' component={InstructorListScreen} />
-<Stack.Screen name="BookLesson" component={BookLesson} />
-<Stack.Screen name="LearningProgress" component={LearningProgress} />
-<Stack.Screen name="Notifications" component={Notifications} />
-<Stack.Screen name="NotificationDetails" component={NotificationDetails} />
-<Stack.Screen name="OCRScanner" component={OCRScanner}/>
-<Stack.Screen name="ScanPreview" component={ScanPreview}/>
-<Stack.Screen name="ScanHistory" component={ScanHistory}/>
-</Stack.Navigator>
-);
+function HomeStackNavigator() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Dashboard" component={Dashboard} />
+      <Stack.Screen name="Reminder" component={Reminder} />
+      <Stack.Screen name="AddReminder" component={AddReminder} />
+      <Stack.Screen name="Maintenance" component={Maintenance} />
+      <Stack.Screen name="AddMaintenance" component={AddMaintenance} />
+      <Stack.Screen name="Expenses" component={Expenses} />
+      <Stack.Screen name="AddExpense" component={AddExpense} />
+      <Stack.Screen name="Reports" component={Reports} />
+      <Stack.Screen name="Insurance" component={Insurance} />
+      <Stack.Screen name="RenewInsurance" component={RenewInsurance} />
+      <Stack.Screen name="SubmitClaim" component={SubmitClaim} />
+      <Stack.Screen name="Finance" component={Finance} />
+      <Stack.Screen name="EMICalculator" component={EMICalculator} />
+      <Stack.Screen name="LoanApplication" component={LoanApplication} />
+      <Stack.Screen name="PaymentSchedule" component={PaymentSchedule} />
+      <Stack.Screen name="DrivingSchool" component={DrivingSchool} />
+      <Stack.Screen name="InstructorDetails" component={InstructorDetails} />
+      <Stack.Screen name='InstructorListScreen' component={InstructorListScreen} />
+      <Stack.Screen name="BookLesson" component={BookLesson} />
+      <Stack.Screen name="LearningProgress" component={LearningProgress} />
+      <Stack.Screen name="Notifications" component={Notifications} />
+      <Stack.Screen name="NotificationDetails" component={NotificationDetails} />
+      <Stack.Screen name="OCRScanner" component={OCRScanner} />
+      <Stack.Screen name="ScanPreview" component={ScanPreview} />
+      <Stack.Screen name="ScanHistory" component={ScanHistory} />
+    </Stack.Navigator>
+  );
 }
 
 // Vehicles Stack Navigator
-function VehiclesStackNavigator(){
-return(
-<Stack.Navigator screenOptions={{headerShown:false}}>
-<Stack.Screen name="VehicleMain" component={Vehicles} />
-<Stack.Screen name="AddVehicle" component={AddVehicle} />
-<Stack.Screen name="VehicleProfile" component={VehicleProfile} />
-
-<Stack.Screen name="EditVehicle" component={EditVehicle} />
-</Stack.Navigator>
-);
+function VehiclesStackNavigator() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="VehicleMain" component={Vehicles} />
+      <Stack.Screen name="AddVehicle" component={AddVehicle} />
+      <Stack.Screen name="VehicleProfile" component={VehicleProfile} />
+      <Stack.Screen name="EditVehicle" component={EditVehicle} />
+    </Stack.Navigator>
+  );
 }
 
 // Documents Stack Navigator
-function DocumentsStackNavigator(){
-
-return(
-
-<Stack.Navigator
-
-screenOptions={{
-headerShown:false
-}}
-
->
-
-
-<Stack.Screen
-
-name="DocumentWalletMain"
-
-component={DocumentWallet}
-
-/>
-
-
-
-<Stack.Screen
-
-name="UploadDocument"
-
-component={UploadDocument}
-
-/>
-
-
-
-<Stack.Screen
-name="DocumentAutoFill"
-component={DocumentAutoFill}
-/>
-
-<Stack.Screen
-
-name="DocumentDetails"
-
-component={DocumentDetails}
-
-/>
-
-
-
-<Stack.Screen
-
-name="EditDocument"
-
-component={EditDocument}
-
-/>
-
-
-
-<Stack.Screen
-
-name="DocumentPreview"
-component={DocumentPreview}
-
-/>
-
-</Stack.Navigator>
-
-);
-
+function DocumentsStackNavigator() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="DocumentWalletMain" component={DocumentWallet} />
+      <Stack.Screen name="UploadDocument" component={UploadDocument} />
+      <Stack.Screen name="DocumentAutoFill" component={DocumentAutoFill} />
+      <Stack.Screen name="DocumentDetails" component={DocumentDetails} />
+      <Stack.Screen name="EditDocument" component={EditDocument} />
+      <Stack.Screen name="DocumentPreview" component={DocumentPreview} />
+    </Stack.Navigator>
+  );
 }
 
 // Profile Stack Navigator
-function ProfileStackNavigator(){
-return(
-<Stack.Navigator screenOptions={{headerShown:false}}>
-<Stack.Screen name="Profile" component={Profile} />
-<Stack.Screen name="EditProfile" component={EditProfile} />
-<Stack.Screen name="ChangePassword" component={ChangePassword} />
-<Stack.Screen name="ConnectedDevices" component={ConnectedDevices} />
-<Stack.Screen name="Privacy" component={Privacy} />
-<Stack.Screen name="NotificationSettings" component={NotificationSettings} />
-<Stack.Screen name="About" component={About}/>
-<Stack.Screen name="Security" component={Security}/>
-<Stack.Screen name="Help" component={Help}/>
-<Stack.Screen name="TermsOfService" component={TermsOfService}/>
-</Stack.Navigator>
-);
+function ProfileStackNavigator() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="ChangePassword" component={ChangePassword} />
+      <Stack.Screen name="ConnectedDevices" component={ConnectedDevices} />
+      <Stack.Screen name="Privacy" component={Privacy} />
+      <Stack.Screen name="NotificationSettings" component={NotificationSettings} />
+      <Stack.Screen name="About" component={About} />
+      <Stack.Screen name="Security" component={Security} />
+      <Stack.Screen name="Help" component={Help} />
+      <Stack.Screen name="TermsOfService" component={TermsOfService} />
+    </Stack.Navigator>
+  );
 }
 
-// --- Animated Custom Center AI Button Component ---
+// Bottom Tab Navigator
+function MainTabNavigator() {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: "#F97316",
+        tabBarInactiveTintColor: "#6B7280",
+        tabBarStyle: {
+          height: 75,
+          paddingBottom: 12,
+          paddingTop: 10,
+          backgroundColor: "#FFFFFF",
+          borderTopWidth: 1,
+          borderTopColor: "#E2E8F0",
+        },
+      }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={HomeStackNavigator}
+        options={{
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons name={focused ? "home" : "home-outline"} color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Vehicles"
+        component={VehiclesStackNavigator}
+        options={{
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons name={focused ? "car" : "car-outline"} color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="AI"
+        component={AIChat}
+        options={{
+          tabBarLabel: "AutoAI",
+          tabBarButton: (props) => (
+            <AnimatedAIButton {...props} focused={props.accessibilityState?.selected} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Documents"
+        component={DocumentsStackNavigator}
+        options={{
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons name={focused ? "document-text" : "document-text-outline"} color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileStackNavigator}
+        options={{
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons name={focused ? "person" : "person-outline"} color={color} size={size} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
+
+// Animated Custom Center AI Button Component
 function AnimatedAIButton({ accessibilityState, onPress, focused: isTabFocused }) {
   const focused = accessibilityState?.selected || isTabFocused;
   const pulseAnim = React.useRef(new Animated.Value(1)).current;
@@ -241,13 +236,8 @@ function AnimatedAIButton({ accessibilityState, onPress, focused: isTabFocused }
   }, [pulseAnim]);
 
   return (
-    // Balanced centered wrapper shell
     <View style={styles.centerTabWrapper}>
-      <TouchableOpacity
-        activeOpacity={0.85}
-        onPress={onPress}
-        style={styles.aiButtonContainer}
-      >
+      <TouchableOpacity activeOpacity={0.85} onPress={onPress} style={styles.aiButtonContainer}>
         <Animated.View
           style={[
             styles.aiPulseRing,
@@ -266,158 +256,18 @@ function AnimatedAIButton({ accessibilityState, onPress, focused: isTabFocused }
   );
 }
 
-
-export default function BottomNavigator(){
-
-
-return(
-
-<Tab.Navigator
-
-screenOptions={{
-
-headerShown:false,
-
-tabBarActiveTintColor:"#F97316",
-
-tabBarInactiveTintColor:"#6B7280",
-
-tabBarStyle:{
-height:75,
-paddingBottom:12,
-paddingTop:10,
-backgroundColor: "#FFFFFF",
-borderTopWidth: 1,
-borderTopColor: "#E2E8F0"
-}
-
-}}
-
->
-
-
-<Tab.Screen
-
-name="Home"
-
-component={HomeStackNavigator}
-
-options={{
-
-tabBarIcon:({color,size,focused})=>(
-
-<Ionicons
-name={focused ? "home" : "home-outline"}
-color={color}
-size={size}
-/>
-
-)
-
-}}
-
-/>
-
-
-
-<Tab.Screen
-
-name="Vehicles"
-
-component={VehiclesStackNavigator}
-
-options={{
-
-tabBarIcon:({color,size,focused})=>(
-
-<Ionicons
-name={focused ? "car" : "car-outline"}
-color={color}
-size={size}
-/>
-
-)
-
-}}
-
-/>
-
-
-
-<Tab.Screen
-
-name="AI"
-
-component={AIChat}
-
-options={{
-  tabBarLabel: "AutoAI",
-  tabBarButton: (props) => (
-    <AnimatedAIButton 
-      {...props} 
-      focused={props.accessibilityState?.selected} 
-    />
-  ),
-}}
-
-/>
-
-<Tab.Screen
-
-name="Documents"
-
-component={DocumentsStackNavigator}
-
-options={{
-
-tabBarIcon:({color,size,focused})=>(
-
-<Ionicons
-name={focused ? "document-text" : "document-text-outline"}
-color={color}
-size={size}
-/>
-
-)
-
-}}
-
-/>
-
-
-
-<Tab.Screen
-
-name="Profile"
-
-component={ProfileStackNavigator}
-
-options={{
-
-tabBarIcon:({color,size,focused})=>(
-
-<Ionicons
-name={focused ? "person" : "person-outline"}
-color={color}
-size={size}
-/>
-
-)
-
-}}
-
-/>
-
-
-</Tab.Navigator>
-
-
-)
-
+// Root Navigation Container with Splash set as First Screen
+export default function AppNavigator() {
+  return (
+    <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Splash" component={SplashScreen} />
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="MainTabs" component={MainTabNavigator} />
+    </Stack.Navigator>
+  );
 }
 
 const styles = StyleSheet.create({
-  // New style added here to keep the absolute button explicitly inside the flex grid center
   centerTabWrapper: {
     flex: 1,
     alignItems: "center",
@@ -425,7 +275,7 @@ const styles = StyleSheet.create({
   },
   aiButtonContainer: {
     position: "absolute",
-    top: -30, // Perfectly balances the elevated look out of the tab line
+    top: -30,
     justifyContent: "center",
     alignItems: "center",
     width: 70,
