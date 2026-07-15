@@ -196,8 +196,17 @@ npm install
 
 # Clean installation
 npm ci
-```
 
+#Run Server
+cd backend
+node server.js
+```
+Or run in Expo
+```bash
+npx expo start
+npx expo run:android #Android Emulator
+npx expo run:ios #ios Simulator
+```
 ## 🎨 Theme & Styling
 
 The app uses a centralized theme system with:
