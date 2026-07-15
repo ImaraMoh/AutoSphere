@@ -55,16 +55,6 @@ export default StyleSheet.create({
     borderColor: "#E2E8F0"
   },
 
-  notificationDot: {
-    position: "absolute",
-    top: 10,
-    right: 11,
-    width: 7,
-    height: 7,
-    borderRadius: 3.5,
-    backgroundColor: "#EF4444"
-  },
-
   scrollContent: {
     paddingBottom: 40
   },
@@ -90,25 +80,22 @@ export default StyleSheet.create({
     marginTop: 2
   },
 
+  // Premium Hero Card Container
   heroVehicleCard: {
     backgroundColor: "#FFFFFF",
-    borderRadius: 20,
+    borderRadius: 22,
     padding: 20,
-    
-    // Forces the component to expand across the layout view track
-    alignSelf: "stretch", 
-    
-    // Inserts a fixed, uncompromised safety gutter on left and right sides
-    marginHorizontal: 16, 
+    alignSelf: "stretch",
+    marginHorizontal: 16,
     marginBottom: 24,
-    
     borderWidth: 1,
     borderColor: "#E2E8F0",
     shadowColor: "#0D1117",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.03,
-    shadowRadius: 12,
-    elevation: 2,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.04,
+    shadowRadius: 16,
+    elevation: 3,
+    overflow: "hidden",
     ...Platform.select({
       web: {
         boxSizing: "border-box"
@@ -119,19 +106,21 @@ export default StyleSheet.create({
   heroRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "flex-start"
+    alignItems: "flex-start",
+    marginBottom: 16
   },
 
   heroMeta: {
     flex: 1,
-    gap: 4
+    gap: 4,
+    paddingRight: 12
   },
 
   heroBadge: {
     fontSize: 10,
     fontWeight: "700",
     color: "#F97316",
-    letterSpacing: 1
+    letterSpacing: 1.2
   },
 
   heroVehicleTitle: {
@@ -142,15 +131,16 @@ export default StyleSheet.create({
   },
 
   heroVehicleSpecs: {
-    fontSize: 12,
+    fontSize: 13,
     color: "#64748B",
+    fontWeight: "500",
     fontFamily: Platform.OS === "web" ? "Plus Jakarta Sans" : undefined
   },
 
   heroIconWrapper: {
-    width: 50,
-    height: 50,
-    borderRadius: 14,
+    width: 52,
+    height: 52,
+    borderRadius: 16,
     backgroundColor: "#FFF7ED",
     alignItems: "center",
     justifyContent: "center",
@@ -158,33 +148,55 @@ export default StyleSheet.create({
     borderColor: "#FFEDD5"
   },
 
+  // High-End Premium Footer Row
   heroFooter: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 18,
     paddingTop: 14,
     borderTopWidth: 1,
-    borderTopColor: "#F1F5F9"
+    borderTopColor: "#F1F5F9",
+    width: "100%"
   },
 
   statusIndicatorContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8
+    flex: 1,
+    marginRight: 10
   },
 
   statusDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: "#16A34A"
+    width: 7,
+    height: 7,
+    borderRadius: 3.5,
+    marginRight: 6
   },
 
   statusText: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: "600",
-    color: "#16A34A",
+    fontFamily: Platform.OS === "web" ? "Plus Jakarta Sans" : undefined,
+    flex: 1
+  },
+
+  // Premium Switch Button Style
+  switchButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFF7ED",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: "#FFEDD5",
+    gap: 4
+  },
+
+  switchButtonText: {
+    fontSize: 11,
+    fontWeight: "700",
+    color: "#F97316",
     fontFamily: Platform.OS === "web" ? "Plus Jakarta Sans" : undefined
   },
 
@@ -199,7 +211,6 @@ export default StyleSheet.create({
     marginBottom: 12
   },
 
-  // 2x2 Fixed Static Non-Scroll Grid Platform Blocks
   utilitiesGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -212,7 +223,7 @@ export default StyleSheet.create({
   utilityGridCard: {
     backgroundColor: "#FFFFFF",
     width: "48.5%",
-    borderRadius: 16,
+    borderRadius: 18,
     padding: 14,
     borderWidth: 1,
     borderColor: "#E2E8F0",
@@ -227,7 +238,7 @@ export default StyleSheet.create({
   utilityIconBox: {
     width: 38,
     height: 38,
-    borderRadius: 10,
+    borderRadius: 12,
     backgroundColor: "#FFF7ED",
     alignItems: "center",
     justifyContent: "center"
@@ -247,62 +258,6 @@ export default StyleSheet.create({
     marginTop: 1
   },
 
-  // Centered AI Assistant Section
-  aiAssistantCard: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 20,
-    marginHorizontal: 16,
-    borderWidth: 1,
-    borderColor: "#E9D5FF",
-    flexDirection: "row",
-    overflow: "hidden",
-    shadowColor: "#A855F7",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.03,
-    shadowRadius: 10,
-    elevation: 2,
-    marginBottom: 24
-  },
-
-  aiLeftMarker: {
-    width: 5,
-    backgroundColor: "#A855F7"
-  },
-
-  aiContentContainer: {
-    flex: 1,
-    padding: 18,
-    gap: 2
-  },
-
-  aiTitleRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6
-  },
-
-  aiAssistBadge: {
-    fontSize: 10,
-    fontWeight: "700",
-    color: "#A855F7",
-    letterSpacing: 0.5
-  },
-
-  aiMainHeading: {
-    fontSize: 16,
-    fontWeight: "700",
-    fontFamily: Platform.OS === "web" ? "Poppins" : undefined,
-    color: "#0D1117"
-  },
-
-  aiBodyCopy: {
-    fontSize: 13,
-    color: "#64748B",
-    fontFamily: Platform.OS === "web" ? "Plus Jakarta Sans" : undefined,
-    lineHeight: 18,
-    marginTop: 2
-  },
-
   healthCardWrapper: {
     marginHorizontal: 16,
     marginBottom: 24
@@ -310,7 +265,7 @@ export default StyleSheet.create({
 
   diagnosticLoadingCard: {
     backgroundColor: "#FFFFFF",
-    borderRadius: 16,
+    borderRadius: 18,
     marginHorizontal: 16,
     padding: 20,
     alignItems: "center",
@@ -328,7 +283,6 @@ export default StyleSheet.create({
     fontWeight: "500"
   },
 
-  // Centered Services & Documents Small 2-Column Grid
   compactActionGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -339,7 +293,7 @@ export default StyleSheet.create({
 
   compactGridButton: {
     backgroundColor: "#FFFFFF",
-    borderRadius: 14,
+    borderRadius: 16,
     borderWidth: 1,
     borderColor: "#E2E8F0",
     width: "48.5%",
@@ -356,14 +310,5 @@ export default StyleSheet.create({
     fontFamily: Platform.OS === "web" ? "Plus Jakarta Sans" : undefined,
     color: "#0D1117",
     flex: 1
-  },
-
-  elementPressed: {
-    opacity: 0.7
-  },
-
-  cardPressed: {
-    transform: [{ scale: 0.98 }],
-    opacity: 0.95
   }
 });

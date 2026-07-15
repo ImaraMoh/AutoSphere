@@ -319,44 +319,33 @@ export default function Dashboard({ navigation }) {
               </View>
             </View>
 
-            <View style={styles.heroFooter}>
-              <View style={styles.statusIndicatorContainer}>
-                <View style={[styles.statusDot, { backgroundColor: getStatusColor() }]} />
-                <Text style={styles.statusText}>
-                  {getSystemStatusText()}
-                </Text>
-              </View>
-
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Ionicons
-                  name="checkmark-circle"
-                  size={20}
-                  color={getStatusColor()}
-                  style={{ marginRight: vehiclesList.length > 1 ? 8 : 0 }}
-                />
-
-                {vehiclesList.length > 1 && (
-                  <Pressable 
-                    onPress={(e) => {
-                      e.stopPropagation();
-                      setIsVehicleModalVisible(true);
-                    }}
-                    style={{ 
-                      flexDirection: "row", 
-                      alignItems: "center", 
-                      backgroundColor: "rgba(249, 115, 22, 0.12)", 
-                      paddingHorizontal: 8, 
-                      paddingVertical: 4, 
-                      borderRadius: 12 
-                    }}
-                  >
-                    <Text style={{ fontSize: 11, fontWeight: "600", color: "#F97316", marginRight: 2 }}>Switch</Text>
-                    <Ionicons name="swap-horizontal" size={12} color="#F97316" />
-                  </Pressable>
-                )}
-              </View>
-
+          <View style={styles.heroFooter}>
+            
+            {/* Status Section */}
+            <View style={styles.statusIndicatorContainer}>
+              <View style={[styles.statusDot, { backgroundColor: getStatusColor() }]} />
+              <Text style={styles.statusText} numberOfLines={1}>
+                {getSystemStatusText()}
+              </Text>
             </View>
+
+            {/* Action Section (Checkmark + Switch Button) */}
+            {vehiclesList.length > 1 && (
+              <View style={{ flexDirection: "row", alignItems: "center", flexShrink: 0 }}>
+
+                <Pressable 
+                  onPress={(e) => {
+                    e.stopPropagation();
+                    setIsVehicleModalVisible(true);
+                  }}
+                  style={styles.switchButton}
+                >
+                  <Ionicons name="swap-horizontal" size={15} color="#F97316" />
+                </Pressable>
+              </View>
+            )}
+
+          </View>
           </Pressable>
 
           <Text style={styles.sectionHeading}>
