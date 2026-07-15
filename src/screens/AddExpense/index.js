@@ -12,11 +12,14 @@ import {
   useWindowDimensions
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { getExpenses, saveExpenses } from "../../services/expenseStorage";
+import { saveExpense } from "../../services/expenseStorage"; // Updated to use saveExpense with vehicleId
 import AppHeader from "../../components/AppHeader";
-import styles from "./styles"; // Incorporates external styles layout seamlessly
+import styles from "./styles";
 
-export default function AddExpense({ navigation }) {
+export default function AddExpense({ navigation, route }) {
+  // Extract vehicleId passed from the previous screen or parameters
+  const vehicleId = route?.params?.vehicleId;
+
   const [expense, setExpense] = useState({
     title: "",
     category: "",
@@ -98,22 +101,29 @@ export default function AddExpense({ navigation }) {
   };
 
   const save = async () => {
+    if (!vehicleId) {
+      alert("Missing vehicle ID. Please select a vehicle first.");
+      return;
+    }
+
     if (!expense.title || !expense.category || !expense.amount || !expense.date) {
       alert("Please enter all details and select an expense date.");
       return;
     }
 
-    const old = await getExpenses();
     const newExpense = {
-      id: Date.now(),
       title: expense.title,
       category: expense.category,
       amount: Number(expense.amount),
       date: expense.date
     };
 
-    await saveExpenses([...old, newExpense]);
-    navigation.goBack();
+    const success = await saveExpense(vehicleId, newExpense);
+    if (success) {
+      navigation.goBack();
+    } else {
+      alert("Failed to save expense. Please try again.");
+    }
   };
 
   return (
@@ -161,9 +171,9 @@ export default function AddExpense({ navigation }) {
 
             {/* Amount Block */}
             <View style={{ gap: 6 }}>
-              <Text style={styles.label || styles.label}>Amount ($)</Text>
+              <Text style={styles.label || styles.label}>Amount (Rs.)</Text>
               <TextInput
-                placeholder="e.g., 65.50"
+                placeholder="e.g., 2500"
                 placeholderTextColor="#94A3B8"
                 keyboardType="numeric"
                 style={styles.input}

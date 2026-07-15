@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   SafeAreaView,
   StatusBar,
-  ScrollView
+  ScrollView,
+  Alert
 } from "react-native";
 import {
   ChevronLeft,
@@ -16,25 +17,39 @@ import {
   Plus,
   Car,
   Clock,
-  ShieldCheck,
   CheckCircle2
 } from "lucide-react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { getLoan } from "../../services/financeStorage";
+import { auth } from "../../firebase/firebaseConfig";
 import styles from "./styles";
 
-export default function Finance({ navigation }) {
+export default function Finance({ route, navigation }) {
+  const vehicleId = route?.params?.vehicleId || null;
   const [loan, setLoan] = useState(null);
 
   useFocusEffect(
     useCallback(() => {
       loadLoanData();
-    }, [])
+    }, [vehicleId])
   );
 
   const loadLoanData = async () => {
-    const data = await getLoan();
-    setLoan(data);
+    if (!auth.currentUser) {
+      Alert.alert("Authentication Error", "You must be logged in to view finance data.");
+      return;
+    }
+
+    if (!vehicleId) {
+      return;
+    }
+
+    try {
+      const data = await getLoan(vehicleId);
+      setLoan(data);
+    } catch (error) {
+      console.log("Error loading loan data:", error);
+    }
   };
 
   return (
@@ -116,7 +131,7 @@ export default function Finance({ navigation }) {
 
             <TouchableOpacity
               style={styles.primaryButton}
-              onPress={() => navigation.navigate("LoanApplication")}
+              onPress={() => navigation.navigate("LoanApplication", { vehicleId })}
               activeOpacity={0.8}
             >
               <Plus size={18} color="#FFFFFF" style={styles.btnIcon} />
@@ -143,7 +158,7 @@ export default function Finance({ navigation }) {
 
           <TouchableOpacity
             style={styles.actionCard}
-            onPress={() => navigation.navigate("LoanApplication")}
+            onPress={() => navigation.navigate("LoanApplication", { vehicleId })}
             activeOpacity={0.8}
           >
             <View style={[styles.actionIconBox, { backgroundColor: "#EFF6FF" }]}>
@@ -157,7 +172,7 @@ export default function Finance({ navigation }) {
         <View style={styles.actionGridContainer}>
           <TouchableOpacity
             style={[styles.actionCard, { flex: 1 }]}
-            onPress={() => navigation.navigate("PaymentSchedule")}
+            onPress={() => navigation.navigate("PaymentSchedule", { vehicleId })}
             activeOpacity={0.8}
           >
             <View style={[styles.actionIconBox, { backgroundColor: "#F0FDF4" }]}>

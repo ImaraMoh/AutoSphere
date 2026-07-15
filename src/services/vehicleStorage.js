@@ -1,188 +1,304 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// src/services/vehicleStorage.js
+
+import {
+  collection,
+  addDoc,
+  getDocs,
+  updateDoc,
+  deleteDoc,
+  doc,
+  query,
+  orderBy,
+  serverTimestamp
+} from "firebase/firestore";
+
+import { auth, db } from "../firebase/firebaseConfig";
+
+
+// Get current user
+const getCurrentUserId = () => {
+
+  const user = auth.currentUser;
+
+  if (!user) {
+    throw new Error("User is not logged in");
+  }
+
+  return user.uid;
+
+};
 
 
 
-const VEHICLE_KEY="vehicles";
-
-
+// ===============================
+// ADD VEHICLE
+// ===============================
 
 export const saveVehicle = async(vehicle)=>{
 
-try{
+  try{
+
+    const uid = getCurrentUserId();
 
 
-const old =
-await getVehicles();
+    const vehicleRef = collection(
+      db,
+      "users",
+      uid,
+      "vehicles"
+    );
 
 
+    const docRef = await addDoc(
+      vehicleRef,
+      {
+        ...vehicle,
 
-const updated=[
+        createdAt:
+        serverTimestamp(),
 
-...old,
-
-vehicle
-
-];
-
-
-
-await AsyncStorage.setItem(
-
-VEHICLE_KEY,
-
-JSON.stringify(updated)
-
-);
+        updatedAt:
+        serverTimestamp()
+      }
+    );
 
 
+    return {
 
-return true;
+      success:true,
+
+      id:docRef.id
+
+    };
 
 
-}
-catch(error){
+  }
 
-console.log(error);
+  catch(error){
 
-return false;
+    console.log(
+      "Save Vehicle Error:",
+      error
+    );
 
-}
+
+    return {
+
+      success:false,
+
+      error
+
+    };
+
+  }
 
 };
 
 
 
 
+// ===============================
+// GET ALL VEHICLES
+// ===============================
 
 export const getVehicles = async()=>{
 
-try{
+
+  try{
 
 
-const data =
-await AsyncStorage.getItem(
-VEHICLE_KEY
-);
-
-
-
-return data
-?
-JSON.parse(data)
-:
-[];
-
-
-}
-catch(error){
-
-console.log(error);
-
-return [];
-
-}
-
-};
+    const uid =
+    getCurrentUserId();
 
 
 
-
-
-export const deleteVehicle = async(id)=>{
-
-
-try{
-
-
-const vehicles =
-await getVehicles();
+    const vehicleRef =
+    collection(
+      db,
+      "users",
+      uid,
+      "vehicles"
+    );
 
 
 
-const updated =
-vehicles.filter(
-
-item=>
-
-String(item.id)!==String(id)
-
-);
-
-
-
-await AsyncStorage.setItem(
-
-VEHICLE_KEY,
-
-JSON.stringify(updated)
-
-);
+    const q =
+    query(
+      vehicleRef,
+      orderBy(
+        "createdAt",
+        "desc"
+      )
+    );
 
 
 
-return true;
+    const snapshot =
+    await getDocs(q);
 
 
-}
 
-catch(error){
+    const vehicles =
+    snapshot.docs.map(item=>({
 
-console.log(error);
+      id:item.id,
 
-return false;
+      ...item.data()
 
-}
+    }));
+
+
+
+    return vehicles;
+
+
+
+  }
+
+  catch(error){
+
+    console.log(
+      "Get Vehicles Error:",
+      error
+    );
+
+
+    return [];
+
+  }
 
 
 };
 
+
+
+
+
+// ===============================
+// UPDATE VEHICLE
+// ===============================
 
 export const updateVehicle = async(vehicle)=>{
 
-try{
 
-const vehicles =
-await getVehicles();
+  try{
 
 
-const updated =
-vehicles.map(item=>
-
-String(item.id)===String(vehicle.id)
-
-?
-
-vehicle
-
-:
-
-item
-
-);
+    const uid =
+    getCurrentUserId();
 
 
 
-await AsyncStorage.setItem(
-
-"vehicles",
-
-JSON.stringify(updated)
-
-);
-
-
-
-return true;
+    const vehicleDoc =
+    doc(
+      db,
+      "users",
+      uid,
+      "vehicles",
+      vehicle.id
+    );
 
 
-}
 
-catch(error){
+    await updateDoc(
 
-console.log(error);
+      vehicleDoc,
 
-return false;
+      {
 
-}
+        ...vehicle,
+
+        updatedAt:
+        serverTimestamp()
+
+      }
+
+    );
+
+
+
+    return true;
+
+
+  }
+
+  catch(error){
+
+
+    console.log(
+      "Update Vehicle Error:",
+      error
+    );
+
+
+    return false;
+
+
+  }
+
+
+};
+
+
+
+
+
+
+// ===============================
+// DELETE VEHICLE
+// ===============================
+
+export const deleteVehicle = async(vehicleId)=>{
+
+
+  try{
+
+
+    const uid =
+    getCurrentUserId();
+
+
+
+    const vehicleDoc =
+    doc(
+
+      db,
+
+      "users",
+
+      uid,
+
+      "vehicles",
+
+      vehicleId
+
+    );
+
+
+
+    await deleteDoc(vehicleDoc);
+
+
+
+    return true;
+
+
+
+  }
+
+  catch(error){
+
+
+    console.log(
+      "Delete Vehicle Error:",
+      error
+    );
+
+
+    return false;
+
+
+  }
+
 
 };

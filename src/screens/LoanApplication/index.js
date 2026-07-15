@@ -12,9 +12,12 @@ import {
 import { ChevronLeft, FileText, UploadCloud, CheckCircle } from "lucide-react-native";
 import * as DocumentPicker from "expo-document-picker";
 import { saveLoan } from "../../services/financeStorage";
+import { auth } from "../../firebase/firebaseConfig";
 import styles from "./styles";
 
-export default function LoanApplication({ navigation }) {
+export default function LoanApplication({ route, navigation }) {
+  const vehicleId = route?.params?.vehicleId || null;
+
   const [vehicleModel, setVehicleModel] = useState("");
   const [loanAmount, setLoanAmount] = useState("");
   const [monthlyIncome, setMonthlyIncome] = useState("");
@@ -40,6 +43,16 @@ export default function LoanApplication({ navigation }) {
   };
 
   const handleSubmitApplication = async () => {
+    if (!auth.currentUser) {
+      Alert.alert("Authentication Error", "You must be logged in to apply for a loan.");
+      return;
+    }
+
+    if (!vehicleId) {
+      Alert.alert("Missing Vehicle", "No target vehicle was selected. Please go back and select a vehicle.");
+      return;
+    }
+
     if (!vehicleModel || !loanAmount || !monthlyIncome || !employmentType) {
       Alert.alert("Missing Fields", "Please fill in all the required loan application details.");
       return;
@@ -55,9 +68,10 @@ export default function LoanApplication({ navigation }) {
     };
 
     try {
-      await saveLoan(newLoan);
+      await saveLoan(vehicleId, newLoan);
       navigation.goBack();
     } catch (error) {
+      console.log("Error saving loan application:", error);
       Alert.alert("Error", "Failed to submit loan application. Please try again.");
     }
   };

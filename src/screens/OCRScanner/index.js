@@ -7,7 +7,10 @@ import styles from "./styles";
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-export default function OCRScanner({ navigation }) {
+export default function OCRScanner({ route, navigation }) {
+  // Extract vehicleId safely from route params if passed from the vehicle profile
+  const { vehicleId = null } = route.params || {};
+  
   const [openCamera, setOpenCamera] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
   const [flash, setFlash] = useState("off");
@@ -31,7 +34,10 @@ export default function OCRScanner({ navigation }) {
         const photo = await cameraRef.current.takePictureAsync(options);
         if (photo?.uri) {
           setOpenCamera(false);
-          navigation.navigate("ScanPreview", { image: photo.uri });
+          navigation.navigate("ScanPreview", { 
+            image: photo.uri,
+            vehicleId: vehicleId // Forward vehicleId
+          });
         }
       } catch (error) {
         Alert.alert("Capture Error", "Could not capture document frame.");
@@ -48,6 +54,7 @@ export default function OCRScanner({ navigation }) {
     if (!result.canceled) {
       navigation.navigate("ScanPreview", {
         image: result.assets[0].uri,
+        vehicleId: vehicleId // Forward vehicleId
       });
     }
   };

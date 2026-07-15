@@ -11,15 +11,28 @@ import {
 } from "react-native";
 import { ChevronLeft, ShieldCheck } from "lucide-react-native";
 import { saveInsurance } from "../../services/insuranceStorage";
+import { auth } from "../../firebase/firebaseConfig";
 import styles from "./styles";
 
-export default function RenewInsurance({ navigation }) {
+export default function RenewInsurance({ route, navigation }) {
+  const vehicleId = route?.params?.vehicleId || null;
+
   const [provider, setProvider] = useState("");
   const [policyNumber, setPolicyNumber] = useState("");
   const [vehicleReg, setVehicleReg] = useState("");
   const [amount, setAmount] = useState("");
 
   const handleSaveInsurance = async () => {
+    if (!auth.currentUser) {
+      Alert.alert("Authentication Error", "You must be logged in to save insurance.");
+      return;
+    }
+
+    if (!vehicleId) {
+      Alert.alert("Missing Vehicle", "No target vehicle was selected. Please go back and select a vehicle.");
+      return;
+    }
+
     if (!provider || !policyNumber || !vehicleReg || !amount) {
       Alert.alert("Missing Fields", "Please fill in all the required insurance details.");
       return;
@@ -34,11 +47,15 @@ export default function RenewInsurance({ navigation }) {
       status: "Active"
     };
 
-    // Save data to storage
-    await saveInsurance(newPolicy);
+    // Save data to storage using the target vehicleId
+    const success = await saveInsurance(vehicleId, newPolicy);
     
-    // Immediately go back to the previous screen
-    navigation.goBack();
+    if (success) {
+      // Immediately go back to the previous screen
+      navigation.goBack();
+    } else {
+      Alert.alert("Save Error", "Could not save the insurance policy. Check console.");
+    }
   };
 
   return (

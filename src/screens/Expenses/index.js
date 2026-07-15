@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useContext } from "react";
 import {
   View,
   Text,
@@ -6,28 +6,48 @@ import {
   Pressable,
   SafeAreaView,
   StatusBar,
-  useWindowDimensions
+  useWindowDimensions,
+  ActivityIndicator
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import AppHeader from "../../components/AppHeader";
 import ExpenseCard from "../../components/ExpenseCard";
-import { getExpenses } from "../../services/expenseStorage";
+import { getExpenses } from "../../services/expenseStorage"; // or your updated expenseService path
+import { VehicleContext } from "../../context/VehicleContext";
 import styles from "./styles";
 
-export default function Expenses({ navigation }) {
+export default function Expenses({ navigation, route }) {
   const [expenses, setExpenses] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { width: windowWidth } = useWindowDimensions();
+
+  // Extract vehicleId from navigation route params or fallback to global VehicleContext
+  const routeVehicleId = route?.params?.vehicleId || route?.params?.vehicle?.id;
+  const { primaryVehicle } = useContext(VehicleContext) || {};
+  const vehicleId = routeVehicleId || primaryVehicle?.id;
 
   useFocusEffect(
     useCallback(() => {
-      load();
-    }, [])
+      if (vehicleId) {
+        load(vehicleId);
+      } else {
+        setLoading(false);
+        setExpenses([]);
+      }
+    }, [vehicleId])
   );
 
-  const load = async () => {
-    const data = await getExpenses();
-    setExpenses(data || []);
+  const load = async (vId) => {
+    try {
+      setLoading(true);
+      const data = await getExpenses(vId);
+      setExpenses(data || []);
+    } catch (error) {
+      console.log("Error loading expenses screen:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const total = expenses.reduce((sum, item) => sum + Number(item.amount || 0), 0);
@@ -37,6 +57,24 @@ export default function Expenses({ navigation }) {
   const responsiveWrapperStyle = isLargeScreen 
     ? { maxWidth: 540, alignSelf: "center", width: "100%" } 
     : { width: "100%" };
+
+  if (!vehicleId) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+        <AppHeader title="Expense Tracker" navigation={navigation} />
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 24 }}>
+          <View style={styles.emptyIconCircle}>
+            <Ionicons name="car-outline" size={30} color="#F97316" />
+          </View>
+          <Text style={styles.emptyTitle}>No Vehicle Selected</Text>
+          <Text style={[styles.emptySubtitle, { textAlign: "center", marginTop: 8 }]}>
+            Please select a vehicle from your dashboard or profile to track expenses.
+          </Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -79,7 +117,11 @@ export default function Expenses({ navigation }) {
 
           {/* History List Content Area */}
           <View style={styles.listWrapper}>
-            {expenses.length === 0 ? (
+            {loading ? (
+              <View style={{ paddingVertical: 40, alignItems: "center" }}>
+                <ActivityIndicator size="large" color="#F97316" />
+              </View>
+            ) : expenses.length === 0 ? (
               <View style={styles.emptyContainer}>
                 <View style={styles.emptyIconCircle}>
                   <Ionicons name="receipt-outline" size={30} color="#F97316" />
@@ -101,7 +143,7 @@ export default function Expenses({ navigation }) {
           {/* Premium Call to Action Floating Button Style */}
           <Pressable
             style={({ pressed }) => [styles.primaryButton, pressed && styles.buttonPressed]}
-            onPress={() => navigation.navigate("AddExpense")}
+            onPress={() => navigation.navigate("AddExpense", { vehicleId })}
           >
             <View style={styles.buttonIcon}>
               <Ionicons name="add" size={18} color="#FFFFFF" />

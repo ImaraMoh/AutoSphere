@@ -1,5 +1,5 @@
 // Profile.js
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { auth } from "../../firebase/firebaseConfig";
 import { getSettings, saveSettings } from "../../services/settingsStorage";
 import { getProfile } from "../../services/profileStorage";
 import styles from "./styles";
@@ -40,20 +40,19 @@ export default function Profile({ navigation }) {
     try {
       setLoading(true);
       
-      // Fetch profile service data
+      // Fetch profile service data from Firebase Firestore
       let user = await getProfile();
       
-      // If service profile is empty, check AsyncStorage for logged-in user credentials
+      const currentUser = auth.currentUser;
+
+      // Fallback: Populate with Firebase Auth credentials if Firestore document is missing or empty
       if (!user || !user.name || user.name === "AutoSphere User") {
-        const storedUser = await AsyncStorage.getItem("@user_profile");
-        if (storedUser) {
-          const parsedUser = JSON.parse(storedUser);
-          user = {
-            name: parsedUser.fullName || "AutoSphere User",
-            email: parsedUser.email || "No email added",
-            image: parsedUser.image || null
-          };
-        }
+        user = {
+          name: currentUser?.displayName || "AutoSphere User",
+          email: currentUser?.email || "No email added",
+          phone: currentUser?.phoneNumber || "",
+          image: currentUser?.photoURL || null
+        };
       }
 
       const savedSettings = await getSettings();
@@ -80,6 +79,16 @@ export default function Profile({ navigation }) {
   }
 
   function handleLogout() {
+    // Web platform fallback since window.alert/confirm works better in browsers
+    if (Platform.OS === "web") {
+      const confirmed = window.confirm("Are you sure you want to logout?");
+      if (confirmed) {
+        performLogout();
+      }
+      return;
+    }
+
+    // Native Mobile Alert
     Alert.alert(
       "Logout",
       "Are you sure you want to logout?",
@@ -88,15 +97,23 @@ export default function Profile({ navigation }) {
         {
           text: "Logout",
           style: "destructive",
-          onPress: () => {
-            navigation.reset({
-              index: 0,
-              routes: [{ name: "Login" }]
-            });
-          }
+          onPress: () => performLogout(),
         }
-      ]
+      ],
+      { cancelable: true }
     );
+  }
+
+  async function performLogout() {
+    try {
+      await auth.signOut();
+    } catch (error) {
+      console.log("Firebase SignOut Error:", error);
+    }
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Login" }]
+    });
   }
 
   if (loading) {

@@ -1,132 +1,102 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// aiHealthStorage.js
 
+import {
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  orderBy,
+  limit,
+  serverTimestamp
+} from "firebase/firestore";
 
-const AI_HEALTH_KEY =
-"autosphere_ai_health_history";
+import {
+  auth,
+  db
+} from "../firebase/firebaseConfig";
 
+/**
+ * Saves an AI health report to Firebase Firestore under the specified vehicle's subcollection.
+ * Path: users/{uid}/vehicles/{vehicleId}/healthHistory/{reportId}
+ * 
+ * @param {string} vehicleId - The ID of the vehicle being analyzed
+ * @param {object} report - The health report object (score, analysis, etc.)
+ */
+export async function saveHealthReport(vehicleId, report) {
+  try {
+    const currentUser = auth.currentUser;
 
+    if (!currentUser || !vehicleId) {
+      console.log("Save Health Report Error: Missing user or vehicle ID");
+      return false;
+    }
 
-export async function saveHealthReport(report){
+    const uid = currentUser.uid;
 
+    const healthCollectionRef = collection(
+      db,
+      "users",
+      uid,
+      "vehicles",
+      vehicleId,
+      "healthHistory"
+    );
 
-try{
+    // Sanitize payload fields to protect against raw index formatting issues
+    const sanitizedReport = {
+      score: Number(report?.score || 0),
+      healthStatus: String(report?.healthStatus || report?.analysis || "Good Condition"),
+      maintenancePrediction: String(report?.maintenancePrediction || ""),
+      drivingEfficiency: String(report?.drivingEfficiency || ""),
+      expenseBehaviour: String(report?.expenseBehaviour || ""),
+      analysis: String(report?.analysis || ""),
+      recommendations: Array.isArray(report?.recommendations) ? report.recommendations : [],
+      createdAt: serverTimestamp(),
+      date: new Date().toISOString()
+    };
 
+    await addDoc(healthCollectionRef, sanitizedReport);
 
-const oldData =
-await AsyncStorage.getItem(
-AI_HEALTH_KEY
-);
-
-
-
-const history =
-oldData
-?
-JSON.parse(oldData)
-:
-[];
-
-
-
-
-const newReport={
-
-
-...report,
-
-
-id:
-Date.now(),
-
-
-date:
-new Date().toISOString()
-
-
-};
-
-
-
-
-history.unshift(newReport);
-
-
-
-
-// keep latest 20 reports
-
-const updated =
-history.slice(0,20);
-
-
-
-await AsyncStorage.setItem(
-
-AI_HEALTH_KEY,
-
-JSON.stringify(updated)
-
-);
-
-
-
-return true;
-
-
-
+    return true;
+  } catch (error) {
+    console.log("Health Save Error (Firebase):", error);
+    return false;
+  }
 }
 
-catch(error){
+/**
+ * Fetches the health history for a specific vehicle from Firebase Firestore.
+ * Path: users/{uid}/vehicles/{vehicleId}/healthHistory
+ * 
+ * @param {string} vehicleId - The ID of the vehicle
+ * @returns {Promise<Array>} - Array of past health reports
+ */
+export async function getHealthHistory(vehicleId) {
+  try {
+    const currentUser = auth.currentUser;
 
+    if (!currentUser || !vehicleId) {
+      return [];
+    }
 
-console.log(
-"Health Save Error",
-error
-);
+    const uid = currentUser.uid;
 
+    const healthQuery = query(
+      collection(db, "users", uid, "vehicles", vehicleId, "healthHistory"),
+      orderBy("date", "desc"),
+      limit(20)
+    );
 
-return false;
+    const querySnapshot = await getDocs(healthQuery);
 
+    const history = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
 
-}
-
-}
-
-
-
-
-
-
-
-export async function getHealthHistory(){
-
-
-try{
-
-
-const data =
-await AsyncStorage.getItem(
-AI_HEALTH_KEY
-);
-
-
-
-return data
-?
-JSON.parse(data)
-:
-[];
-
-
-}
-
-catch(error){
-
-
-return [];
-
-
-}
-
-
+    return history;
+  } catch (error) {
+    console.log("Get Health History Error (Firebase):", error);
+    return [];
+  }
 }

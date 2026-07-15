@@ -1,4 +1,4 @@
-// DocumentWallet.js
+// DocumentWallet/index.js
 import React, { useState, useCallback } from "react";
 import {
   View,
@@ -17,7 +17,10 @@ import { getDocuments, deleteDocument } from "../../services/documentStorage";
 import { useFocusEffect } from "@react-navigation/native";
 import styles from "./styles";
 
-export default function DocumentWallet({ navigation }) {
+export default function DocumentWallet({ route, navigation }) {
+  // Extract vehicleId, fallback to a default identifier if not passed
+  const vehicleId = route?.params?.vehicleId || "global-wallet";
+
   const [documents, setDocuments] = useState([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
@@ -26,7 +29,7 @@ export default function DocumentWallet({ navigation }) {
   const isLargeScreen = windowWidth > 600;
 
   const load = async () => {
-    const data = await getDocuments();
+    const data = await getDocuments(vehicleId);
     setDocuments(data || []);
   };
 
@@ -35,7 +38,7 @@ export default function DocumentWallet({ navigation }) {
       let isActive = true;
 
       const fetchLatestDocuments = async () => {
-        const data = await getDocuments();
+        const data = await getDocuments(vehicleId);
         if (isActive) {
           setDocuments(data || []);
         }
@@ -46,12 +49,12 @@ export default function DocumentWallet({ navigation }) {
       return () => {
         isActive = false;
       };
-    }, [])
+    }, [vehicleId])
   );
 
   const remove = async (id) => {
     const performDelete = async () => {
-      await deleteDocument(id);
+      await deleteDocument(id, vehicleId);
       load();
     };
 
@@ -196,12 +199,10 @@ export default function DocumentWallet({ navigation }) {
 
       </View>
 
-      {/* Floating Action Button (FAB) */}
+      {/* Floating Action Button (FAB) - Passes vehicleId forward to the scanner/uploader */}
       <TouchableOpacity
         style={styles.fab}
-        onPress={() => navigation.navigate("UploadDocument")}
-        activeOpacity={0.85}
-      >
+        onPress={() => navigation.navigate("UploadDocument", { vehicleId: vehicleId })}>
         <Plus size={22} color="white" />
       </TouchableOpacity>
     </SafeAreaView>

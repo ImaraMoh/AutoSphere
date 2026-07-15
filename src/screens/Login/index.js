@@ -1,21 +1,24 @@
+// LoginScreen.js
 import React, { useState } from "react";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
   Alert,
+  ActivityIndicator,
+  Image
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { registerUserWithFirebase, loginUserWithFirebase } from "../../firebase/authService";
 import styles from "./styles";
 
 export default function LoginScreen({ navigation }) {
   const [activeTab, setActiveTab] = useState("login"); // 'login' or 'register'
+  const [loading, setLoading] = useState(false);
 
   // Form Fields
   const [email, setEmail] = useState("");
@@ -28,64 +31,50 @@ export default function LoginScreen({ navigation }) {
   const [vehicleYear, setVehicleYear] = useState("");
   const [vehicleNumber, setVehicleNumber] = useState("");
 
-  // Handle Authentication / Registration Flow
   const handleSubmit = async () => {
     if (!email || !password) {
       Alert.alert("Error", "Please fill in all mandatory fields.");
       return;
     }
 
+    setLoading(true);
+
     try {
       if (activeTab === "register") {
         if (!fullName || !vehicleMake || !vehicleModel || !vehicleNumber) {
           Alert.alert("Incomplete Details", "Please fill in your name and primary vehicle information.");
+          setLoading(false);
           return;
         }
 
-        const userData = {
-          fullName,
-          email,
-          password, 
-          primaryVehicle: {
-            make: vehicleMake,
-            model: vehicleModel,
-            year: vehicleYear,
-            plateNumber: vehicleNumber,
-          },
+        const primaryVehicleData = {
+          make: vehicleMake,
+          model: vehicleModel,
+          year: vehicleYear,
+          plateNumber: vehicleNumber,
         };
 
-        // Save to Local Storage for Profile & Dashboard retrieval
-        await AsyncStorage.setItem("@user_profile", JSON.stringify(userData));
-        await AsyncStorage.setItem("@primary_vehicle", JSON.stringify(userData.primaryVehicle));
+        // Register in Firebase Auth & Firestore
+        await registerUserWithFirebase(email.trim().toLowerCase(), password, fullName, primaryVehicleData);
 
-        // Automatically switch to login tab and prefill user's email for convenience
+        setLoading(false);
         setActiveTab("login");
         Alert.alert("Success", "Account created successfully! Please sign in with your credentials.");
       } else {
-        // Sign In Verification check
-        const storedUser = await AsyncStorage.getItem("@user_profile");
-        
-        if (storedUser) {
-          const parsedUser = JSON.parse(storedUser);
-          if (parsedUser.email.toLowerCase() === email.trim().toLowerCase()) {
-            navigation.replace("MainTabs");
-            return;
-          }
-        }
-
-        // Fallback mock validation if storage was empty
-        const fallbackUserData = {
-          fullName: "Garage Member",
-          email: email,
-          primaryVehicle: { make: "Tesla", model: "Model 3", year: "2024", plateNumber: "CA-7789" }
-        };
-        await AsyncStorage.setItem("@user_profile", JSON.stringify(fallbackUserData));
-        await AsyncStorage.setItem("@primary_vehicle", JSON.stringify(fallbackUserData.primaryVehicle));
-
-        navigation.replace("MainTabs");
+        // Sign in via Firebase Auth
+        await loginUserWithFirebase(email.trim().toLowerCase(), password);
+        setLoading(false);
       }
     } catch (error) {
-      Alert.alert("Storage Error", "Failed to process user authentication.");
+      setLoading(false);
+      // Explicitly log the full error object to your terminal for debugging
+      console.log("FIREBASE AUTH ERROR CODE:", error.code);
+      console.log("FIREBASE AUTH ERROR MESSAGE:", error.message);
+      
+      Alert.alert(
+        "Authentication Error", 
+        error.message || "Failed to process request. Check terminal logs."
+      );
     }
   };
 
@@ -99,7 +88,10 @@ export default function LoginScreen({ navigation }) {
         {/* Brand Header */}
         <View style={styles.headerContainer}>
           <View style={styles.iconWrapper}>
-            <Ionicons name="car-sport" size={36} color="#F97316" />
+            <Image
+              source={require("../../../assets/logo/logo.png")}
+              style={{ width: 68, height: 68, borderRadius: 22,resizeMode: "contain" }}
+            />
           </View>
           <Text style={styles.brandTitle}>AutoSphere</Text>
           <Text style={styles.brandSubtitle}>Manage your garage & rides seamlessly</Text>
@@ -168,7 +160,7 @@ export default function LoginScreen({ navigation }) {
             />
           </View>
 
-          {/* Primary Vehicle Registration Fields (Only shown on Register tab) */}
+          {/* Primary Vehicle Registration Fields */}
           {activeTab === "register" && (
             <View style={styles.vehicleSectionContainer}>
               <Text style={styles.sectionHeader}>Primary Vehicle Information</Text>
@@ -223,11 +215,22 @@ export default function LoginScreen({ navigation }) {
           )}
 
           {/* Action Button */}
-          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit} activeOpacity={0.85}>
-            <Text style={styles.submitButtonText}>
-              {activeTab === "login" ? "Sign In to Garage" : "Complete Registration"}
-            </Text>
-            <Ionicons name="arrow-forward" size={18} color="#FFFFFF" style={{ marginLeft: 8 }} />
+          <TouchableOpacity 
+            style={[styles.submitButton, loading && { opacity: 0.7 }]} 
+            onPress={handleSubmit} 
+            disabled={loading}
+            activeOpacity={0.85}
+          >
+            {loading ? (
+              <ActivityIndicator size="small" color="#FFFFFF" />
+            ) : (
+              <>
+                <Text style={styles.submitButtonText}>
+                  {activeTab === "login" ? "Login" : "Complete Registration"}
+                </Text>
+                <Ionicons name="arrow-forward" size={18} color="#FFFFFF" style={{ marginLeft: 8 }} />
+              </>
+            )}
           </TouchableOpacity>
         </View>
 

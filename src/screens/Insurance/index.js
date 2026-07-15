@@ -19,18 +19,19 @@ import InsuranceCard from "../../components/InsuranceCard";
 import { getInsurance } from "../../services/insuranceStorage";
 import styles from "./styles";
 
-export default function Insurance({ navigation }) {
+export default function Insurance({ route, navigation }) {
+  const vehicleId = route?.params?.vehicleId || null;
   const [insurance, setInsurance] = useState(null);
 
-  // Automatically fetches fresh data whenever the screen comes into focus
+  // Automatically fetches fresh data for this specific vehicle whenever the screen comes into focus
   useFocusEffect(
     useCallback(() => {
       loadInsuranceData();
-    }, [])
+    }, [vehicleId])
   );
 
   const loadInsuranceData = async () => {
-    const data = await getInsurance();
+    const data = await getInsurance(vehicleId);
     setInsurance(data);
   };
 
@@ -78,7 +79,7 @@ export default function Insurance({ navigation }) {
 
             <TouchableOpacity
               style={styles.primaryButton}
-              onPress={() => navigation.navigate("RenewInsurance")}
+              onPress={() => navigation.navigate("RenewInsurance", { vehicleId })}
               activeOpacity={0.8}
             >
               <Plus size={18} color="#FFFFFF" style={styles.btnIcon} />
@@ -92,7 +93,7 @@ export default function Insurance({ navigation }) {
         <View style={styles.actionsGrid}>
           <TouchableOpacity
             style={styles.actionCard}
-            onPress={() => navigation.navigate("RenewInsurance")}
+            onPress={() => navigation.navigate("RenewInsurance", { vehicleId })}
             activeOpacity={0.8}
           >
             <View style={[styles.actionIconBox, { backgroundColor: "#FFF7ED" }]}>
@@ -104,7 +105,7 @@ export default function Insurance({ navigation }) {
 
           <TouchableOpacity
             style={styles.actionCard}
-            onPress={() => navigation.navigate("SubmitClaim")}
+            onPress={() => navigation.navigate("SubmitClaim", { vehicleId })}
             activeOpacity={0.8}
           >
             <View style={[styles.actionIconBox, { backgroundColor: "#EFF6FF" }]}>

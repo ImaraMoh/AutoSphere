@@ -1,6 +1,13 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const KEY = "driving";
+import {
+  collection,
+  getDocs,
+  doc,
+  setDoc,
+  query,
+  serverTimestamp
+} from "firebase/firestore";
+import { auth, db } from "../firebase/firebaseConfig";
 
 const initialSchoolsData = [
   {
@@ -104,16 +111,68 @@ const initialSchoolsData = [
   }
 ];
 
+/**
+ * Saves driving schools or user booking details to Firebase Firestore.
+ * Path: users/{uid}/drivingSchools/schoolsData
+ * 
+ * @param {Array|Object} data - Driving schools list or booking data object
+ */
 export const saveBooking = async (data) => {
-  await AsyncStorage.setItem(KEY, JSON.stringify(data));
+  try {
+    const currentUser = auth.currentUser;
+
+    if (!currentUser) {
+      console.log("Save Booking Error: No authenticated user found.");
+      return;
+    }
+
+    const uid = currentUser.uid;
+    const docRef = doc(db, "users", uid, "drivingSchools", "schoolsData");
+
+    await setDoc(docRef, {
+      schools: data,
+      updatedAt: serverTimestamp()
+    });
+  } catch (error) {
+    console.log("Error saving driving data to Firebase:", error);
+  }
 };
 
+/**
+ * Fetches driving schools data from Firebase Firestore. 
+ * Seeds initial demo academies if no prior document exists in the user's collection.
+ * 
+ * @returns {Promise<Array>} - List of driving schools and instructors
+ */
 export const getBooking = async () => {
-  const data = await AsyncStorage.getItem(KEY);
-  if (!data) {
-    // Seed initial data if nothing exists yet
-    await saveBooking(initialSchoolsData);
+  try {
+    const currentUser = auth.currentUser;
+
+    if (!currentUser) {
+      return initialSchoolsData;
+    }
+
+    const uid = currentUser.uid;
+    const docRef = doc(db, "users", uid, "drivingSchools", "schoolsData");
+    const docSnap = await getDocs(query(collection(db, "users", uid, "drivingSchools")));
+
+    // Check if document exists or collection is empty
+    if (docSnap.empty) {
+      await saveBooking(initialSchoolsData);
+      return initialSchoolsData;
+    }
+
+    // Find the specific schoolsData doc or map through docs
+    let schoolsResult = initialSchoolsData;
+    docSnap.forEach((document) => {
+      if (document.id === "schoolsData" && document.data().schools) {
+        schoolsResult = document.data().schools;
+      }
+    });
+
+    return schoolsResult;
+  } catch (error) {
+    console.log("Error fetching driving data from Firebase:", error);
     return initialSchoolsData;
   }
-  return JSON.parse(data);
 };

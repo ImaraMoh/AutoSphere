@@ -1,4 +1,5 @@
-import React, { useState, useCallback } from "react";
+// Reminder.js
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -7,46 +8,94 @@ import {
   SafeAreaView,
   Alert,
   Platform,
-  useWindowDimensions
+  useWindowDimensions,
+  Modal,
+  TouchableOpacity
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import AppHeader from "../../components/AppHeader";
 import { getReminders, deleteReminder } from "../../services/reminderStorage"; 
+import { getVehicles } from "../../services/vehicleStorage";
+import { saveNotification } from "../../services/notificationStorage"; // Imported notification storage helper
 import styles from "./styles";
 
 export default function Reminder({ navigation }) {
   const [data, setData] = useState([]);
+  const [vehicles, setVehicles] = useState([]);
+  const [selectedVehicleId, setSelectedVehicleId] = useState(null);
+  const [showVehicleModal, setShowVehicleModal] = useState(false);
+  
   const { width: windowWidth } = useWindowDimensions();
+
+  // Load vehicles on mount to allow vehicle filtering / selection
+  useEffect(() => {
+    loadVehicles();
+  }, []);
 
   useFocusEffect(
     useCallback(() => {
-      load();
-    }, [])
+      loadReminders();
+    }, [selectedVehicleId])
   );
 
-  const load = async () => {
-    const reminders = await getReminders();
-    setData(reminders || []);
+  const loadVehicles = async () => {
+    try {
+      const storedVehicles = typeof getVehicles === "function" ? await getVehicles() : [];
+      setVehicles(storedVehicles || []);
+      if (storedVehicles && storedVehicles.length > 0 && !selectedVehicleId) {
+        setSelectedVehicleId(storedVehicles[0].id || storedVehicles[0]._id);
+      }
+    } catch (error) {
+      console.log("Error loading vehicles", error);
+    }
+  };
+
+  const loadReminders = async () => {
+    try {
+      const reminders = selectedVehicleId ? await getReminders(selectedVehicleId) : await getReminders();
+      setData(reminders || []);
+
+      // Automatically sync active reminders into Firestore notifications queue
+      if (reminders && reminders.length > 0) {
+        for (const item of reminders) {
+          const reminderDateStr = item.date || item.dueDate || item.dateTime;
+          if (reminderDateStr) {
+            await saveNotification({
+              title: item.title || "Vehicle Reminder",
+              message: `Upcoming due for ${item.type || "Service"} on ${formatReminderDate(reminderDateStr)}`,
+              type: item.type || "Maintenance",
+              priority: item.priority || "Medium",
+              date: reminderDateStr,
+              reminderId: item.id || item._id,
+              read: false
+            });
+          }
+        }
+      }
+    } catch (error) {
+      console.log("Error loading reminders", error);
+      setData([]);
+    }
   };
 
   const handleDelete = (id) => {
     const executeDeletion = async () => {
       try {
-        // 1. Optimistically update local UI state immediately so it vanishes instantly
-        setData((prevData) => prevData.filter((item) => item.id !== id));
+        setData((prevData) => prevData.filter((item) => item.id !== id && item._id !== id));
 
-        // 2. Perform the async storage update background task
         if (typeof deleteReminder === "function") {
-          await deleteReminder(id);
+          if (selectedVehicleId) {
+            await deleteReminder(selectedVehicleId, id);
+          } else {
+            await deleteReminder(id);
+          }
         }
         
-        // 3. Re-sync structural state from storage to make sure everything matches perfectly
-        await load();
+        await loadReminders();
       } catch (error) {
         console.log("Delete error", error);
-        // Fallback: reload original data if backend execution fails
-        await load();
+        await loadReminders();
       }
     };
 
@@ -64,7 +113,6 @@ export default function Reminder({ navigation }) {
             text: "Delete", 
             style: "destructive", 
             onPress: () => {
-              // Wrapped inside a microtask context wrapper execution clear
               setTimeout(() => {
                 executeDeletion();
               }, 1);
@@ -75,7 +123,6 @@ export default function Reminder({ navigation }) {
     }
   };
 
-  // Safe fallback logic helper to parse date data variants safely
   const formatReminderDate = (dateVal) => {
     if (!dateVal) return "Not Set";
     try {
@@ -92,9 +139,40 @@ export default function Reminder({ navigation }) {
   const isLargeScreen = windowWidth > 600;
   const responsiveWrapperStyle = isLargeScreen ? { maxWidth: 540, alignSelf: "center", width: "100%" } : { width: "100%" };
 
+  const currentVehicle = vehicles.find(v => (v.id === selectedVehicleId || v._id === selectedVehicleId));
+
   return (
     <SafeAreaView style={styles.container}>
       <AppHeader title="Smart Reminder" navigation={navigation} />
+
+      {/* Vehicle Selection Header Bar */}
+      <View style={{ paddingHorizontal: 20, paddingTop: 10, paddingBottom: 5 }}>
+        <TouchableOpacity 
+          style={{
+            backgroundColor: "#FFFFFF",
+            borderWidth: 1,
+            borderColor: "#E2E8F0",
+            padding: 12,
+            borderRadius: 12,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            shadowColor: "#0F172A",
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.02,
+            elevation: 1
+          }}
+          onPress={() => setShowVehicleModal(true)}
+        >
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+            <Ionicons name="car-outline" size={18} color="#F97316" />
+            <Text style={{ fontSize: 14, fontWeight: "600", color: "#0F172A" }}>
+              {currentVehicle ? (currentVehicle.name || currentVehicle.model || "Selected Vehicle") : "Select Vehicle"}
+            </Text>
+          </View>
+          <Ionicons name="chevron-down" size={16} color="#64748B" />
+        </TouchableOpacity>
+      </View>
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -112,7 +190,7 @@ export default function Reminder({ navigation }) {
             </View>
           ) : (
             data.map((item) => (
-              <View style={styles.cardGutter} key={item.id}>
+              <View style={styles.cardGutter} key={item.id || item._id}>
                 <View style={styles.card}>
                   <View style={styles.cardHeader}>
                     <View style={styles.iconCircleWrapper}>
@@ -125,7 +203,7 @@ export default function Reminder({ navigation }) {
                     </View>
 
                     <Pressable
-                      onPress={() => handleDelete(item.id)}
+                      onPress={() => handleDelete(item.id || item._id)}
                       style={({ pressed }) => [styles.deleteButton, pressed && styles.elementPressed]}
                       hitSlop={12}
                     >
@@ -155,7 +233,7 @@ export default function Reminder({ navigation }) {
 
           <Pressable
             style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
-            onPress={() => navigation.navigate("AddReminder")}
+            onPress={() => navigation.navigate("AddReminder", { vehicleId: selectedVehicleId })}
           >
             <Ionicons name="add" size={20} color="#FFFFFF" style={{ marginRight: 4 }} />
             <Text style={styles.buttonText}>Add Reminder</Text>
@@ -163,6 +241,60 @@ export default function Reminder({ navigation }) {
 
         </View>
       </ScrollView>
+
+      {/* Vehicle Selection Modal */}
+      <Modal
+        visible={showVehicleModal}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowVehicleModal(false)}
+      >
+        <View style={{ flex: 1, backgroundColor: "rgba(15, 23, 42, 0.4)", justifyContent: "center", alignItems: "center", padding: 20 }}>
+          <View style={{ backgroundColor: "#FFFFFF", width: "100%", maxWidth: 400, borderRadius: 20, padding: 20 }}>
+            <Text style={{ fontSize: 18, fontWeight: "700", marginBottom: 15, color: "#0F172A" }}>Select Vehicle</Text>
+            {vehicles.length === 0 ? (
+              <Text style={{ color: "#64748B", marginBottom: 20 }}>No vehicles found. Please add a vehicle first.</Text>
+            ) : (
+              vehicles.map((v) => {
+                const vId = v.id || v._id;
+                const isSelected = vId === selectedVehicleId;
+                return (
+                  <TouchableOpacity
+                    key={vId}
+                    style={{
+                      paddingVertical: 12,
+                      paddingHorizontal: 16,
+                      borderRadius: 12,
+                      backgroundColor: isSelected ? "#F8FAFC" : "#FFFFFF",
+                      borderWidth: isSelected ? 1 : 0,
+                      borderColor: "#F97316",
+                      marginBottom: 8,
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center"
+                    }}
+                    onPress={() => {
+                      setSelectedVehicleId(vId);
+                      setShowVehicleModal(false);
+                    }}
+                  >
+                    <Text style={{ fontWeight: isSelected ? "700" : "500", color: "#0F172A" }}>
+                      {v.name || v.model || "Vehicle"}
+                    </Text>
+                    {isSelected && <Ionicons name="checkmark" size={18} color="#F97316" />}
+                  </TouchableOpacity>
+                );
+              })
+            )}
+            <TouchableOpacity
+              style={{ backgroundColor: "#F1F5F9", padding: 14, borderRadius: 12, alignItems: "center", marginTop: 10 }}
+              onPress={() => setShowVehicleModal(false)}
+            >
+              <Text style={{ fontWeight: "600", color: "#475569" }}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }

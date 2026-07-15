@@ -1,3 +1,4 @@
+// src/navigation/BottomNavigator.js
 import React, { useEffect } from "react";
 import { View, TouchableOpacity, StyleSheet, Animated, Easing, Platform } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -142,7 +143,7 @@ function ProfileStackNavigator() {
 }
 
 // Bottom Tab Navigator
-function MainTabNavigator() {
+export default function MainTabNavigator() {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -253,17 +254,6 @@ function AnimatedAIButton({ accessibilityState, onPress, focused: isTabFocused }
         </View>
       </TouchableOpacity>
     </View>
-  );
-}
-
-// Root Navigation Container with Splash set as First Screen
-export default function AppNavigator() {
-  return (
-    <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Splash" component={SplashScreen} />
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="MainTabs" component={MainTabNavigator} />
-    </Stack.Navigator>
   );
 }
 

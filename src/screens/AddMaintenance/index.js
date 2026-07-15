@@ -13,9 +13,12 @@ import {
   useWindowDimensions
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { getMaintenance, saveMaintenance } from "../../services/maintenanceStorage";
+import { saveMaintenance } from "../../services/maintenanceStorage"; // Updated to use modern Firebase service
 
-export default function AddMaintenance({ navigation }) {
+export default function AddMaintenance({ navigation, route }) {
+  // Extract vehicleId passed from the route params
+  const vehicleId = route?.params?.vehicleId;
+
   const [service, setService] = useState({
     garage: "",
     repair: "",
@@ -99,19 +102,29 @@ export default function AddMaintenance({ navigation }) {
   };
 
   const save = async () => {
+    if (!vehicleId) {
+      alert("Missing vehicle ID. Please select a vehicle first.");
+      return;
+    }
+
     if (!service.garage || !service.repair || !service.cost || !service.date) {
       alert("Please fill in all fields including the service date.");
       return;
     }
 
-    const old = await getMaintenance();
     const newData = {
-      id: Date.now(),
-      ...service
+      garage: service.garage,
+      repair: service.repair,
+      cost: Number(service.cost),
+      date: service.date
     };
 
-    await saveMaintenance([...old, newData]);
-    navigation.goBack();
+    const success = await saveMaintenance(vehicleId, newData);
+    if (success) {
+      navigation.goBack();
+    } else {
+      alert("Failed to save service record. Please try again.");
+    }
   };
 
   return (
@@ -165,9 +178,9 @@ export default function AddMaintenance({ navigation }) {
             </View>
 
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>Cost ($)</Text>
+              <Text style={styles.label}>Cost (Rs.)</Text>
               <TextInput
-                placeholder="e.g., 120.00"
+                placeholder="e.g., 2500"
                 placeholderTextColor="#94A3B8"
                 keyboardType="numeric"
                 style={styles.input}
@@ -273,7 +286,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   scrollContainerLarge: {
-    maxWidth: 1000, // Centers and frames container beautifully on desktop/tablets
+    maxWidth: 1000,
   },
   header: {
     flexDirection: "row",
@@ -370,15 +383,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "700",
   },
-
-  /* RESPONSIVE CALENDAR MODAL UI DESIGN */
   modalOverlay: {
     flex: 1,
-    backgroundColor: "rgba(15, 23, 42, 0.4)", // Translucent backdrop overlay
-    justifyContent: "flex-end", // Mobile default: Slides up from bottom
+    backgroundColor: "rgba(15, 23, 42, 0.4)",
+    justifyContent: "flex-end",
   },
   modalOverlayLarge: {
-    justifyContent: "center", // Desktop/Tablet style: Centers the picker dialog
+    justifyContent: "center",
     alignItems: "center",
     padding: 20,
   },
@@ -396,7 +407,7 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   modalContentLarge: {
-    width: 400, // Sets elegant static card width for wide displays
+    width: 400,
     borderRadius: 24,
     paddingVertical: 24,
     paddingBottom: 24,
@@ -436,7 +447,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
   },
   dayOfWeekText: {
-    width: "13%", // Distributes items evenly across horizontal width
+    width: "13%",
     textAlign: "center",
     fontSize: 13,
     fontWeight: "600",
@@ -450,15 +461,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
   },
   calendarDay: {
-    width: "13%", // Maps perfectly to 7 columns dynamically
-    aspectRatio: 1, // Ensures perfect circles across varying mobile screens
+    width: "13%",
+    aspectRatio: 1,
     justifyContent: "center",
     alignItems: "center",
     marginVertical: 4,
     borderRadius: 99,
   },
   calendarDaySelected: {
-    backgroundColor: "#F97316", // Accent Highlight color
+    backgroundColor: "#F97316",
     shadowColor: "#F97316",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,

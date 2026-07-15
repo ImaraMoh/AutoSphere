@@ -15,13 +15,15 @@ import { extractTextFromImage } from "../../services/ocrService";
 import styles from "./styles";
 
 export default function ScanPreview({ route, navigation }) {
-  const { image } = route.params;
+  // Extract image and vehicleId safely from route params
+  const { image, vehicleId } = route.params || {};
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
 
   const scanDocument = async () => {
     try {
       console.log("Sending Image:", image);
+      console.log("Passing vehicleId to OCR:", vehicleId);
       setLoading(true);
       
       const result = await extractTextFromImage(image);
@@ -33,12 +35,13 @@ export default function ScanPreview({ route, navigation }) {
 
       setText(result.text);
 
-      // Navigate immediately with the parsed vehicle metadata payload
+      // Navigate with vehicleId included inside the nested params
       navigation.navigate("Documents", {
         screen: "DocumentAutoFill",
         params: {
           vehicleData: result.vehicleData || {},
-          ocrText: result.text
+          ocrText: result.text,
+          vehicleId: vehicleId // <--- Forward vehicleId here
         }
       });
 

@@ -13,9 +13,12 @@ import {
   useWindowDimensions
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { getReminders, saveReminders } from "../../services/reminderStorage";
+import { saveReminder } from "../../services/reminderStorage";
 
-export default function AddReminder({ navigation }) {
+export default function AddReminder({ route, navigation }) {
+  // Capture vehicleId passed from the previous screen
+  const vehicleId = route?.params?.vehicleId || null;
+
   const [reminder, setReminder] = useState({
     title: "",
     date: "", // Formatted 'YYYY-MM-DD'
@@ -101,17 +104,24 @@ export default function AddReminder({ navigation }) {
       return;
     }
 
-    const old = await getReminders();
     const newReminder = {
-      id: Date.now(),
       title: reminder.title,
       date: reminder.date,
       type: reminder.type,
-      status: "Upcoming"
+      status: "Upcoming",
+      vehicleId: vehicleId // Attach the selected vehicle ID here
     };
 
-    await saveReminders([...old, newReminder]);
-    navigation.goBack();
+    // If your backend helper requires vehicleId as a separate argument or part of the object:
+    const success = vehicleId 
+      ? await saveReminder(newReminder, vehicleId) 
+      : await saveReminder(newReminder);
+
+    if (success) {
+      navigation.goBack();
+    } else {
+      alert("Failed to save reminder. Please check your connection.");
+    }
   };
 
   return (
@@ -264,7 +274,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   scrollContainerLarge: {
-    maxWidth: 600, // Caps desktop width to fit forms perfectly
+    maxWidth: 600,
   },
   header: {
     flexDirection: "row",
@@ -361,8 +371,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "700",
   },
-
-  /* RESPONSIVE DESIGN CALENDAR STRUCTURAL BLOCK STYLES */
   modalOverlay: {
     flex: 1,
     backgroundColor: "rgba(15, 23, 42, 0.4)",

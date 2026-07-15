@@ -1,3 +1,4 @@
+// BookLesson.js
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -13,6 +14,7 @@ import {
 } from "react-native";
 import { ChevronLeft, CalendarDays, Calendar } from "lucide-react-native";
 import * as Notifications from "expo-notifications";
+import { saveNotification } from "../../services/notificationStorage";
 import styles from "./styles";
 
 // Fall back smoothly to native picker engines only on physical mobile platforms
@@ -97,12 +99,29 @@ export default function BookLesson({ navigation }) {
       return;
     }
 
+    const title = "Driving School Booking Confirmed";
+    const message = `🎉 Success! You booked a lesson for ${dateText} using a ${vehicle.toLowerCase()}. Your instructor will contact you shortly!`;
+
+    try {
+      // Save notification to Firestore so it shows up in the Notifications screen
+      await saveNotification({
+        title: title,
+        message: message,
+        type: "DrivingSchool",
+        priority: "Medium",
+        date: date.toISOString(),
+        read: false
+      });
+    } catch (err) {
+      console.log("Error storing booking notification to database:", err);
+    }
+
     if (Platform.OS !== "web") {
       try {
         await Notifications.scheduleNotificationAsync({
           content: {
-            title: "AutoSphere Driving School",
-            body: `🎉 Success! You booked a lesson for ${dateText} using a ${vehicle.toLowerCase()}. Your instructor will contact you shortly!`,
+            title: title,
+            body: message,
           },
           trigger: null,
         });

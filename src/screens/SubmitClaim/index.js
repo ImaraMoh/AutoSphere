@@ -11,20 +11,32 @@ import {
 } from "react-native";
 import { ChevronLeft, FileText, AlertCircle } from "lucide-react-native";
 import { saveClaim } from "../../services/claimsStorage";
+import { auth } from "../../firebase/firebaseConfig";
 import styles from "./styles";
 
-export default function SubmitClaim({ navigation }) {
+export default function SubmitClaim({ route, navigation }) {
+  const vehicleId = route?.params?.vehicleId || null;
+
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
 
   const handleSubmitClaim = async () => {
+    if (!auth.currentUser) {
+      Alert.alert("Authentication Error", "You must be logged in to submit a claim.");
+      return;
+    }
+
+    if (!vehicleId) {
+      Alert.alert("Missing Vehicle", "No target vehicle was found. Please go back and select a vehicle.");
+      return;
+    }
+
     if (!description.trim() || !location.trim()) {
       Alert.alert("Missing Fields", "Please provide both the incident location and damage description.");
       return;
     }
 
     const newClaim = {
-      id: Date.now().toString(),
       description: description.trim(),
       location: location.trim(),
       date: new Date().toLocaleDateString(),
@@ -32,9 +44,16 @@ export default function SubmitClaim({ navigation }) {
     };
 
     try {
-      await saveClaim(newClaim);
-      navigation.goBack();
+      // Pass the vehicleId and payload parameters properly
+      await saveClaim(vehicleId, newClaim);
+      
+      Alert.alert(
+        "Claim Submitted",
+        "Your incident report has been successfully submitted and is under review.",
+        [{ text: "OK", onPress: () => navigation.goBack() }]
+      );
     } catch (error) {
+      console.log("Error submitting claim inside screen:", error);
       Alert.alert("Error", "Failed to submit your claim. Please try again.");
     }
   };

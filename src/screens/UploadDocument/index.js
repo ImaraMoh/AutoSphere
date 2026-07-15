@@ -16,9 +16,12 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
 import { saveDocument } from "../../services/documentStorage";
+import { auth } from "../../firebase/firebaseConfig";
 import styles from "./styles";
 
-export default function UploadDocument({ navigation }) {
+export default function UploadDocument({ route, navigation }) {
+  const vehicleId = route?.params?.vehicleId || null;
+
   const [title, setTitle] = useState("");
   const [type, setType] = useState("");
   const [customType, setCustomType] = useState("");
@@ -62,9 +65,24 @@ export default function UploadDocument({ navigation }) {
   };
 
   const save = async () => {
+    console.log("Save button clicked");
+
+    if (!auth.currentUser) {
+      console.log("Blocked: No authenticated user");
+      Alert.alert("Authentication Error", "You must be logged in to save documents.");
+      return;
+    }
+
+    if (!vehicleId) {
+      console.log("Blocked: No vehicleId provided");
+      Alert.alert("Missing Vehicle", "No target vehicle was selected. Please go back and select a vehicle.");
+      return;
+    }
+
     const finalType = type === "Other" ? customType : type;
 
     if (!title || !finalType || !file) {
+      console.log("Blocked: Missing fields", { title, finalType, file });
       Alert.alert("Missing Information", "Document name, type and file are required.");
       return;
     }
@@ -82,9 +100,16 @@ export default function UploadDocument({ navigation }) {
       createdAt: new Date().toISOString(),
     };
 
-    await saveDocument(document);
-    Alert.alert("Success", "Document saved successfully.");
-    navigation.goBack();
+    try {
+      console.log("Attempting to save document to storage for vehicle:", vehicleId);
+      await saveDocument(vehicleId, document);
+      console.log("Document saved successfully");
+      Alert.alert("Success", "Document saved successfully.");
+      navigation.goBack();
+    } catch (error) {
+      console.log("Error inside saveDocument catch block:", error);
+      Alert.alert("Error", `Failed to save document: ${error.message || error}`);
+    }
   };
 
   const isLargeScreen = windowWidth > 600;

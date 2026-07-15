@@ -67,13 +67,39 @@ export default function AddVehicle({ navigation }) {
       return;
     }
 
-    await saveVehicle({
+    const result = await saveVehicle({
+
       ...vehicle,
-      image: image ? `data:image/jpeg;base64,${image.base64}` : null,
-      id: Date.now().toString(),
-      healthScore: 92,
-      createdAt: new Date().toISOString()
+
+      image:
+      image
+      ? `data:image/jpeg;base64,${image.base64}`
+      : null,
+
+      healthScore:92
+
     });
+
+
+    if(result.success){
+
+      Alert.alert(
+        "Success",
+        "Vehicle added successfully"
+      );
+
+      navigation.goBack();
+
+    }
+
+    else{
+
+      Alert.alert(
+        "Error",
+        "Failed to save vehicle"
+      );
+
+    }
 
     navigation.goBack();
   }

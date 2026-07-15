@@ -29,6 +29,7 @@
     "expo-sharing": "~57.0.3",
     "expo-status-bar": "~57.0.0",
     "expo-text-recognition": "^0.1.1",
+    "firebase": "^12.16.0",
     "lucide-react-native": "^1.24.0",
     "punycode": "^2.3.1",
     "react": "19.2.3",

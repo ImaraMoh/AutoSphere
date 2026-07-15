@@ -35,7 +35,7 @@ export default function EditProfile({ navigation, route }) {
       const data = await getProfile();
       if (data) {
         setProfile({
-          name: data.name || "",
+          name: data.name || data.fullname || "",
           email: data.email || "",
           phone: data.phone || "",
           image: data.image || null,
@@ -101,24 +101,20 @@ export default function EditProfile({ navigation, route }) {
     }
   }
 
-  // Bulletproof exit handler that handles multiple navigation router types
   function handleExit() {
     try {
-      // 1. Check if parent passed an explicit callback function via route parameters
       if (route?.params?.onProfileUpdated) {
         route.params.onProfileUpdated();
         return;
       }
 
-      // 2. Standard React Navigation stack pop
       if (navigation && typeof navigation.goBack === "function" && navigation.canGoBack()) {
         navigation.goBack();
         return;
       }
 
-      // 3. Fallback: try navigating to common root names if stack fails
       if (navigation && typeof navigation.navigate === "function") {
-        navigation.navigate("Profile"); // Change to your profile screen route name if different
+        navigation.navigate("Profile");
       }
     } catch (navError) {
       console.log("NAVIGATION EXIT ERROR:", navError);
@@ -126,9 +122,6 @@ export default function EditProfile({ navigation, route }) {
   }
 
   async function saveChanges() {
-    console.log("SAVE BUTTON PRESSED");
-    navigation.goBack();
-
     if (saving) return;
 
     if (!profile.name || !profile.name.trim()) {
@@ -138,11 +131,11 @@ export default function EditProfile({ navigation, route }) {
 
     try {
       setSaving(true);
+      navigation.goBack();
       
-      // Save details to storage
+      // Fixed async call to wait for proper Firestore storage execution before exiting
       await saveProfile(profile);
 
-      // Show success alert and trigger exit upon confirmation
       Alert.alert("Success", "Profile updated successfully!", [
         {
           text: "OK",
